@@ -11,15 +11,12 @@
         body { font-family: -apple-system, system-ui, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; touch-action: manipulation; }
         .container { background: var(--card); padding: 1.2rem; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.12); width: 315px; text-align: center; position: relative; }
         
-        /* Main Title */
         .main-title { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: 15px; letter-spacing: -0.5px; }
 
-        /* Digital Input */
         .digital-box { background: #1a1a1a; color: #00ff00; font-family: monospace; font-size: 1.5rem; padding: 10px; border-radius: 10px; display: inline-flex; align-items: center; margin-bottom: 12px; border: 2px solid #333; position: relative; }
         #time-picker { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; }
         .ampm-label { font-size: 0.8rem; color: #888; margin-left: 5px; }
 
-        /* Clock Visuals */
         #clock-container { width: 110px; height: 110px; background: var(--clock-bg); border: 5px solid var(--accent); border-radius: 50%; margin: 10px auto; position: relative; }
         .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: var(--text); border-radius: 10px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .hour-hand { width: 4px; height: 28px; margin-left: -2px; z-index: 2; }
@@ -35,12 +32,13 @@
         .btn-real { background: #007bff; color: white; }
         .btn-sub { background: var(--btn-sub); color: var(--text); font-size: 0.75rem; padding: 8px; }
         
-        /* Help Modal */
+        /* Updated Help Modal Styling */
         #help-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--help-bg); border-radius: 24px; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; }
-        .help-section { margin-bottom: 15px; border-left: 3px solid var(--accent); padding-left: 10px; }
-        .help-section h3 { font-size: 0.95rem; margin: 0 0 5px 0; color: var(--accent); }
-        .help-section p { font-size: 0.8rem; margin: 0; line-height: 1.4; }
-        .example { color: #666; font-style: italic; display: block; margin-top: 3px; }
+        .help-section { margin-bottom: 12px; border-left: 3px solid var(--accent); padding-left: 10px; }
+        .help-section h3 { font-size: 0.9rem; margin: 0 0 5px 0; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+        .help-section p { font-size: 0.78rem; margin: 0; line-height: 1.4; }
+        .example { color: #666; font-style: italic; display: block; margin-top: 2px; }
+        .instr-list { font-size: 0.78rem; padding-left: 15px; margin: 5px 0; }
         
         .top-row { display: flex; gap: 5px; margin-bottom: 10px; }
         .setting-row { display: flex; justify-content: space-around; align-items: center; font-size: 0.85rem; margin-bottom: 12px; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 12px; }
@@ -52,7 +50,18 @@
     <div class="main-title" id="app-title">Learn to Tell the Time in Polish</div>
 
     <div id="help-modal">
-        <h2 id="h-title" style="font-size: 1.15rem; margin-top:0; color: var(--accent);">Learn to Tell the Time in Polish</h2>
+        <h2 style="font-size: 1.1rem; margin-top:0; color: var(--accent);">App Instructions & Grammar</h2>
+        
+        <div class="help-section">
+            <h3>How to Use</h3>
+            <ul class="instr-list">
+                <li><b>Set Time:</b> Tap the green numbers to pick a specific time or use "Random".</li>
+                <li><b>Quiz Mode:</b> Hide the text to test yourself. Tap "Reveal" to check.</li>
+                <li><b>Casual vs Formal:</b> Toggle between everyday speech and official time.</li>
+                <li><b>Listen:</b> Use "Repeat" or "½ Speed" to hear the pronunciation.</li>
+            </ul>
+        </div>
+
         <div id="h-content"></div>
         <button class="btn-main" onclick="toggleHelp()" id="h-close">Close</button>
     </div>
@@ -100,36 +109,31 @@
     let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', is24h = false;
     
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
-    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnasta", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
+    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
     const mWords = ["", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
 
     const dict = {
         EN: { 
             title: "Learn to Tell the Time in Polish",
             real: "ACTUAL TIME", random: "RANDOM TIME", reveal: "REVEAL ANSWER", repeat: "🔊 REPEAT", slow: "½ SPEED", casual: "Casual", formal: "Formal", qOn: "Quiz: ON", qOff: "Quiz: OFF", qAsk: "How do you say this?", 
-            hTitle: "Learn to Tell the Time in Polish", hClose: "Close", 
+            hClose: "Close", 
             hBody: `
                 <div class="help-section"><h3>Rule 1: Minutes 1–29</h3><p>Use "po" (after) + Genitive hour.<span class="example">5:10 → Dziesięć po piątej</span></p></div>
                 <div class="help-section"><h3>Rule 2: Half-Hour</h3><p>Use "Wpół do" (half to) + Genitive NEXT hour.<span class="example">5:30 → Wpół do szóstej</span></p></div>
-                <div class="help-section"><h3>Rule 3: Minutes 31–59</h3><p>Use "Za" (before) + Nominative NEXT hour.<span class="example">5:45 → Za piętnaście szósta</span></p></div>
-                <div class="help-section"><h3>Formal Time</h3><p>Always 24h: "Jest godzina..."<span class="example">17:15 → Jest godzina siedemnasta piętnaście</span></p></div>`
+                <div class="help-section"><h3>Rule 3: Minutes 31–59</h3><p>Use "Za" (before) + Nominative NEXT hour.<span class="example">5:45 → Za piętnaście szósta</span></p></div>`
         },
         PL: { 
             title: "Nauka czasu po polsku",
             real: "CZAS RZECZYWISTY", random: "LOSUJ CZAS", reveal: "POKAŻ ODPOWIEDŹ", repeat: "🔊 POWTÓRZ", slow: "½ PRĘDKOŚĆ", casual: "Potoczny", formal: "Oficjalny", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ", qAsk: "Jak to powiedzieć?", 
-            hTitle: "Nauka czasu po polsku", hClose: "Zamknij", 
+            hClose: "Zamknij", 
             hBody: `
                 <div class="help-section"><h3>1: Minuty 1–29</h3><p>Używamy "po" + dopełniacz godziny.<span class="example">5:10 → Dziesięć po piątej</span></p></div>
                 <div class="help-section"><h3>2: Pół godziny</h3><p>Używamy "Wpół do" + dopełniacz NASTĘPNEJ godziny.<span class="example">5:30 → Wpół do szóstej</span></p></div>
-                <div class="help-section"><h3>3: Minuty 31–59</h3><p>Używamy "Za" + mianownik NASTĘPNEJ godziny.<span class="example">5:45 → Za piętnaście szósta</span></p></div>
-                <div class="help-section"><h3>Tryb Oficjalny</h3><p>Używamy 24h: "Jest godzina..."<span class="example">17:15 → Jest godzina siedemnasta piętnaście</span></p></div>`
+                <div class="help-section"><h3>3: Minuty 31–59</h3><p>Używamy "Za" + mianownik NASTĘPNEJ godziny.<span class="example">5:45 → Za piętnaście szósta</span></p></div>`
         }
     };
 
-    function init() {
-        updateLangUI();
-        setRealTime();
-    }
+    function init() { updateLangUI(); setRealTime(); }
 
     function updateLangUI() {
         const t = dict[currentLang];
@@ -141,7 +145,6 @@
         document.getElementById('btn-slow').innerText = t.slow;
         document.getElementById('lbl-casual').innerText = t.casual;
         document.getElementById('lbl-formal').innerText = t.formal;
-        document.getElementById('h-title').innerText = t.hTitle;
         document.getElementById('h-close').innerText = t.hClose;
         document.getElementById('h-content').innerHTML = t.hBody;
         document.getElementById('quiz-toggle').innerText = isQuiz ? t.qOn : t.qOff;
