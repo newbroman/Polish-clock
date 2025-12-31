@@ -3,70 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Polish Time Master</title>
-    
     <style>
-        :root { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; --clock-bg: #ffffff; }
-        body.dark-mode { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --clock-bg: #2d2d2d; }
+        :root { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; --clock-bg: #ffffff; --btn-sub: #e9ecef; }
+        body.dark-mode { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --clock-bg: #2d2d2d; --btn-sub: #333; }
         
-        body { 
-            font-family: -apple-system, system-ui, sans-serif; 
-            background-color: var(--bg); color: var(--text); 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; margin: 0; overflow: hidden; touch-action: manipulation;
-        }
+        body { font-family: -apple-system, system-ui, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; touch-action: manipulation; }
+        .container { background: var(--card); padding: 1.2rem; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.12); width: 310px; text-align: center; position: relative; }
+        
+        .digital-box { background: #1a1a1a; color: #00ff00; font-family: monospace; font-size: 1.5rem; padding: 10px; border-radius: 10px; display: inline-block; margin-bottom: 12px; border: 2px solid #333; }
+        .ampm-label { font-size: 0.8rem; color: #888; margin-left: 5px; }
 
-        .container { background: var(--card); padding: 1.2rem; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.12); width: 320px; text-align: center; }
-        h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); }
-
-        .digital-box { 
-            background: #1a1a1a; color: #00ff00; font-family: 'Courier New', monospace; 
-            font-size: 1.4rem; padding: 8px 16px; border-radius: 10px; display: inline-block; 
-            margin-bottom: 12px; border: 2px solid #333; box-shadow: inset 0 0 10px rgba(0,255,0,0.2);
-        }
-        .ampm-label { font-size: 0.7rem; margin-left: 4px; color: #888; }
-
-        #clock-container { 
-            width: 120px; height: 120px; background: var(--clock-bg); border: 5px solid var(--accent); 
-            border-radius: 50%; margin: 10px auto; position: relative; display: flex; align-items: center; justify-content: center;
-        }
-        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: var(--text); border-radius: 10px; z-index: 5; transition: transform 0.5s cubic-bezier(0.4, 2.08, 0.55, 0.44); }
+        #clock-container { width: 120px; height: 120px; background: var(--clock-bg); border: 5px solid var(--accent); border-radius: 50%; margin: 10px auto; position: relative; }
+        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: var(--text); border-radius: 10px; transition: transform 0.4s ease-out; }
         .hour-hand { width: 4px; height: 30px; margin-left: -2px; }
         .min-hand { width: 3px; height: 45px; margin-left: -1.5px; }
-        .dot { width: 8px; height: 8px; background: var(--accent); position: absolute; border-radius: 50%; z-index: 10; }
+        .dot { width: 8px; height: 8px; background: var(--accent); position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 10; }
 
-        .polish-display { min-height: 65px; margin: 12px 0; font-size: 1.1rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; justify-content: center; line-height: 1.3; padding: 0 10px; }
-        .placeholder { color: #888; font-style: italic; font-weight: 400; font-size: 0.85rem; }
-
-        button { cursor: pointer; font-weight: 700; border-radius: 12px; border: none; transition: 0.1s; -webkit-tap-highlight-color: transparent; }
-        button:active { transform: scale(0.96); }
-
-        .btn-main { background: var(--accent); color: white; width: 100%; padding: 12px; font-size: 1rem; margin-bottom: 8px; }
-        .btn-real { background: #007bff; color: white; width: 100%; padding: 10px; font-size: 0.9rem; margin-bottom: 12px; }
+        .polish-display { min-height: 70px; margin: 10px 0; font-size: 1.1rem; font-weight: 700; color: var(--accent); display: flex; align-items: center; justify-content: center; }
         
-        .btn-group { display: flex; gap: 8px; }
-        .btn-sub { background: #e9ecef; color: #495057; padding: 10px; flex: 1; font-size: 0.75rem; }
+        button { cursor: pointer; font-weight: 700; border-radius: 12px; border: none; padding: 12px; transition: 0.1s; width: 100%; margin-bottom: 8px; }
+        button:active { transform: scale(0.98); opacity: 0.8; }
+        .btn-main { background: var(--accent); color: white; }
+        .btn-real { background: #007bff; color: white; }
+        .btn-sub { background: var(--btn-sub); color: var(--text); font-size: 0.75rem; padding: 8px; }
         
-        #reveal-btn { background: #28a745; color: white; width: 100%; padding: 12px; font-size: 1rem; margin-bottom: 12px; display: none; }
+        /* Help Modal */
+        #help-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card); border-radius: 24px; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; }
+        #help-modal h2 { font-size: 1.2rem; color: var(--accent); margin-top: 0; }
+        #help-modal p { font-size: 0.85rem; line-height: 1.4; }
 
-        .top-row { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 6px; }
-        .mode-area { font-size: 0.85rem; margin-bottom: 12px; font-weight: 600; }
+        .top-row { display: flex; gap: 5px; margin-bottom: 10px; }
+        .btn-group { display: flex; gap: 5px; }
     </style>
 </head>
-<body onload="initVoices()">
+<body onload="init()">
 
 <div class="container">
-    <div class="top-row">
-        <button class="btn-sub" onclick="toggleDark()">🌓</button>
-        <button class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">QUIZ: OFF</button>
-        <button class="btn-sub" id="lang-toggle" onclick="toggleLang()">EN / PL</button>
+    <div id="help-modal">
+        <h2 id="h-title">How to tell time</h2>
+        <div id="h-content">
+            <p><b>1-29 mins:</b> Use "po" (after) + Genitive hour. (e.g., 5 po drugiej)</p>
+            <p><b>30 mins:</b> Use "wpół do" (half to) + Genitive NEXT hour.</p>
+            <p><b>31-59 mins:</b> Use "za" (before) + Nominative NEXT hour. (e.g., za 10 trzecia)</p>
+        </div>
+        <button class="btn-main" onclick="toggleHelp()" id="h-close">Close</button>
     </div>
 
-    <h1 id="ui-title">Polish Time Master</h1>
+    <div class="top-row">
+        <button class="btn-sub" onclick="toggleDark()">🌓 Theme</button>
+        <button class="btn-sub" id="lang-toggle" onclick="toggleLang()">EN / PL</button>
+        <button class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">Quiz: OFF</button>
+        <button class="btn-sub" onclick="toggleHelp()">❓</button>
+    </div>
 
     <div class="digital-box">
-        <span id="digi-time">--:--</span><span class="ampm-label" id="ampm">--</span>
+        <span id="digi-time">00:00</span><span class="ampm-label" id="ampm">AM</span>
     </div>
 
     <div id="clock-container">
@@ -75,29 +67,119 @@
         <div class="hand min-hand" id="m-hand"></div>
     </div>
 
-    <div class="polish-display" id="polish-text">
-        <span id="ui-welcome" class="placeholder">Select a time mode</span>
-    </div>
+    <div class="polish-display" id="polish-text">Ready?</div>
+    
+    <button id="reveal-btn" style="display:none; background:#28a745; color:white;" onclick="revealAnswer()">REVEAL ANSWER</button>
 
-    <button id="reveal-btn" onclick="revealAnswer()">REVEAL ANSWER</button>
-
-    <div class="mode-area">
-        <input type="radio" name="mode" id="casual" checked onchange="updateDisplay()"> <label for="casual" id="ui-casual">Casual</label>
+    <div style="margin-bottom: 10px; font-size: 0.9rem;">
+        <input type="radio" name="mode" id="casual" checked onchange="updateDisplay()"> <span id="lbl-casual">Casual</span>
         &nbsp;
-        <input type="radio" name="mode" id="formal" onchange="updateDisplay()"> <label for="formal" id="ui-formal">Formal</label>
+        <input type="radio" name="mode" id="formal" onchange="updateDisplay()"> <span id="lbl-formal">Formal</span>
     </div>
 
-    <button class="btn-real" id="ui-real" onclick="setRealTime()">REAL TIME</button>
-    <button class="btn-main" id="ui-random" onclick="rollTime()">RANDOM TIME</button>
+    <button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
+    <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
     
     <div class="btn-group">
-        <button class="btn-sub" id="ui-repeat" onclick="speak(1)">🔊 REPEAT</button>
-        <button class="btn-sub" id="ui-slow" onclick="speak(0.55)">½ SPEED</button>
+        <button class="btn-sub" id="btn-repeat" onclick="speak(1)">🔊 REPEAT</button>
+        <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
     </div>
 </div>
 
 <script>
-    let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, polVoice = null, currentLang = 'EN';
-
+    let hours = 0, minutes = 0, isQuiz = false, isRevealed = true, currentLang = 'EN';
+    
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
-    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnasta", "sied
+    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
+    const mWords = ["", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
+
+    const dict = {
+        EN: { real: "ACTUAL TIME", random: "RANDOM TIME", reveal: "REVEAL ANSWER", repeat: "🔊 REPEAT", slow: "½ SPEED", casual: "Casual", formal: "Formal", qOn: "Quiz: ON", qOff: "Quiz: OFF", qAsk: "How do you say this?", hTitle: "Grammar Help", hClose: "Close", hBody: `<p><b>1-29 mins:</b> Use 'po' (after) + Genitive hour.</p><p><b>30 mins:</b> Use 'wpół do' (half to) + Genitive NEXT hour.</p><p><b>31-59 mins:</b> Use 'za' (before) + Nominative NEXT hour.</p>` },
+        PL: { real: "CZAS RZECZYWISTY", random: "LOSUJ CZAS", reveal: "POKAŻ ODPOWIEDŹ", repeat: "🔊 POWTÓRZ", slow: "½ PRĘDKOŚĆ", casual: "Potoczny", formal: "Oficjalny", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ", qAsk: "Jak to powiedzieć?", hTitle: "Pomoc gramatyczna", hClose: "Zamknij", hBody: `<p><b>1-29 min:</b> 'po' + dopełniacz (np. 5 po drugiej).</p><p><b>30 min:</b> 'wpół do' + dopełniacz NASTĘPNEJ godziny.</p><p><b>31-59 min:</b> 'za' + mianownik NASTĘPNEJ godziny.</p>` }
+    };
+
+    function init() { setRealTime(); }
+
+    function toggleLang() {
+        currentLang = currentLang === 'EN' ? 'PL' : 'EN';
+        const t = dict[currentLang];
+        document.getElementById('btn-real').innerText = t.real;
+        document.getElementById('btn-random').innerText = t.random;
+        document.getElementById('reveal-btn').innerText = t.reveal;
+        document.getElementById('btn-repeat').innerText = t.repeat;
+        document.getElementById('btn-slow').innerText = t.slow;
+        document.getElementById('lbl-casual').innerText = t.casual;
+        document.getElementById('lbl-formal').innerText = t.formal;
+        document.getElementById('h-title').innerText = t.hTitle;
+        document.getElementById('h-close').innerText = t.hClose;
+        document.getElementById('h-content').innerHTML = t.hBody;
+        document.getElementById('quiz-toggle').innerText = isQuiz ? t.qOn : t.qOff;
+        updateDisplay();
+    }
+
+    function toggleHelp() {
+        const modal = document.getElementById('help-modal');
+        modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function setRealTime() {
+        const now = new Date(); hours = now.getHours(); minutes = now.getMinutes();
+        isRevealed = !isQuiz; updateDisplay();
+    }
+
+    function rollTime() {
+        hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60);
+        isRevealed = !isQuiz; updateDisplay();
+    }
+
+    function toggleQuiz() {
+        isQuiz = !isQuiz; isRevealed = !isQuiz;
+        document.getElementById('quiz-toggle').innerText = isQuiz ? dict[currentLang].qOn : dict[currentLang].qOff;
+        updateDisplay();
+    }
+
+    function revealAnswer() { isRevealed = true; updateDisplay(); speak(1); }
+
+    function updateDisplay() {
+        document.getElementById('h-hand').style.transform = `rotate(${(hours % 12) * 30 + minutes * 0.5}deg)`;
+        document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
+        document.getElementById('digi-time').innerText = `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')}`;
+        document.getElementById('ampm').innerText = hours >= 12 ? "PM" : "AM";
+
+        const isFormal = document.getElementById('formal').checked;
+        let polish = "";
+        if (isFormal) { polish = `Jest godzina ${hNom[hours]} ${mWords[minutes]}`; }
+        else {
+            let nextH = (hours + 1) % 24;
+            if (minutes === 0) polish = `Jest ${hNom[hours]}`;
+            else if (minutes === 15) polish = `Kwadrans po ${hGen[hours]}`;
+            else if (minutes < 30) polish = `${mWords[minutes]} po ${hGen[hours]}`;
+            else if (minutes === 30) polish = `Wpół do ${hGen[nextH]}`;
+            else if (minutes === 45) polish = `Za kwadrans ${hNom[nextH]}`;
+            else polish = `Za ${mWords[60 - minutes]} ${hNom[nextH]}`;
+        }
+
+        const textField = document.getElementById('polish-text');
+        if (isQuiz && !isRevealed) {
+            textField.innerText = dict[currentLang].qAsk;
+            document.getElementById('reveal-btn').style.display = "block";
+        } else {
+            textField.innerText = polish.charAt(0).toUpperCase() + polish.slice(1);
+            document.getElementById('reveal-btn').style.display = "none";
+        }
+    }
+
+    function speak(rate) {
+        window.speechSynthesis.cancel();
+        const text = document.getElementById('polish-text').innerText;
+        if (text.includes("?") || text.includes("Ready")) return;
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'pl-PL';
+        msg.rate = rate;
+        window.speechSynthesis.speak(msg);
+    }
+
+    function toggleDark() { document.body.classList.toggle('dark-mode'); }
+</script>
+</body>
+</html>
