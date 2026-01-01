@@ -9,7 +9,7 @@
         body.dark-mode { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --clock-border: #444; --btn-sub: #333; --help-bg: #1e1e1e; --eng-text: #a0a0a0; }
         body { font-family: -apple-system, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding-top: 10px; touch-action: manipulation; }
         .container { background: var(--card); padding: 1rem; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; position: relative; }
-        h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); }
+        h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); font-weight: 800; }
         #clock-container { width: 140px; height: 140px; margin: 5px auto 10px; position: relative; border-radius: 50%; border: 6px solid var(--clock-border); background: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%); overflow: hidden; }
         .mark { position: absolute; width: 2px; height: 8px; background: #212529; left: 50%; transform-origin: 50% 70px; }
         .mark.hour { width: 3px; height: 12px; }
@@ -21,9 +21,9 @@
         .picker-row { display: flex; gap: 20px; }
         .picker-btn { background: #333; color: white; border: none; border-radius: 5px; width: 50px; height: 35px; font-weight: bold; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
         .digital-display { background: #1a1a1a; color: #00ff00; font-family: monospace; font-size: 1.5rem; padding: 8px 15px; border-radius: 8px; border: 2px solid #333; margin: 4px 0; min-width: 100px; }
-        .display-area { min-height: 85px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .polish-display { font-size: 1rem; font-weight: 700; color: var(--accent); line-height: 1.2; padding: 0 5px; }
-        .english-display { font-size: 0.8rem; color: var(--eng-text); font-style: italic; }
+        .display-area { min-height: 95px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .polish-display { font-size: 0.95rem; font-weight: 700; color: var(--accent); line-height: 1.3; padding: 0 5px; }
+        .english-display { font-size: 0.8rem; color: var(--eng-text); font-style: italic; margin-top: 4px; }
         button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; padding: 10px; transition: 0.1s; width: 100%; margin-bottom: 6px; font-size: 0.85rem; }
         .btn-main { background: var(--accent); color: white; }
         .btn-real { background: #007bff; color: white; }
@@ -71,7 +71,7 @@
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;"><button class="btn-sub" id="btn-repeat" onclick="speak(1)">🔊 REPEAT</button><button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button></div>
 
     <div id="help-modal">
-        <h2 id="help-title" style="font-size: 1.1rem; margin-top:0; color: var(--accent);">Help</h2>
+        <h2 id="modal-title" style="font-size: 1.1rem; margin-top:0; color: var(--accent);">Help Guide</h2>
         <div id="help-content"></div>
         <button class="btn-main" style="margin-top:10px" id="help-close-btn" onclick="toggleHelp()">Close</button>
     </div>
@@ -79,18 +79,19 @@
 
 <script>
     let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, is24h = false, currentLang = 'EN';
+    
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
-    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
-    const mWords = ["", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnasta", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści"];
+    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnasta", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
+    const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
 
     const dict = {
         EN: {
-            title: "Tell the Time in Polish", casual: "Casual", formal: "Formal", actual: "ACTUAL TIME", random: "RANDOM TIME", reveal: "REVEAL", ask: "How to say?", close: "Close",
-            help: `<div class="help-section"><h3>How to Use</h3><p>• Use <b>+</b> and <b>-</b> to adjust time.<br>• Toggle <b>Quiz</b> to hide the answer for practice.<br>• Toggle <b>EN/PL</b> to change button labels.</p></div><div class="help-section"><h3>Casual Grammar</h3><p><b>1. Minutes 1-29:</b> Use <i>po</i> (after) + Genitive hour.<br><span class="example">5:10 → Dziesięć po piątej</span><b>2. Half Hour:</b> Use <i>Wpół do</i> + Genitive NEXT hour.<br><span class="example">5:30 → Wpół do szóstej</span><b>3. Minutes 31-59:</b> Use <i>Za</i> (before) + Nominative NEXT hour.<br><span class="example">5:45 → Za piętnaście szósta</span></p></div>`
+            title: "Tell the Time in Polish", casual: "Casual", formal: "Formal", actual: "ACTUAL TIME", random: "RANDOM TIME", reveal: "REVEAL", ask: "How to say?", close: "Close", mTitle: "Help Guide",
+            help: `<div class="help-section"><h3>Controls</h3><p>• <b>+/-</b>: Adjust time.<br>• <b>Quiz</b>: Practice without seeing the answer.<br>• <b>Repeat</b>: Hear the Polish pronunciation.</p></div><div class="help-section"><h3>Grammar Rules</h3><p><b>1. Po (After):</b> For minutes 1-29.<br><span class="example">5:10 - Dziesięć po piątej</span><b>2. Wpół do (Half to):</b> For 30 minutes.<br><span class="example">5:30 - Wpół do szóstej</span><b>3. Za (Before):</b> For minutes 31-59.<br><span class="example">5:45 - Za piętnaście szósta</span></p></div>`
         },
         PL: {
-            title: "Podaj Czas po Polsku", casual: "Potoczny", formal: "Oficjalny", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS", reveal: "POKAŻ", ask: "Jak to powiedzieć?", close: "Zamknij",
-            help: `<div class="help-section"><h3>Jak używać</h3><p>• Użyj <b>+</b> i <b>-</b> by zmienić czas.<br>• Włącz <b>Quiz</b> aby ukryć odpowiedź.<br>• Kliknij <b>EN/PL</b> by zmienić język menu.</p></div><div class="help-section"><h3>Zasady Potoczne</h3><p><b>1. Minuty 1-29:</b> <i>po</i> + Dopełniacz godziny.<br><span class="example">5:10 → Dziesięć po piątej</span><b>2. Pół godziny:</b> <i>Wpół do</i> + Dopełniacz następnej.<br><span class="example">5:30 → Wpół do szóstej</span><b>3. Minuty 31-59:</b> <i>Za</i> + Mianownik następnej.<br><span class="example">5:45 → Za piętnaście szósta</span></p></div>`
+            title: "Podaj Czas po Polsku", casual: "Potoczny", formal: "Oficjalny", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS", reveal: "POKAŻ", ask: "Jak to powiedzieć?", close: "Zamknij", mTitle: "Pomoc",
+            help: `<div class="help-section"><h3>Instrukcja</h3><p>• <b>+/-</b>: Zmieniaj czas.<br>• <b>Quiz</b>: Ćwicz ukrywając odpowiedź.<br>• <b>Powtórz</b>: Usłysz poprawną wymowę.</p></div><div class="help-section"><h3>Zasady</h3><p><b>1. Po:</b> Dla minut 1-29.<br><span class="example">5:10 - Dziesięć po piątej</span><b>2. Wpół do:</b> Dla 30 minut.<br><span class="example">5:30 - Wpół do szóstej</span><b>3. Za:</b> Dla minut 31-59.<br><span class="example">5:45 - Za piętnaście szósta</span></p></div>`
         }
     };
 
@@ -121,6 +122,7 @@
         document.getElementById('btn-random').innerText = d.random;
         document.getElementById('quiz-toggle').innerText = isQuiz ? (currentLang === 'EN' ? "Quiz: ON" : "Quiz: WŁ") : (currentLang === 'EN' ? "Quiz: OFF" : "Quiz: WYŁ");
         document.getElementById('reveal-btn').innerText = d.reveal;
+        document.getElementById('modal-title').innerText = d.mTitle;
         document.getElementById('help-close-btn').innerText = d.close;
         document.getElementById('help-content').innerHTML = d.help;
         updateDisplay();
@@ -144,21 +146,22 @@
 
         let polish = "", english = "";
         if (formal) {
-            polish = `Godzina ${hNom[hours]} ${minutes.toString().padStart(2, '0')}`;
+            let mSpelled = (minutes === 0) ? "zero zero" : (minutes < 10 ? "zero " + mAll[minutes] : mAll[minutes]);
+            polish = `Godzina ${hNom[hours]} ${mSpelled}`;
             english = `${hours}:${minutes.toString().padStart(2, '0')}`;
         } else {
             if (minutes === 0) {
                 polish = (hours === 0) ? `Północ` : (hours === 12) ? `Południe` : hNom[curH];
                 english = (hours === 0) ? `Midnight` : (hours === 12) ? `Noon` : `${hours % 12 || 12} o'clock`;
             } else if (minutes < 30) {
-                polish = `${mWords[minutes]} po ${hGen[curH]}`;
+                polish = `${mAll[minutes]} po ${hGen[curH]}`;
                 english = `${minutes} past ${hours % 12 || 12}`;
             } else if (minutes === 30) {
                 polish = `Wpół do ${hGen[nextH_Spoken]}`;
-                english = `Half to ${nextH % 12 || 12}`;
+                english = `Half past ${hours % 12 || 12}`;
             } else {
                 let diff = 60 - minutes;
-                polish = `Za ${mWords[diff]} ${hNom[nextH_Spoken]}`;
+                polish = `Za ${mAll[diff]} ${hNom[nextH_Spoken]}`;
                 english = `${diff} to ${nextH % 12 || 12}`;
             }
         }
