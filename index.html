@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Polish Time Master</title>
+    <title>Tell the Time in Polish</title>
     <style>
         :root { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; --clock-border: #d1d1d1; --btn-sub: #e9ecef; --help-bg: #fff; --eng-text: #6c757d; }
         body.dark-mode { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --clock-border: #444; --btn-sub: #333; --help-bg: #1e1e1e; --eng-text: #a0a0a0; }
-        
         body { font-family: -apple-system, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding-top: 10px; touch-action: manipulation; }
         .container { background: var(--card); padding: 1rem; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 300px; text-align: center; position: relative; }
-        
+        h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); }
         #clock-container { width: 140px; height: 140px; margin: 5px auto 10px; position: relative; border-radius: 50%; border: 6px solid var(--clock-border); background: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%); overflow: hidden; }
         .mark { position: absolute; width: 2px; height: 8px; background: #212529; left: 50%; transform-origin: 50% 70px; }
         .mark.hour { width: 3px; height: 12px; }
@@ -18,24 +17,19 @@
         .hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
         .min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
         .dot { width: 10px; height: 10px; background: #212529; position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 10; border: 1.5px solid white; }
-
         .picker-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
         .picker-row { display: flex; gap: 20px; }
         .picker-btn { background: #333; color: white; border: none; border-radius: 5px; width: 50px; height: 35px; font-weight: bold; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; }
         .digital-display { background: #1a1a1a; color: #00ff00; font-family: monospace; font-size: 1.5rem; padding: 8px 15px; border-radius: 8px; border: 2px solid #333; margin: 4px 0; min-width: 100px; }
-
         .display-area { min-height: 85px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .polish-display { font-size: 1rem; font-weight: 700; color: var(--accent); line-height: 1.2; padding: 0 5px; }
         .english-display { font-size: 0.8rem; color: var(--eng-text); font-style: italic; }
-        
         button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; padding: 10px; transition: 0.1s; width: 100%; margin-bottom: 6px; font-size: 0.85rem; }
         .btn-main { background: var(--accent); color: white; }
         .btn-real { background: #007bff; color: white; }
         .btn-sub { background: var(--btn-sub); color: var(--text); padding: 6px; font-size: 0.7rem; }
-        
         .top-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
         .setting-row { display: flex; justify-content: space-around; align-items: center; font-size: 0.8rem; margin-bottom: 10px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; }
-        
         #help-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--help-bg); border-radius: 20px; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; }
         .help-section { margin-bottom: 15px; border-left: 3px solid var(--accent); padding-left: 10px; }
         .help-section h3 { font-size: 0.85rem; margin: 0 0 5px 0; color: var(--accent); text-transform: uppercase; }
@@ -43,8 +37,8 @@
     </style>
 </head>
 <body onload="init()">
-
 <div class="container">
+    <h1 id="app-title">Tell the Time in Polish</h1>
     <div class="top-row">
         <button class="btn-sub" onclick="toggleDark()">🌓</button>
         <button class="btn-sub" onclick="toggleLang()">EN/PL</button>
@@ -61,8 +55,8 @@
     </div>
 
     <div class="display-area">
-        <div class="polish-display" id="polish-text">Dzień dobry!</div>
-        <div class="english-display" id="english-text">Good morning!</div>
+        <div class="polish-display" id="polish-text"></div>
+        <div class="english-display" id="english-text"></div>
         <button id="reveal-btn" style="display:none; background:#28a745; color:white; margin-top:5px;" onclick="revealAnswer()">REVEAL</button>
     </div>
 
@@ -74,11 +68,7 @@
 
     <button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
     <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
-    
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-        <button class="btn-sub" id="btn-repeat" onclick="speak(1)">🔊 REPEAT</button>
-        <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
-    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;"><button class="btn-sub" id="btn-repeat" onclick="speak(1)">🔊 REPEAT</button><button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button></div>
 
     <div id="help-modal">
         <h2 id="help-title" style="font-size: 1.1rem; margin-top:0; color: var(--accent);">Help</h2>
@@ -91,18 +81,16 @@
     let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, is24h = false, currentLang = 'EN';
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
     const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
-    const mWords = ["", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnasta", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
+    const mWords = ["", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnasta", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści"];
 
     const dict = {
         EN: {
-            title: "Polish Time Guide", casual: "Casual", formal: "Formal", actual: "ACTUAL TIME", random: "RANDOM TIME",
-            repeat: "🔊 REPEAT", slow: "½ SPEED", quizOn: "Quiz: ON", quizOff: "Quiz: OFF", reveal: "REVEAL", ask: "How to say?", close: "Close",
-            help: `<div class="help-section"><h3>How to Use</h3><p>• Use <b>+</b> and <b>-</b> buttons to change time.<br>• Use RANDOM to practice.<br>• QUIZ hides text until you tap REVEAL.</p></div><div class="help-section"><h3>Grammar Rules</h3><p><b>1. Minutes 1-29:</b> Use <i>po</i> (after) + Genitive hour.<br><span class="example">5:10 → Dziesięć po piątej</span><b>2. Half Hour:</b> Use <i>Wpół do</i> + Genitive NEXT hour.<br><span class="example">5:30 → Wpół do szóstej</span><b>3. Minutes 31-59:</b> Use <i>Za</i> (before) + Nominative NEXT hour.<br><span class="example">5:45 → Za piętnaście szósta</span></p></div>`
+            title: "Tell the Time in Polish", casual: "Casual", formal: "Formal", actual: "ACTUAL TIME", random: "RANDOM TIME", reveal: "REVEAL", ask: "How to say?", close: "Close",
+            help: `<div class="help-section"><h3>How to Use</h3><p>• Use <b>+</b> and <b>-</b> to adjust time.<br>• Toggle <b>Quiz</b> to hide the answer for practice.<br>• Toggle <b>EN/PL</b> to change button labels.</p></div><div class="help-section"><h3>Casual Grammar</h3><p><b>1. Minutes 1-29:</b> Use <i>po</i> (after) + Genitive hour.<br><span class="example">5:10 → Dziesięć po piątej</span><b>2. Half Hour:</b> Use <i>Wpół do</i> + Genitive NEXT hour.<br><span class="example">5:30 → Wpół do szóstej</span><b>3. Minutes 31-59:</b> Use <i>Za</i> (before) + Nominative NEXT hour.<br><span class="example">5:45 → Za piętnaście szósta</span></p></div>`
         },
         PL: {
-            title: "Przewodnik Czasu", casual: "Potoczny", formal: "Oficjalny", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS",
-            repeat: "🔊 POWTÓRZ", slow: "½ PRĘDKOŚĆ", quizOn: "Quiz: WŁ", quizOff: "Quiz: WYŁ", reveal: "POKAŻ", ask: "Jak to powiedzieć?", close: "Zamknij",
-            help: `<div class="help-section"><h3>Jak używać</h3><p>• Użyj przycisków <b>+</b> i <b>-</b> aby zmienić czas.<br>• LOSUJ aby ćwiczyć.<br>• QUIZ ukrywa tekst do kliknięcia POKAŻ.</p></div><div class="help-section"><h3>Zasady Gramatyki</h3><p><b>1. Minuty 1-29:</b> po + Dopełniacz godziny.<br><span class="example">5:10 → Dziesięć po piątej</span><b>2. Pół godziny:</b> Wpół do + Dopełniacz następnej.<br><span class="example">5:30 → Wpół do szóstej</span><b>3. Minuty 31-59:</b> Za + Mianownik następnej.<br><span class="example">5:45 → Za piętnaście szósta</span></p></div>`
+            title: "Podaj Czas po Polsku", casual: "Potoczny", formal: "Oficjalny", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS", reveal: "POKAŻ", ask: "Jak to powiedzieć?", close: "Zamknij",
+            help: `<div class="help-section"><h3>Jak używać</h3><p>• Użyj <b>+</b> i <b>-</b> by zmienić czas.<br>• Włącz <b>Quiz</b> aby ukryć odpowiedź.<br>• Kliknij <b>EN/PL</b> by zmienić język menu.</p></div><div class="help-section"><h3>Zasady Potoczne</h3><p><b>1. Minuty 1-29:</b> <i>po</i> + Dopełniacz godziny.<br><span class="example">5:10 → Dziesięć po piątej</span><b>2. Pół godziny:</b> <i>Wpół do</i> + Dopełniacz następnej.<br><span class="example">5:30 → Wpół do szóstej</span><b>3. Minuty 31-59:</b> <i>Za</i> + Mianownik następnej.<br><span class="example">5:45 → Za piętnaście szósta</span></p></div>`
         }
     };
 
@@ -117,7 +105,7 @@
         setRealTime(); updateUI(); 
     }
 
-    function adjTime(h, m) { hours = (hours + h + 24) % 24; minutes = (minutes + m + 60) % 60; isRevealed = !isQuiz; updateDisplay(); if(!isQuiz) speak(1); }
+    function adjTime(h, m) { hours = (hours + h + 24) % 24; minutes = (minutes + m + 60) % 60; isRevealed = !isQuiz; updateDisplay(); }
     function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateUI(); }
     function toggleFormat() { is24h = !is24h; document.getElementById('format-toggle').innerText = is24h ? "24H" : "12H"; updateDisplay(); }
     function toggleQuiz() { isQuiz = !isQuiz; isRevealed = !isQuiz; updateUI(); }
@@ -126,22 +114,20 @@
 
     function updateUI() {
         const d = dict[currentLang];
+        document.getElementById('app-title').innerText = d.title;
         document.getElementById('label-casual').innerText = d.casual;
         document.getElementById('label-formal').innerText = d.formal;
         document.getElementById('btn-real').innerText = d.actual;
         document.getElementById('btn-random').innerText = d.random;
-        document.getElementById('btn-repeat').innerText = d.repeat;
-        document.getElementById('btn-slow').innerText = d.slow;
-        document.getElementById('help-close-btn').innerText = d.close;
-        document.getElementById('help-title').innerText = d.title;
-        document.getElementById('quiz-toggle').innerText = isQuiz ? d.quizOn : d.quizOff;
+        document.getElementById('quiz-toggle').innerText = isQuiz ? (currentLang === 'EN' ? "Quiz: ON" : "Quiz: WŁ") : (currentLang === 'EN' ? "Quiz: OFF" : "Quiz: WYŁ");
         document.getElementById('reveal-btn').innerText = d.reveal;
+        document.getElementById('help-close-btn').innerText = d.close;
         document.getElementById('help-content').innerHTML = d.help;
         updateDisplay();
     }
 
     function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); isRevealed = !isQuiz; updateDisplay(); }
-    function rollTime() { hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60); isRevealed = !isQuiz; updateDisplay(); if(!isQuiz) speak(1); }
+    function rollTime() { hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60); isRevealed = !isQuiz; updateDisplay(); }
     function revealAnswer() { isRevealed = true; updateDisplay(); speak(1); }
 
     function updateDisplay() {
@@ -150,7 +136,7 @@
         let displayHours = is24h ? hours : (hours % 12 || 12);
         document.getElementById('digi-time').innerText = `${displayHours}:${minutes.toString().padStart(2, '0')}`;
         document.getElementById('ampm').innerText = is24h ? "" : (hours >= 12 ? "PM" : "AM");
-        
+
         const formal = document.getElementById('formal').checked;
         let curH = is24h ? hours : (hours % 12);
         let nextH = (hours + 1) % 24;
@@ -158,16 +144,23 @@
 
         let polish = "", english = "";
         if (formal) {
-            polish = `Godzina ${hNom[hours]} ${mWords[minutes]}`;
+            polish = `Godzina ${hNom[hours]} ${minutes.toString().padStart(2, '0')}`;
             english = `${hours}:${minutes.toString().padStart(2, '0')}`;
         } else {
-            if (minutes === 0) { 
-                polish = (curH === 0 && hours === 0) ? `Jest północ` : (curH === 12 && hours === 12) ? `Jest południe` : `Jest ${hNom[curH]}`;
-                english = `It's ${hours === 0 ? 'midnight' : hours === 12 ? 'noon' : (hours % 12 || 12) + " o'clock"}`;
+            if (minutes === 0) {
+                polish = (hours === 0) ? `Północ` : (hours === 12) ? `Południe` : hNom[curH];
+                english = (hours === 0) ? `Midnight` : (hours === 12) ? `Noon` : `${hours % 12 || 12} o'clock`;
+            } else if (minutes < 30) {
+                polish = `${mWords[minutes]} po ${hGen[curH]}`;
+                english = `${minutes} past ${hours % 12 || 12}`;
+            } else if (minutes === 30) {
+                polish = `Wpół do ${hGen[nextH_Spoken]}`;
+                english = `Half to ${nextH % 12 || 12}`;
+            } else {
+                let diff = 60 - minutes;
+                polish = `Za ${mWords[diff]} ${hNom[nextH_Spoken]}`;
+                english = `${diff} to ${nextH % 12 || 12}`;
             }
-            else if (minutes < 30) { polish = `${mWords[minutes]} po ${hGen[curH]}`; english = `${minutes} past ${hours % 12 || 12}`; }
-            else if (minutes === 30) { polish = `Wpół do ${hGen[nextH_Spoken]}`; english = `Half to ${nextH % 12 || 12}`; }
-            else { polish = `Za ${mWords[60 - minutes]} ${hNom[nextH_Spoken]}`; english = `${60-minutes} to ${nextH % 12 || 12}`; }
         }
 
         const pTxt = document.getElementById('polish-text');
