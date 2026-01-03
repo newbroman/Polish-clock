@@ -33,7 +33,7 @@
 </head>
 <body onload="init()">
 <div class="container">
-    <h1>Tell the Time in Polish</h1>
+    <h1 id="app-title">Tell the Time in Polish</h1>
     <div class="top-row">
         <button class="btn-sub" onclick="toggleDark()">🌓</button>
         <button class="btn-sub" onclick="toggleLang()">EN/PL</button>
@@ -59,64 +59,43 @@
     </div>
 
     <button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
-    <button class="btn-main" onclick="rollTime()">RANDOM TIME</button>
+    <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-        <button class="btn-sub" onclick="speak(1)">🔊 LISTEN</button>
-        <button class="btn-sub" onclick="speak(0.5)">½ SPEED</button>
+        <button class="btn-sub" id="btn-listen" onclick="speak(1)">🔊 LISTEN</button>
+        <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
     </div>
 
     <div id="help-modal">
-        <h2 style="color:var(--accent); margin-top:0;">Comprehensive Guide</h2>
-        
-        <div class="help-sect">
-            <h3>🔤 Phonetics (Green Text)</h3>
-            <p>Polish uses many letter combinations that are new to English speakers. The green text shows a "sounds-like" guide:</p>
-            <ul>
-                <li><strong>tsh</strong> = cz (church)</li>
-                <li><strong>sh</strong> = sz (show)</li>
-                <li><strong>vpoow</strong> = wpół (half)</li>
-            </ul>
-        </div>
-
-        <div class="help-sect">
-            <h3>👔 Formal (24h)</h3>
-            <p>Used for schedules, transport, and official TV. It always uses "Godzina" (Hour) + Ordinal Number (1st, 2nd, etc).</p>
-            <p><em>Example: 16:10 is "Godzina szesnasta dziesięć" (Hour sixteenth ten).</em></p>
-        </div>
-
-        <div class="help-sect">
-            <h3>☕ Casual (12h)</h3>
-            <p>Used in conversation. It is more complex but more common:</p>
-            <ul>
-                <li><strong>Minutes 1-29:</strong> Use "po" (after). <em>10 po 5.</em></li>
-                <li><strong>Minute 30:</strong> Use "Wpół do" (Half to). <em>Wpół do szóstej (Half to sixth).</em></li>
-                <li><strong>Minutes 31-59:</strong> Use "Za" (To). <em>Za dziesięć szósta (In ten, six).</em></li>
-            </ul>
-        </div>
-
-        <div class="help-sect">
-            <h3>🎮 Features</h3>
-            <ul>
-                <li><strong>Actual Time:</strong> Resets to current time.</li>
-                <li><strong>Direct Type:</strong> Type numbers (1430) into the green clock to set time.</li>
-                <li><strong>Listen:</strong> Plays high-quality Polish audio.</li>
-            </ul>
-        </div>
-
-        <button class="btn-main" onclick="toggleHelp()">Close Help</button>
+        <h2 id="help-title" style="color:var(--accent); margin-top:0;">Guide / Poradnik</h2>
+        <div id="help-content"></div>
+        <button class="btn-main" id="help-close" onclick="toggleHelp()">Close</button>
     </div>
 </div>
 
 <script>
     let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
     
-    // Core Data Arrays
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
     const hNomPh = ["poow-nots", "pyerv-shah", "droo-gah", "tshe-tsyah", "chvar-tah", "pyon-tah", "shoos-tah", "shood-mah", "oos-mah", "je-vyon-tah", "je-shon-tah", "ye-de-nas-tah", "po-wood-nye", "tshi-nas-tah", "chter-nas-tah", "pyent-nas-tah", "shes-nas-tah", "she-dem-nas-tah", "o-shem-nas-tah", "je-vyet-nas-tah", "dvoo-jest-ah", "dvoo-jest-ah pyerv-shah", "dvoo-jest-ah droo-gah", "dvoo-jest-ah tshe-tsyah"];
     const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
     const hGenPh = ["poow-no-tsi", "pyerv-shey", "droo-gyey", "tshe-tsiey", "chvar-tey", "pyon-tey", "shoos-tey", "shood-mey", "oos-mey", "je-vyon-tey", "je-shon-tey", "ye-de-nas-tey", "po-wood-nyah", "tshi-nas-tey", "chter-nas-tey", "pyent-nas-tey", "shes-nas-tey", "she-dem-nas-tey", "o-shem-nas-tey", "je-vyet-nas-tey", "dvoo-jes-tey", "dvoo-jes-tey pyerv-shey", "dvoo-jes-tey droo-gyey", "dvoo-jes-tey tshe-tsiey"];
     const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
-    const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nash-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nash-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nash-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
+    const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nash-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nash-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
+
+    const dict = {
+        EN: { title: "Tell the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF",
+              help: `<div class="help-sect"><h3>🔤 Phonetics (Green)</h3><p>Guide for sounds: <strong>tsh</strong> = cz, <strong>sh</strong> = sz, <strong>vpoow</strong> = wpół.</p></div>
+                     <div class="help-sect"><h3>👔 Formal (24h)</h3><p>Used for schedules. "Godzina" + Ordinal Number (1st, 2nd). Example: 16:10 = "Godzina szesnasta dziesięć".</p></div>
+                     <div class="help-sect"><h3>☕ Casual (12h)</h3><p>Used in conversation. Uses "po" (after), "Wpół do" (Half to), and "Za" (To).</p></div>
+                     <div class="help-sect"><h3>🎮 Features</h3><p>Type 4 digits (e.g. 1530) into the green digital clock to jump to that time.</p></div>`
+        },
+        PL: { title: "Podaj czas po polsku", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ TEMPO", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ",
+              help: `<div class="help-sect"><h3>🔤 Fonetyka (Zielony)</h3><p>Przewodnik: <strong>tsh</strong> = cz, <strong>sh</strong> = sz, <strong>vpoow</strong> = wpół.</p></div>
+                     <div class="help-sect"><h3>👔 Oficjalny (24h)</h3><p>Używany w rozkładach. "Godzina" + liczebnik porządkowy. Przykład: 16:10 = "Godzina szesnasta dziesięć".</p></div>
+                     <div class="help-sect"><h3>☕ Potoczny (12h)</h3><p>Używany w rozmowie. Używa "po", "Wpół do" oraz "Za".</p></div>
+                     <div class="help-sect"><h3>🎮 Funkcje</h3><p>Wpisz 4 cyfry (np. 1530) w zielony zegar cyfrowy, aby ustawić czas.</p></div>`
+        }
+    };
 
     function init() { 
         const c = document.getElementById('clock-container');
@@ -174,18 +153,28 @@
             }
         }
 
+        const d = dict[currentLang];
+        document.getElementById('app-title').innerText = d.title;
+        document.getElementById('btn-real').innerText = d.actual;
+        document.getElementById('btn-random').innerText = d.random;
+        document.getElementById('btn-listen').innerText = d.listen;
+        document.getElementById('btn-slow').innerText = d.slow;
+        document.getElementById('reveal-btn').innerText = d.reveal;
+        document.getElementById('help-close').innerText = d.close;
+        document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
+        document.getElementById('help-content').innerHTML = d.help;
+
         const pt = document.getElementById('polish-text'), pht = document.getElementById('phonetic-text'), et = document.getElementById('english-text');
         const rb = document.getElementById('reveal-btn');
-        document.getElementById('quiz-toggle').innerText = isQuiz ? (currentLang==='EN'?"Quiz: ON":"Quiz: WŁ"):(currentLang==='EN'?"Quiz: OFF":"Quiz: WYŁ");
         
-        if (isQuiz && !isRevealed) { pt.innerText = currentLang==='EN'?"How to say?":"Jak powiedzieć?"; pht.innerText = ""; et.innerText = ""; rb.style.display = "block"; }
+        if (isQuiz && !isRevealed) { pt.innerText = d.ask; pht.innerText = ""; et.innerText = ""; rb.style.display = "block"; }
         else { pt.innerText = p; pht.innerText = showPh ? ph : ""; et.innerText = e; rb.style.display = "none"; }
     }
 
     function speak(r) { 
         window.speechSynthesis.cancel(); 
         const t = document.getElementById('polish-text').innerText;
-        if (t.includes("?")) return;
+        if (t === dict.EN.ask || t === dict.PL.ask) return;
         const m = new SpeechSynthesisUtterance(t); m.lang = 'pl-PL'; m.rate = r; 
         window.speechSynthesis.speak(m); 
     }
