@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tell the Time in Polish</title>
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#dc3545">
+<link rel="apple-touch-icon" href="icon.png">
     <style>
         :root { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; --clock-border: #d1d1d1; --btn-sub: #e9ecef; --help-bg: #fff; --eng-text: #6c757d; --phonetic: #28a745; }
         
@@ -194,5 +197,11 @@
         window.speechSynthesis.speak(m); 
     }
 </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log("Service Worker Registered"));
+  }
+</script>  
 </body>
 </html>
