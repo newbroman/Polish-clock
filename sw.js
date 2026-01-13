@@ -1,4 +1,4 @@
-const CACHE_NAME = 'polish-time-v16
+const CACHE_NAME = 'polish-time-v17
   ;
 const ASSETS = [
   './',
