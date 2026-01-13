@@ -107,7 +107,7 @@
                      <tr><td>1</td><td>pierwsza</td><td>pierwszej</td><td>pyerv-shey</td></tr><tr><td>2</td><td>druga</td><td>drugiej</td><td>droo-gyey</td></tr><tr><td>3</td><td>trzecia</td><td>trzeciej</td><td>tshe-tsiey</td></tr><tr><td>4</td><td>czwarta</td><td>czwartej</td><td>chvar-tey</td></tr><tr><td>5</td><td>piąta</td><td>piątej</td><td>pyon-tey</td></tr><tr><td>6</td><td>szósta</td><td>szóstej</td><td>shoos-tey</td></tr><tr><td>7</td><td>siódma</td><td>siódmej</td><td>shood-mey</td></tr><tr><td>8</td><td>ósma</td><td>ósmej</td><td>oos-mey</td></tr><tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td><td>je-vyon-tey</td></tr><tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td><td>je-shon-tey</td></tr><tr><td>11</td><td>jedenasta</td><td>jedenastej</td><td>ye-de-nas-tey</td></tr><tr><td>12</td><td>dwunasta</td><td>dwunastej</td><td>dvoo-nas-tey</td></tr></table></div>` }
     };
 
-    function translateTime(h, m, formal) {
+   function translateTime(h, m, formal) {
         let p = "", ph = "";
         if (formal) {
             let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
@@ -115,11 +115,27 @@
             p = `Godzina ${hNom[h]} ${mStr}`.trim();
             ph = `go-jee-nah ${hNomPh[h]} ${phStr}`.trim();
         } else {
-            let h12 = h % 12, n12 = (h + 1) % 12;
-            if (m === 0) { p = h===0?"Północ":h===12?"Południe":hNom[h12]; ph = h===0?"poow-nots":h===12?"po-wood-nye":hNomPh[h12]; }
-            else if (m < 30) { p = `${mAll[m]} po ${hGen[h12]}`; ph = `${mAllPh[m]} po ${hGenPh[h12]}`; }
-            else if (m === 30) { p = `Wpół do ${hGen[n12]}`; ph = `vpoow doh ${hGenPh[n12]}`; }
-            else { p = `Za ${mAll[60-m]} ${hNom[n12]}`; ph = `zah ${mAllPh[60-m]} ${hNomPh[n12]}`; }
+            let h12 = h % 12;
+            let n12 = (h + 1) % 12;
+            // Adjustment: If next hour is 0 (Midnight), we usually say "pierwsza" (1) 
+            // after midnight or "północ" depending on context, 
+            // but for the 12h casual system, we want to ensure n12 is never index 12 (południe)
+            if (m === 0) { 
+                p = h===0?"Północ":h===12?"Południe":hNom[h12]; 
+                ph = h===0?"poow-nots":h===12?"po-wood-nye":hNomPh[h12]; 
+            }
+            else if (m < 30) { 
+                p = `${mAll[m]} po ${hGen[h12]}`; 
+                ph = `${mAllPh[m]} po ${hGenPh[h12]}`; 
+            }
+            else if (m === 30) { 
+                p = `Wpół do ${hGen[n12 === 0 ? 0 : n12]}`; 
+                ph = `vpoow doh ${hGenPh[n12 === 0 ? 0 : n12]}`; 
+            }
+            else { 
+                p = `Za ${mAll[60-m]} ${hNom[n12 === 0 ? 0 : n12]}`; 
+                ph = `zah ${mAllPh[60-m]} ${hNomPh[n12 === 0 ? 0 : n12]}`; 
+            }
         }
         return { polish: p, phonetic: ph };
     }
