@@ -95,7 +95,8 @@
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
     const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
     const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
-
+    const sPh = ["ze-ro", "yed-nah", "dv-yeh", "t-shih", "chter-ih", "pyench", "sheshch", "shed-yem", "osh-yem", "dyev-yench", "dyes-yench", "yed-en-ash-cheh", "dvan-ash-cheh", "t-shin-ash-cheh", "chter-nash-cheh", "pyent-nash-cheh", "shes-nash-cheh", "shed-yem-nash-cheh", "osh-yem-nash-cheh", "dyev-yent-nash-cheh", "dvad-zyesh-chah", "dvad-zyesh-chah yed-en", "dvad-zyesh-chah dv-yeh", "dvad-zyesh-chah t-shih", "dvad-zyesh-chah chter-ih", "dvad-zyesh-chah pyench", "dvad-zyesh-chah sheshch", "dvad-zyesh-chah shed-yem", "dvad-zyesh-chah osh-yem", "dvad-zyesh-chah dyev-yench", "t-shid-zyesh-chi", "t-shid-zyesh-chi yed-en", "t-shid-zyesh-chi dv-yeh", "t-shid-zyesh-chi t-shih", "t-shid-zyesh-chi chter-ih", "t-shid-zyesh-chi pyench", "t-shid-zyesh-chi sheshch", "t-shid-zyesh-chi shed-yem", "t-shid-zyesh-chi osh-yem", "t-shid-zyesh-chi dyev-yench", "chter-dyesh-chi", "chter-dyesh-chi yed-en", "chter-dyesh-chi dv-yeh", "chter-dyesh-chi t-shih", "chter-dyesh-chi chter-ih", "chter-dyesh-chi pyench", "chter-dyesh-chi sheshch", "chter-dyesh-chi shed-yem", "chter-dyesh-chi osh-yem", "chter-dyesh-chi dyev-yench", "pyench-dzyesh-ont", "pyench-dzyesh-ont yed-en", "pyench-dzyesh-ont dv-yeh", "pyench-dzyesh-ont t-shih", "pyench-dzyesh-ont chter-ih", "pyench-dzyesh-ont pyench", "pyench-dzyesh-ont sheshch", "pyench-dzyesh-ont shed-yem", "pyench-dzyesh-ont osh-yem", "pyench-dzyesh-ont dyev-yench"];
+    
     const dict = {
         EN: { 
             title: "Say the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", qOn: "Quiz: ON", qOff: "Quiz: OFF",
@@ -115,14 +116,18 @@
 
     function translateTime(h, m, formal) {
         const s = seconds;
-        let secPL = (s === 1) ? "jedna sekunda" : (s%10>=2 && s%10<=4 && (s%100<10 || s%100>=20)) ? s+" sekundy" : s+" sekund";
-        let secPh = (s === 1) ? "yed-nah seh-koon-dah" : s + " seh-koon-dy";
+        let suffix = (s === 1) ? "sekunda" : (s%10>=2 && s%10<=4 && (s%100<10 || s%100>=20)) ? "sekundy" : "sekund";
+        let suffixPh = (s === 1) ? "seh-koon-dah" : (s%10>=2 && s%10<=4 && (s%100<10 || s%100>=20)) ? "seh-koon-dy" : "seh-koont";
+
+let secPL = sAll[s] + " " + suffix;
+let secPh = sPh[s] + " " + suffixPh;
 
         if (formal) {
             const hStr = hNom[h];
             const mStr = m === 0 ? "" : (m < 10 ? " zero " : " ") + mAll[m];
             let res = `Godzina ${hStr}${mStr}`;
-            let ph = `Goh-jee-nah ${hStr}${m < 10 && m > 0 ? ' ze-ro ' : ' '}${mAll[m]}`;
+           let mPh = m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]; 
+           let ph = `Goh-jee-nah ${hStr}${mPh}`;
             if (showSec && s > 0) { res += ` i ${secPL}`; ph += ` ee ${secPh}`; }
             return { polish: res, phonetic: ph };
         }
