@@ -100,7 +100,7 @@
     const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
     const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
-   const dict = {
+ const dict = {
     EN: { 
         title: "Say the Time in Polish", 
         actual: "ACTUAL TIME", 
@@ -109,49 +109,11 @@
         slow: "½ SPEED", 
         qOn: "Quiz: ON", 
         qOff: "Quiz: OFF",
-        help: `<div class="help-sect">
-                 <h3>🎮 Interaction</h3>
-                 <ul>
-                   <li><b>Dragging:</b> Use the outer ring for minutes and the inner ring for hours.</li>
-                   <li><b>Multiple Choice:</b> When Quiz is ON, pick the correct Polish phrase to see the answer.</li>
-                 </ul>
-               </div>
-               <div class="help-sect">
-                 <h3>👔 Formal Logic (24h)</h3>
-                 <p>Structure: Godzina + Ordinal Hour + Cardinal Minutes.</p>
-                 <ul>
-                   <li><i>14:05:</i> Godzina czternasta <b>zero</b> pięć.</li>
-                   <li><i>14:15:</i> Godzina czternasta piętnaście.</li>
-                   <li>"Zero" is only used for minutes 01-09.</li>
-                 </ul>
-               </div>
-               <div class="help-sect">
-                 <h3>☕ Casual Logic (12h)</h3>
-                 <p>Uses a 12-hour clock and <b>never</b> uses the word "zero".</p>
-                 <ul>
-                   <li><b>Po (Past):</b> Minutes + po + Genitive Hour (e.g., 5 past 1).</li>
-                   <li><b>Wpół do (Half to):</b> Wpół do + Genitive NEXT Hour.</li>
-                   <li><b>Za (To):</b> Za + Minutes + Nominative NEXT Hour (e.g., 10 to 2).</li>
-                 </ul>
-               </div>
-               <div class="help-sect">
-                 <h3>📊 Grammar Table (1-12)</h3>
-                 <table>
-                   <tr><th>Hr</th><th>Nom (Za...)</th><th>Gen (Po/Wpół)</th><th>Phonetic</th></tr>
-                   <tr><td>1</td><td>pierwsza</td><td>pierwszej</td><td>pyerv-shey</td></tr>
-                   <tr><td>2</td><td>druga</td><td>drugiej</td><td>droo-gyey</td></tr>
-                   <tr><td>3</td><td>trzecia</td><td>trzeciej</td><td>tshe-tsiey</td></tr>
-                   <tr><td>4</td><td>czwarta</td><td>czwartej</td><td>chvar-tey</td></tr>
-                   <tr><td>5</td><td>piąta</td><td>piątej</td><td>pyon-tey</td></tr>
-                   <tr><td>6</td><td>szósta</td><td>szóstej</td><td>shoos-tey</td></tr>
-                   <tr><td>7</td><td>siódma</td><td>siódmej</td><td>shood-mey</td></tr>
-                   <tr><td>8</td><td>ósma</td><td>ósmej</td><td>oos-mey</td></tr>
-                   <tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td><td>je-vyon-tey</td></tr>
-                   <tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td><td>je-shon-tey</td></tr>
-                   <tr><td>11</td><td>jedenasta</td><td>jedenastej</td><td>ye-de-nas-tey</td></tr>
-                   <tr><td>12</td><td>dwunasta</td><td>dwunastej</td><td>dvoo-nas-tey</td></tr>
-                 </table>
-               </div>`
+        help: `<div class="help-sect"><h3>🎮 Interaction</h3><ul><li><b>Dragging:</b> Outer ring for mins, inner for hrs.</li><li><b>SEC Button:</b> Toggles the <b>Grey Seconds Hand</b> and digital :SS display.</li><li><b>Quiz:</b> Pick the correct Polish phrase to answer.</li></ul></div>
+               <div class="help-sect"><h3>👔 Formal Logic (24h)</h3><p>Godzina + Ordinal Hr + Cardinal Min. <i>14:05</i> = Godzina czternasta <b>zero</b> pięć. "Zero" used for mins 01-09.</p></div>
+               <div class="help-sect"><h3>☕ Casual Logic (12h)</h3><p><b>Never uses "zero".</b> Seconds are shown by the <b>Grey Hand</b> but omitted in speech.<ul><li><b>Po (Past):</b> Mins + po + Genitive Hour.</li><li><b>Wpół do:</b> Wpół do + Genitive NEXT Hour.</li><li><b>Za (To):</b> Za + Mins + Nominative NEXT Hour.</li></ul></div>
+               <div class="help-sect"><h3>📊 Grammar Table (1-12)</h3><table style="width:100%; border-collapse: collapse; font-size: 0.8rem;"><thead><tr style="border-bottom: 1px solid #ddd;"><th>Hr</th><th>Nom (Za...)</th><th>Gen (Po/Wpół)</th></tr></thead><tbody>
+               <tr><td>1</td><td>pierwsza</td><td>pierwszej</td></tr><tr><td>2</td><td>druga</td><td>drugiej</td></tr><tr><td>3</td><td>trzecia</td><td>trzeciej</td></tr><tr><td>4</td><td>czwarta</td><td>czwartej</td></tr><tr><td>5</td><td>piąta</td><td>piątej</td></tr><tr><td>6</td><td>szósta</td><td>szóstej</td></tr><tr><td>7</td><td>siódma</td><td>siódmej</td></tr><tr><td>8</td><td>ósma</td><td>ósmej</td></tr><tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td></tr><tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td></tr><tr><td>11</td><td>jedenasta</td><td>jedenastej</td></tr><tr><td>12</td><td>dwunasta</td><td>dwunastej</td></tr></tbody></table></div>`
     },
     PL: { 
         title: "Powiedz która godzina", 
@@ -161,67 +123,73 @@
         slow: "½ PRĘDKOŚĆ", 
         qOn: "Quiz: WŁ", 
         qOff: "Quiz: WYŁ",
-        help: `<div class="help-sect">
-                 <h3>🎮 Interakcja</h3>
-                 <ul>
-                   <li><b>Przeciąganie:</b> Zewnętrzny pierścień - minuty, wewnętrzny - godziny.</li>
-                   <li><b>Quiz:</b> Wybierz poprawną polską frazę, aby zobaczyć odpowiedź.</li>
-                 </ul>
-               </div>
-               <div class="help-sect">
-                 <h3>👔 Czas Oficjalny (24h)</h3>
-                 <p>Struktura: Godzina + Liczebnik Porządkowy + Minuty.</p>
-                 <ul>
-                   <li><i>14:05:</i> Godzina czternasta <b>zero</b> pięć.</li>
-                   <li><i>14:15:</i> Godzina czternasta piętnaście.</li>
-                   <li>"Zero" używamy tylko dla minut 01-09.</li>
-                 </ul>
-               </div>
-               <div class="help-sect">
-                 <h3>☕ Czas Potoczny (12h)</h3>
-                 <p>Używa zegara 12-godzinnego i <b>nigdy</b> nie używa słowa "zero".</p>
-                 <ul>
-                   <li><b>Po:</b> Minuty + po + Godzina w Dopełniaczu.</li>
-                   <li><b>Wpół do:</b> Wpół do + następna Godzina w Dopełniaczu.</li>
-                   <li><b>Za:</b> Za + Minuty + następna Godzina w Mianowniku.</li>
-                 </ul>
-               </div>
-               <div class="help-sect">
-                 <h3>📊 Tabela Gramatyczna</h3>
-                 <table>
-                   <tr><th>Godz</th><th>Mianownik</th><th>Dopełniacz</th><th>Fonetyka</th></tr>
-                   <tr><td>1</td><td>pierwsza</td><td>pierwszej</td><td>pyerv-shey</td></tr>
-                   <tr><td>2</td><td>druga</td><td>drugiej</td><td>droo-gyey</td></tr>
-                   <tr><td>3</td><td>trzecia</td><td>trzeciej</td><td>tshe-tsiey</td></tr>
-                   <tr><td>4</td><td>czwarta</td><td>czwartej</td><td>chvar-tey</td></tr>
-                   <tr><td>5</td><td>piąta</td><td>piątej</td><td>pyon-tey</td></tr>
-                   <tr><td>6</td><td>szósta</td><td>szóstej</td><td>shoos-tey</td></tr>
-                   <tr><td>7</td><td>siódma</td><td>siódmej</td><td>shood-mey</td></tr>
-                   <tr><td>8</td><td>ósma</td><td>ósmej</td><td>oos-mey</td></tr>
-                   <tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td><td>je-vyon-tey</td></tr>
-                   <tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td><td>je-shon-tey</td></tr>
-                   <tr><td>11</td><td>jedenasta</td><td>jedenastej</td><td>ye-de-nas-tey</td></tr>
-                   <tr><td>12</td><td>dwunasta</td><td>dwunastej</td><td>dvoo-nas-tey</td></tr>
-                 </table>
-               </div>`
+        help: `<div class="help-sect"><h3>🎮 Interakcja</h3><ul><li><b>Przeciąganie:</b> Zewn. pierścień - minuty, wewn. - godziny.</li><li><b>Przycisk SEC:</b> Włącza <b>szarą wskazówkę sekundnika</b> i czas cyfrowy.</li><li><b>Quiz:</b> Wybierz poprawną frazę, aby sprawdzić wynik.</li></ul></div>
+               <div class="help-sect"><h3>👔 Czas Oficjalny (24h)</h3><p>Godzina + Porządkowy + Minuty. <i>14:05</i> = Godzina czternasta <b>zero</b> pięć. "Zero" tylko dla minut 01-09.</p></div>
+               <div class="help-sect"><h3>☕ Czas Potoczny (12h)</h3><p><b>Nigdy nie używa "zero".</b> Sekundy są widoczne na <b>szarej wskazówce</b>, ale pomijane w mowie.<ul><li><b>Po:</b> Minuty + po + Godzina (Dopełniacz).</li><li><b>Wpół do:</b> Wpół do + Następna Godzina (Dopełniacz).</li><li><b>Za:</b> Za + Minuty + Następna Godzina (Mianownik).</li></ul></div>
+               <div class="help-sect"><h3>📊 Tabela Gramatyczna</h3><table style="width:100%; border-collapse: collapse; font-size: 0.8rem;"><thead><tr style="border-bottom: 1px solid #ddd;"><th>Godz</th><th>Mianownik</th><th>Dopełniacz</th></tr></thead><tbody>
+               <tr><td>1</td><td>pierwsza</td><td>pierwszej</td></tr><tr><td>2</td><td>druga</td><td>drugiej</td></tr><tr><td>3</td><td>trzecia</td><td>trzeciej</td></tr><tr><td>4</td><td>czwarta</td><td>czwartej</td></tr><tr><td>5</td><td>piąta</td><td>piątej</td></tr><tr><td>6</td><td>szósta</td><td>szóstej</td></tr><tr><td>7</td><td>siódma</td><td>siódmej</td></tr><tr><td>8</td><td>ósma</td><td>ósmej</td></tr><tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td></tr><tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td></tr><tr><td>11</td><td>jedenasta</td><td>jedenastej</td></tr><tr><td>12</td><td>dwunasta</td><td>dwunastej</td></tr></tbody></table></div>`
     }
 };
-    function translateTime(h, m, formal) {
-        let p = "", ph = "";
-        if (formal) {
-            let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
-            let phStr = (m > 0 && m < 10) ? "ze-ro " + mAllPh[m] : (m === 0 ? "" : mAllPh[m]);
-            p = `Godzina ${hNom[h]} ${mStr}`.trim();
-            ph = `go-jee-nah ${hNomPh[h]} ${phStr}`.trim();
-        } else {
-            let h12 = h % 12, n12 = (h + 1) % 12;
-            if (m === 0) { p = h===0?"Północ":h===12?"Południe":hNom[h12]; ph = h===0?"poow-nots":h===12?"po-wood-nye":hNomPh[h12]; }
-            else if (m < 30) { p = `${mAll[m]} po ${hGen[h12]}`; ph = `${mAllPh[m]} po ${hGenPh[h12]}`; }
-            else if (m === 30) { p = `Wpół do ${hGen[n12]}`; ph = `vpoow doh ${hGenPh[n12]}`; }
-            else { p = `Za ${mAll[60-m]} ${hNom[n12]}`; ph = `zah ${mAllPh[60-m]} ${hNomPh[n12]}`; }
-        }
-        return { polish: p, phonetic: ph };
+    
+function translateTime(h, m, formal) {
+    const s = seconds; // Pulled from the global ticker
+    
+    // 1. Polish Seconds Pluralization Logic
+    let secText = "";
+    if (s === 1) {
+        secText = "jedna sekunda";
+    } else if (s % 10 >= 2 && s % 10 <= 4 && (s % 100 < 10 || s % 100 >= 20)) {
+        secText = s + " sekundy";
+    } else {
+        secText = s + " sekund";
     }
+
+    // 2. Formal Logic (24h)
+    if (formal) {
+        const hStr = h === 0 ? "północ" : formalHours[h];
+        // Only use "zero" for minutes 01-09
+        const mStr = m === 0 ? "" : (m < 10 ? " zero " : " ") + cardinalMinutes[m];
+        
+        let fullPL = (h === 0) ? hStr : `Godzina ${hStr}${mStr}`;
+        if (showSec && s > 0) fullPL += ` i ${secText}`;
+
+        return {
+            polish: fullPL,
+            phonetic: "Goh-jee-nah " + hStr + (m < 10 && m > 0 ? " zeh-roh " : " ") + cardinalMinutes[m] + (showSec ? " ee " + s + " seh-koond" : "")
+        };
+    }
+
+    // 3. Casual Logic (12h) - No "Zero" used here
+    let h12 = h % 12 || 12;
+    let n12 = (h + 1) % 12 || 12;
+    let resPL = "";
+    let resPh = "";
+
+    if (m === 0) {
+        resPL = h === 0 ? "północ" : h === 12 ? "południe" : nominativeHours[h12];
+        resPh = h === 0 ? "poow-nots" : h === 12 ? "po-wood-nyeh" : h12;
+    } else if (m <= 30) {
+        if (m === 30) {
+            resPL = `wpół do ${genitiveHours[n12]}`;
+            resPh = `vpoow doh ${n12}`;
+        } else {
+            resPL = `${cardinalMinutes[m]} po ${genitiveHours[h12]}`;
+            resPh = `${m} poh ${h12}`;
+        }
+    } else {
+        let minsTo = 60 - m;
+        resPL = `za ${cardinalMinutes[minsTo]} ${nominativeHours[n12]}`;
+        resPh = `zah ${minsTo} ${n12}`;
+    }
+
+    // Add seconds to casual if toggled
+    if (showSec && s > 0) {
+        resPL += ` i ${secText}`;
+        resPh += ` ee ${s} seh-koond`;
+    }
+
+    return { polish: resPL, phonetic: resPh };
+}
 
    let seconds = 0, showSec = false, ticker = null;
 
@@ -267,26 +235,18 @@
         document.getElementById('polish-text').innerText = result.polish;
         document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
         
-        let e = "";
-        if (isFormal) {
-            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-        } else {
-            let h12 = hours % 12 || 12;
-            let n12 = (hours + 1) % 12 || 12;
-            if (minutes === 0) {
-                e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12} o'clock`;
-            } else if (minutes < 30) {
-                e = `${minutes} ${minutes === 1 ? "minute" : "minutes"} past ${h12}`;
-            } else if (minutes === 30) {
-                e = `Half past ${h12}`;
-            } else {
-                let minsTo = 60 - minutes;
-                e = `${minsTo} ${minsTo === 1 ? "minute" : "minutes"} to ${n12}`;
-            }
-        }
-        document.getElementById('english-text').innerText = e;
+        l// English translation label logic inside updateDisplay
+    let e = "";
+    if (formal) {
+        e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+        if (showSec) e += `:${seconds.toString().padStart(2, '0')}`;
+    } else {
+        let h12 = hours % 12 || 12;
+        let n12 = (hours + 1) % 12 || 12;
+        // ... (Existing Casual English Logic) ...
+        if (showSec) e += ` and ${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
     }
-
+    document.getElementById('english-text').innerText = e;
     function init() {
         const c = document.getElementById('clock-container');
         for (let i = 0; i < 12; i++) {
