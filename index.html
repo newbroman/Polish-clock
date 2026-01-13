@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -23,10 +22,7 @@
         .hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
         .min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
         .dot { width: 10px; height: 10px; background: #212529; position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 10; border: 1.5px solid white; }
-        
-        /* Fixed Input Styles */
-        #time-input-display { background: var(--card); color: var(--accent); font-family: monospace; font-size: 1.8rem; padding: 10px; border-radius: 8px; border: 2px solid var(--accent); width: 140px; text-align: center; margin: 5px auto 10px; display: block; cursor: pointer; }
-        
+        #time-input-display { background: var(--card); color: var(--accent); font-family: monospace; font-size: 1.8rem; padding: 10px; border-radius: 8px; border: 2px solid var(--accent); width: 145px; text-align: center; margin: 5px auto 10px; display: block; cursor: pointer; }
         .display-area { min-height: 115px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .polish-display { font-size: 0.95rem; font-weight: 700; color: var(--accent); line-height: 1.2; }
         .phonetic-display { font-size: 0.75rem; color: var(--phonetic); font-family: monospace; margin-top: 2px; font-weight: bold; min-height: 1em; }
@@ -40,6 +36,8 @@
         #help-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--help-bg); border-radius: 20px; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; font-size: 0.8rem; line-height: 1.4; }
         .help-sect { border-bottom: 1px solid #ddd; padding-bottom: 8px; margin-bottom: 8px; }
         .help-sect h3 { margin: 0 0 5px 0; color: var(--accent); font-size: 0.9rem; }
+        table { width: 100%; font-size: 0.7rem; border-collapse: collapse; margin-top: 5px; }
+        th, td { border: 1px solid #ddd; padding: 4px; text-align: left; }
     </style>
 </head>
 <body onload="init()">
@@ -64,9 +62,9 @@
     </div>
 
     <div class="setting-row">
-    <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay()"> Casual</label>
-    <label><input type="radio" name="mode" id="formal" onchange="updateDisplay()"> Formal</label>
-</div>
+        <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay()"> Casual</label>
+        <label><input type="radio" name="mode" id="formal" onchange="updateDisplay()"> Formal</label>
+    </div>
 
     <button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
     <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
@@ -90,11 +88,31 @@
     const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
     const hGenPh = ["poow-no-tsi", "pyerv-shey", "droo-gyey", "tshe-tsiey", "chvar-tey", "pyon-tey", "shoos-tey", "shood-mey", "oos-mey", "je-vyon-tey", "je-shon-tey", "ye-de-nas-tey", "po-wood-nyah", "tshi-nas-tey", "chter-nas-tey", "pyent-nas-tey", "shes-nas-tey", "she-dem-nas-tey", "o-shem-nas-tey", "je-vyet-nas-tey", "dvoo-jes-tey", "dvoo-jes-tey pyerv-shey", "dvoo-jes-tey droo-gyey", "dvoo-jes-tey tshe-tsiey"];
     const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
-    const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nas-che", "chter-nas-che", "pyent-nas-che", "shes-nas-che", "she-dem-nas-che", "o-shem-nas-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
+    const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nash-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
     const dict = {
         EN: { title: "Tell the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-              help: `<div class="help-sect"><h3>👔 Formal vs Casual</h3><p><b>Formal:</b> Uses 24h Clock. Godzina + Ordinal + Cardinal.<br><b>Casual:</b> Uses 12h Clock. Po (Past), Za (To), and Wpół do (Half to).</p></div>`
+              help: `<div class="help-sect"><h3>👔 Formal vs Casual</h3>
+                     <p><b>Formal:</b> 24h Clock. Uses "zero" only for minutes 01-09.</p>
+                     <p><b>Casual:</b> 12h Clock. Never uses "zero".</p></div>
+                     <div class="help-sect"><h3>🏗️ Casual Hour Grammar</h3>
+                     <p><b>Po (Past):</b> Use Genitive hour.</p>
+                     <p><b>Wpół do (Half to):</b> Use NEXT hour in Genitive.</p>
+                     <p><b>Za (To):</b> Use NEXT hour in Nominative.</p></div>
+                     <div class="help-sect"><h3>📊 Hour Cases (1-12)</h3>
+                     <table><tr><th>#</th><th>Nom</th><th>Gen</th></tr>
+                     <tr><td>1</td><td>pierwsza</td><td>pierwszej</td></tr>
+                     <tr><td>2</td><td>druga</td><td>drugiej</td></tr>
+                     <tr><td>3</td><td>trzecia</td><td>trzeciej</td></tr>
+                     <tr><td>4</td><td>czwarta</td><td>czwartej</td></tr>
+                     <tr><td>5</td><td>piąta</td><td>piątej</td></tr>
+                     <tr><td>6</td><td>szósta</td><td>szóstej</td></tr>
+                     <tr><td>7</td><td>siódma</td><td>siódmej</td></tr>
+                     <tr><td>8</td><td>ósma</td><td>ósmej</td></tr>
+                     <tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td></tr>
+                     <tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td></tr>
+                     <tr><td>11</td><td>jedenasta</td><td>jedenastej</td></tr>
+                     <tr><td>12</td><td>dwunasta</td><td>dwunastej</td></tr></table></div>`
         }
     };
 
@@ -126,18 +144,14 @@
         let p = "", ph = "", e = "";
 
         if (isFormal) {
-            // Formal: Godzina + Ordinal Hour + Minute (Zero only for 01-09)
             let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
             let phStr = (minutes > 0 && minutes < 10) ? "ze-ro " + mAllPh[minutes] : (minutes === 0 ? "" : mAllPh[minutes]);
-            
             p = `Godzina ${hNom[hours]} ${mStr}`.trim();
             ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
             e = `${hours}:${minutes.toString().padStart(2, '0')}`;
         } else {
-            // Casual: Never uses Zero
             let h12 = hours % 12, n12 = (hours + 1) % 12;
             const mLabel = (m) => m === 1 ? 'minute' : 'minutes';
-            
             if (minutes === 0) {
                 p = hours===0?"Północ":hours===12?"Południe":hNom[h12];
                 ph = hours===0?"poow-nots":hours===12?"po-wood-nye":hNomPh[h12];
@@ -150,36 +164,6 @@
                 let d = 60 - minutes; p = `Za ${mAll[d]} ${hNom[n12]}`; ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`; e = `${d} ${mLabel(d)} to ${n12 || 12}`;
             }
         }
-
-2. Ensure Casual is Default
-
-Look at your HTML code where the radio buttons are. Make sure the checked attribute is on the casual input, not the formal one:
-HTML
-
-<div class="setting-row">
-    <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay()"> Casual</label>
-    <label><input type="radio" name="mode" id="formal" onchange="updateDisplay()"> Formal</label>
-</div>
-
-3. Keep the Digital Clock Interactive
-
-Ensure your digital clock line looks exactly like this. Using type="time" ensures the native mobile/browser time picker opens when you tap it:
-HTML
-
-<input type="time" id="time-input-display" oninput="manualTime(this.value)">
-
-And ensure this helper function exists in your <script>:
-JavaScript
-
-function manualTime(val) { 
-    if(!val) return; 
-    const [h, m] = val.split(':'); 
-    hours = parseInt(h); 
-    minutes = parseInt(m); 
-    updateDisplay(); 
-}
-
-Would you like me to explain how the "Wpół do" (half to) logic works for the hour selection, as it's often the trickiest part of Polish time?
 
         const d = dict[currentLang] || dict['EN'];
         document.getElementById('app-title').innerText = d.title;
@@ -201,7 +185,7 @@ Would you like me to explain how the "Wpół do" (half to) logic works for the h
         window.speechSynthesis.cancel(); 
         let t = document.getElementById('polish-text').innerText;
         if (t.includes("?")) return;
-        let naturalT = t.replace(/\bzero\b/gi, "").replace(/\s+/g, ' ').trim();
+        let naturalT = t.replace(/\s+/g, ' ').trim();
         const m = new SpeechSynthesisUtterance(naturalT); 
         m.lang = 'pl-PL'; m.rate = r; 
         window.speechSynthesis.speak(m); 
