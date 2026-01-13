@@ -202,13 +202,25 @@
         const isFormal = document.getElementById('formal').checked;
         const result = translateTime(hours, minutes, isFormal);
         let e = "";
-        if (isFormal) e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-        else {
+        if (isFormal) {
+            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+        } else {
             let h12 = hours % 12;
-            if (minutes === 0) e = hours===0?"Midnight":hours===12?"Noon":`${h12||12} o'clock`;
-            else if (minutes < 30) e = `${minutes} past ${h12 || 12}`;
-            else if (minutes === 30) e = `Half past ${h12 || 12}`;
-            else e = `${60 - minutes} to ${(hours + 1) % 12 || 12}`;
+            let n12 = (hours + 1) % 12 || 12;
+            let displayH = h12 || 12;
+
+            if (minutes === 0) {
+                e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${displayH} o'clock`;
+            } else if (minutes < 30) {
+                let mLabel = minutes === 1 ? "minute" : "minutes";
+                e = `${minutes} ${mLabel} past ${displayH}`;
+            } else if (minutes === 30) {
+                e = `Half past ${displayH}`;
+            } else {
+                let minsTo = 60 - minutes;
+                let mLabel = minsTo === 1 ? "minute" : "minutes";
+                e = `${minsTo} ${mLabel} to ${n12}`;
+            }
         }
         const d = dict[currentLang] || dict['EN'];
         document.getElementById('app-title').innerText = d.title;
