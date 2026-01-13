@@ -19,6 +19,8 @@
         .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: #212529; border-radius: 10px; pointer-events: none; }
         .hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
         .min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
+        .sec-hand { width: 2px; height: 58px; margin-left: -1px;  background: #808080; /* Grey color */ z-index: 3; display: none; box-shadow: 0 0 2px rgba(0,0,0,0.2); /* Adds slight depth */ }
+        .show-sec { display: block !important; }
         .dot { width: 10px; height: 10px; background: #212529; position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 10; border: 1.5px solid white; }
         #time-input-display { background: var(--card); color: var(--accent); font-family: monospace; font-size: 1.8rem; padding: 10px; border-radius: 8px; border: 2px solid var(--accent); width: 140px; text-align: center; margin: 5px auto 10px; display: block; }
         .display-area { min-height: 135px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -46,6 +48,7 @@
 <div class="container">
     <h1 id="app-title">Polish Time Learner</h1>
     <div class="top-row">
+        <button class="btn-sub" id="sec-toggle" onclick="toggleSec()">SEC</button>
         <button class="btn-sub" onclick="toggleLang()">EN/PL</button>
         <button class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">Quiz</button>
         <button class="btn-sub" id="ph-toggle" onclick="togglePh()">Phon</button>
@@ -56,6 +59,7 @@
         <div class="dot"></div>
         <div class="hand hour-hand" id="h-hand"></div>
         <div class="hand min-hand" id="m-hand"></div>
+        <div class="hand sec-hand" id="s-hand"></div>
     </div>
     
     <input type="text" id="time-input-display" placeholder="12:00" oninput="manualTime(this.value)">
@@ -221,35 +225,39 @@
         return { polish: p, phonetic: ph };
     }
 
+   let seconds = 0, showSec = false, ticker = null;
+
+    function toggleSec() {
+        showSec = !showSec;
+        document.getElementById('s-hand').classList.toggle('show-sec', showSec);
+        document.getElementById('sec-toggle').style.background = showSec ? 'rgba(0,0,0,0.3)' : '';
+        updateDisplay(true);
+    }
+
+    function startTicker() {
+        if(ticker) clearInterval(ticker);
+        ticker = setInterval(() => {
+            if(showSec) {
+                seconds = new Date().getSeconds();
+                document.getElementById('s-hand').style.transform = `rotate(${seconds * 6}deg)`;
+                updateDisplay(true);
+            }
+        }, 1000);
+    }
+
     function updateDisplay(syncInput) {
         const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
         document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
         document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
-        if(syncInput) document.getElementById('time-input-display').value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        
+        let timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        if(showSec) timeStr += `:${seconds.toString().padStart(2, '0')}`;
+        if(syncInput) document.getElementById('time-input-display').value = timeStr;
         
         const isFormal = document.getElementById('formal').checked;
         const result = translateTime(hours, minutes, isFormal);
         
-        let e = "";
-        if (isFormal) {
-            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-        } else {
-            let h12 = hours % 12;
-            let n12 = (hours + 1) % 12 || 12;
-            let displayH = h12 || 12;
-            if (minutes === 0) {
-                e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${displayH} o'clock`;
-            } else if (minutes < 30) {
-                e = `${minutes} ${minutes === 1 ? "minute" : "minutes"} past ${displayH}`;
-            } else if (minutes === 30) {
-                e = `Half past ${displayH}`;
-            } else {
-                let minsTo = 60 - minutes;
-                e = `${minsTo} ${minsTo === 1 ? "minute" : "minutes"} to ${n12}`;
-            }
-        }
-
-        const d = dict[currentLang];
+        const d = dict[currentLang] || dict['EN'];
         document.getElementById('app-title').innerText = d.title;
         document.getElementById('btn-real').innerText = d.actual;
         document.getElementById('btn-random').innerText = d.random;
@@ -257,20 +265,41 @@
         document.getElementById('btn-slow').innerText = d.slow;
         document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
         document.getElementById('help-content').innerHTML = d.help;
+
         document.getElementById('polish-text').innerText = result.polish;
         document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
+        
+        let e = "";
+        if (isFormal) {
+            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+        } else {
+            let h12 = hours % 12 || 12;
+            let n12 = (hours + 1) % 12 || 12;
+            if (minutes === 0) {
+                e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12} o'clock`;
+            } else if (minutes < 30) {
+                e = `${minutes} ${minutes === 1 ? "minute" : "minutes"} past ${h12}`;
+            } else if (minutes === 30) {
+                e = `Half past ${h12}`;
+            } else {
+                let minsTo = 60 - minutes;
+                e = `${minsTo} ${minsTo === 1 ? "minute" : "minutes"} to ${n12}`;
+            }
+        }
         document.getElementById('english-text').innerText = e;
     }
 
     function init() {
         const c = document.getElementById('clock-container');
         for (let i = 0; i < 12; i++) {
-            const m = document.createElement('div'); m.className = 'mark';
-            m.style.transform = `rotate(${i * 30}deg)`; c.appendChild(m);
+            const m = document.createElement('div'); 
+            m.className = 'mark';
+            m.style.transform = `rotate(${i * 30}deg)`; 
+            c.appendChild(m);
         }
-        setRealTime(); 
+        setRealTime();
+        startTicker(); 
     }
-
     function startDrag(e) {
         e.preventDefault();
         const move = (ev) => {
@@ -319,10 +348,19 @@
     }
 
     function manualTime(val) {
-        if(!val.includes(':')) return;
-        const [h, m] = val.split(':'); let ph = parseInt(h), pm = parseInt(m);
-        if(!isNaN(ph) && !isNaN(pm)) { hours = Math.min(23, Math.max(0, ph)); minutes = Math.min(59, Math.max(0, pm)); updateDisplay(true); if(isQuiz) generateQuiz(); }
+    const parts = val.split(':');
+    if (parts.length < 2) return;
+
+    let ph = parseInt(parts[0]), pm = parseInt(parts[1]), ps = parseInt(parts[2] || 0);
+    
+    if (!isNaN(ph) && !isNaN(pm)) {
+        hours = Math.min(23, Math.max(0, ph));
+        minutes = Math.min(59, Math.max(0, pm));
+        seconds = Math.min(59, Math.max(0, ps));
+        updateDisplay(true);
+        if (isQuiz) generateQuiz();
     }
+}
 
     function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); document.getElementById('casual').checked = true; updateDisplay(true); if(isQuiz) generateQuiz(); }
     function rollTime() { hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60); updateDisplay(true); if(isQuiz) generateQuiz(); }
