@@ -126,12 +126,18 @@
         let p = "", ph = "", e = "";
 
         if (isFormal) {
-            p = `Godzina ${hNom[hours]} ${minutes === 0 ? "zero zero" : (minutes < 10 ? "zero " + mAll[minutes] : mAll[minutes])}`;
-            ph = `go-jee-nah ${hNomPh[hours]} ${minutes === 0 ? "ze-ro ze-ro" : (minutes < 10 ? "ze-ro " + mAllPh[minutes] : mAllPh[minutes])}`;
+            // Formal: Godzina + Ordinal Hour + Minute (Zero only for 01-09)
+            let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
+            let phStr = (minutes > 0 && minutes < 10) ? "ze-ro " + mAllPh[minutes] : (minutes === 0 ? "" : mAllPh[minutes]);
+            
+            p = `Godzina ${hNom[hours]} ${mStr}`.trim();
+            ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
             e = `${hours}:${minutes.toString().padStart(2, '0')}`;
         } else {
+            // Casual: Never uses Zero
             let h12 = hours % 12, n12 = (hours + 1) % 12;
             const mLabel = (m) => m === 1 ? 'minute' : 'minutes';
+            
             if (minutes === 0) {
                 p = hours===0?"Północ":hours===12?"Południe":hNom[h12];
                 ph = hours===0?"poow-nots":hours===12?"po-wood-nye":hNomPh[h12];
@@ -144,6 +150,36 @@
                 let d = 60 - minutes; p = `Za ${mAll[d]} ${hNom[n12]}`; ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`; e = `${d} ${mLabel(d)} to ${n12 || 12}`;
             }
         }
+
+2. Ensure Casual is Default
+
+Look at your HTML code where the radio buttons are. Make sure the checked attribute is on the casual input, not the formal one:
+HTML
+
+<div class="setting-row">
+    <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay()"> Casual</label>
+    <label><input type="radio" name="mode" id="formal" onchange="updateDisplay()"> Formal</label>
+</div>
+
+3. Keep the Digital Clock Interactive
+
+Ensure your digital clock line looks exactly like this. Using type="time" ensures the native mobile/browser time picker opens when you tap it:
+HTML
+
+<input type="time" id="time-input-display" oninput="manualTime(this.value)">
+
+And ensure this helper function exists in your <script>:
+JavaScript
+
+function manualTime(val) { 
+    if(!val) return; 
+    const [h, m] = val.split(':'); 
+    hours = parseInt(h); 
+    minutes = parseInt(m); 
+    updateDisplay(); 
+}
+
+Would you like me to explain how the "Wpół do" (half to) logic works for the hour selection, as it's often the trickiest part of Polish time?
 
         const d = dict[currentLang] || dict['EN'];
         document.getElementById('app-title').innerText = d.title;
