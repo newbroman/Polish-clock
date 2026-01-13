@@ -19,8 +19,9 @@
         .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: #212529; border-radius: 10px; pointer-events: none; }
         .hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
         .min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
-        .sec-hand { width: 2px; height: 58px; margin-left: -1px;  background: #808080; /* Grey color */ z-index: 3; display: none; box-shadow: 0 0 2px rgba(0,0,0,0.2); /* Adds slight depth */ }
+        .sec-hand { width: 2px; height: 58px; margin-left: -1px;  background: #808080; /* Grey color */ z-index: 3; display: none; pointer-events: none; border-radius: 2px; }
         .show-sec { display: block !important; }
+        .hand { box-shadow: 0 0 2px rgba(0,0,0,0.2); }
         .dot { width: 10px; height: 10px; background: #212529; position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 10; border: 1.5px solid white; }
         #time-input-display { background: var(--card); color: var(--accent); font-family: monospace; font-size: 1.8rem; padding: 10px; border-radius: 8px; border: 2px solid var(--accent); width: 140px; text-align: center; margin: 5px auto 10px; display: block; }
         .display-area { min-height: 135px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
