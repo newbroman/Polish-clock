@@ -99,15 +99,21 @@
     const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
     const dict = {
-        EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-              help: `<div class="help-sect"><h3>🎮 Interaction</h3><ul><li><b>Dragging:</b> Outer ring for mins, inner for hrs.</li><li><b>Multiple Choice:</b> Pick the correct Polish phrase.</li></ul></div>
-                     <div class="help-sect"><h3>👔 Formal Logic (24h)</h3><p>Godzina + Ordinal Hr + Cardinal Min.<ul><li><i>14:05</i> = Godzina czternasta <b>zero</b> pięć.</li><li>"Zero" only for minutes 01-09.</li></ul></div>
-                     <div class="help-sect"><h3>☕ Casual Logic (12h)</h3><p><b>Never uses "zero".</b><ul><li><b>Po (Past):</b> Mins + po + Genitive Hour.</li><li><b>Wpół do:</b> Wpół do + Genitive NEXT Hour.</li><li><b>Za (To):</b> Za + Mins + Nominative NEXT Hour.</li></ul></div>
-                     <div class="help-sect"><h3>📊 Grammar Table (1-12)</h3><table><tr><th>Hr</th><th>Nom (Za...)</th><th>Gen (Po/Wpół)</th><th>Phonetic</th></tr>
-                     <tr><td>1</td><td>pierwsza</td><td>pierwszej</td><td>pyerv-shey</td></tr><tr><td>2</td><td>druga</td><td>drugiej</td><td>droo-gyey</td></tr><tr><td>3</td><td>trzecia</td><td>trzeciej</td><td>tshe-tsiey</td></tr><tr><td>4</td><td>czwarta</td><td>czwartej</td><td>chvar-tey</td></tr><tr><td>5</td><td>piąta</td><td>piątej</td><td>pyon-tey</td></tr><tr><td>6</td><td>szósta</td><td>szóstej</td><td>shoos-tey</td></tr><tr><td>7</td><td>siódma</td><td>siódmej</td><td>shood-mey</td></tr><tr><td>8</td><td>ósma</td><td>ósmej</td><td>oos-mey</td></tr><tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td><td>je-vyon-tey</td></tr><tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td><td>je-shon-tey</td></tr><tr><td>11</td><td>jedenasta</td><td>jedenastej</td><td>ye-de-nas-tey</td></tr><tr><td>12</td><td>dwunasta</td><td>dwunastej</td><td>dvoo-nas-tey</td></tr></table></div>` }
+        EN: { 
+            title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", qOn: "Quiz: ON", qOff: "Quiz: OFF",
+            help: `<div class="help-sect"><h3>🎮 Interaction</h3><ul><li><b>Dragging:</b> Outer ring for mins, inner for hrs.</li><li><b>Multiple Choice:</b> Pick the correct Polish phrase.</li></ul></div>
+                   <div class="help-sect"><h3>👔 Formal Logic (24h)</h3><p>Godzina + Ordinal Hr + Cardinal Min. (e.g., 14:05 = Godzina czternasta <b>zero</b> pięć).</p></div>
+                   <div class="help-sect"><h3>☕ Casual Logic (12h)</h3><p><b>Never uses "zero".</b><ul><li><b>Po (Past):</b> Mins + po + Genitive Hour.</li><li><b>Wpół do:</b> Wpół do + Genitive NEXT Hour.</li><li><b>Za (To):</b> Za + Mins + Nominative NEXT Hour.</li></ul></div>`
+        },
+        PL: { 
+            title: "Nauka Polskiego Czasu", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ",
+            help: `<div class="help-sect"><h3>🎮 Interakcja</h3><ul><li><b>Przeciąganie:</b> Zewnętrzny pierścień - minuty, wewnętrzny - godziny.</li><li><b>Quiz:</b> Wybierz poprawną polską frazę.</li></ul></div>
+                   <div class="help-sect"><h3>👔 Czas Oficjalny (24h)</h3><p>Godzina + Liczebnik Porządkowy + Minuty. (np. 14:05 = Godzina czternasta <b>zero</b> pięć).</p></div>
+                   <div class="help-sect"><h3>☕ Czas Potoczny (12h)</h3><p><b>Nigdy nie używa "zero".</b><ul><li><b>Po:</b> Minuty + po + Godzina w Dopełniaczu.</li><li><b>Wpół do:</b> Wpół do + następna Godzina w Dopełniaczu.</li><li><b>Za:</b> Za + Minuty + następna Godzina w Mianowniku.</li></ul></div>`
+        }
     };
 
-   function translateTime(h, m, formal) {
+    function translateTime(h, m, formal) {
         let p = "", ph = "";
         if (formal) {
             let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
@@ -115,29 +121,54 @@
             p = `Godzina ${hNom[h]} ${mStr}`.trim();
             ph = `go-jee-nah ${hNomPh[h]} ${phStr}`.trim();
         } else {
-            let h12 = h % 12;
-            let n12 = (h + 1) % 12;
-            // Adjustment: If next hour is 0 (Midnight), we usually say "pierwsza" (1) 
-            // after midnight or "północ" depending on context, 
-            // but for the 12h casual system, we want to ensure n12 is never index 12 (południe)
-            if (m === 0) { 
-                p = h===0?"Północ":h===12?"Południe":hNom[h12]; 
-                ph = h===0?"poow-nots":h===12?"po-wood-nye":hNomPh[h12]; 
-            }
-            else if (m < 30) { 
-                p = `${mAll[m]} po ${hGen[h12]}`; 
-                ph = `${mAllPh[m]} po ${hGenPh[h12]}`; 
-            }
-            else if (m === 30) { 
-                p = `Wpół do ${hGen[n12 === 0 ? 0 : n12]}`; 
-                ph = `vpoow doh ${hGenPh[n12 === 0 ? 0 : n12]}`; 
-            }
-            else { 
-                p = `Za ${mAll[60-m]} ${hNom[n12 === 0 ? 0 : n12]}`; 
-                ph = `zah ${mAllPh[60-m]} ${hNomPh[n12 === 0 ? 0 : n12]}`; 
-            }
+            let h12 = h % 12, n12 = (h + 1) % 12;
+            if (m === 0) { p = h===0?"Północ":h===12?"Południe":hNom[h12]; ph = h===0?"poow-nots":h===12?"po-wood-nye":hNomPh[h12]; }
+            else if (m < 30) { p = `${mAll[m]} po ${hGen[h12]}`; ph = `${mAllPh[m]} po ${hGenPh[h12]}`; }
+            else if (m === 30) { p = `Wpół do ${hGen[n12]}`; ph = `vpoow doh ${hGenPh[n12]}`; }
+            else { p = `Za ${mAll[60-m]} ${hNom[n12]}`; ph = `zah ${mAllPh[60-m]} ${hNomPh[n12]}`; }
         }
         return { polish: p, phonetic: ph };
+    }
+
+    function updateDisplay(syncInput) {
+        const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
+        document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
+        document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
+        if(syncInput) document.getElementById('time-input-display').value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        
+        const isFormal = document.getElementById('formal').checked;
+        const result = translateTime(hours, minutes, isFormal);
+        
+        let e = "";
+        if (isFormal) {
+            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+        } else {
+            let h12 = hours % 12;
+            let n12 = (hours + 1) % 12 || 12;
+            let displayH = h12 || 12;
+            if (minutes === 0) {
+                e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${displayH} o'clock`;
+            } else if (minutes < 30) {
+                e = `${minutes} ${minutes === 1 ? "minute" : "minutes"} past ${displayH}`;
+            } else if (minutes === 30) {
+                e = `Half past ${displayH}`;
+            } else {
+                let minsTo = 60 - minutes;
+                e = `${minsTo} ${minsTo === 1 ? "minute" : "minutes"} to ${n12}`;
+            }
+        }
+
+        const d = dict[currentLang];
+        document.getElementById('app-title').innerText = d.title;
+        document.getElementById('btn-real').innerText = d.actual;
+        document.getElementById('btn-random').innerText = d.random;
+        document.getElementById('btn-listen').innerText = d.listen;
+        document.getElementById('btn-slow').innerText = d.slow;
+        document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
+        document.getElementById('help-content').innerHTML = d.help;
+        document.getElementById('polish-text').innerText = result.polish;
+        document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
+        document.getElementById('english-text').innerText = e;
     }
 
     function init() {
@@ -208,49 +239,6 @@
     function toggleHelp() { const m = document.getElementById('help-modal'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
     function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); }
     function togglePh() { showPh = !showPh; document.getElementById('ph-toggle').style.background = showPh ? '' : 'rgba(0,0,0,0.3)'; updateDisplay(true); }
-
-    function updateDisplay(syncInput) {
-        const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
-        document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
-        document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
-        if(syncInput) document.getElementById('time-input-display').value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-        
-        const isFormal = document.getElementById('formal').checked;
-        const result = translateTime(hours, minutes, isFormal);
-        let e = "";
-        if (isFormal) {
-            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-        } else {
-            let h12 = hours % 12;
-            let n12 = (hours + 1) % 12 || 12;
-            let displayH = h12 || 12;
-
-            if (minutes === 0) {
-                e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${displayH} o'clock`;
-            } else if (minutes < 30) {
-                let mLabel = minutes === 1 ? "minute" : "minutes";
-                e = `${minutes} ${mLabel} past ${displayH}`;
-            } else if (minutes === 30) {
-                e = `Half past ${displayH}`;
-            } else {
-                let minsTo = 60 - minutes;
-                let mLabel = minsTo === 1 ? "minute" : "minutes";
-                e = `${minsTo} ${mLabel} to ${n12}`;
-            }
-        }
-        const d = dict[currentLang] || dict['EN'];
-        document.getElementById('app-title').innerText = d.title;
-        document.getElementById('btn-real').innerText = d.actual;
-        document.getElementById('btn-random').innerText = d.random;
-        document.getElementById('btn-listen').innerText = d.listen;
-        document.getElementById('btn-slow').innerText = d.slow;
-        document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
-        document.getElementById('help-content').innerHTML = d.help;
-        document.getElementById('polish-text').innerText = result.polish;
-        document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
-        document.getElementById('english-text').innerText = e;
-    }
-
     function speak(r) { window.speechSynthesis.cancel(); let t = document.getElementById('polish-text').innerText; const m = new SpeechSynthesisUtterance(t); m.lang = 'pl-PL'; m.rate = r; window.speechSynthesis.speak(m); }
 </script>
 </body>
