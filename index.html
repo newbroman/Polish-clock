@@ -92,27 +92,37 @@
 
     const dict = {
         EN: { title: "Tell the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-              help: `<div class="help-sect"><h3>👔 Formal vs Casual</h3>
-                     <p><b>Formal:</b> 24h Clock. Uses "zero" only for minutes 01-09.</p>
-                     <p><b>Casual:</b> 12h Clock. Never uses "zero".</p></div>
-                     <div class="help-sect"><h3>🏗️ Casual Hour Grammar</h3>
-                     <p><b>Po (Past):</b> Use Genitive hour.</p>
-                     <p><b>Wpół do (Half to):</b> Use NEXT hour in Genitive.</p>
-                     <p><b>Za (To):</b> Use NEXT hour in Nominative.</p></div>
-                     <div class="help-sect"><h3>📊 Hour Cases (1-12)</h3>
-                     <table><tr><th>#</th><th>Nom</th><th>Gen</th></tr>
-                     <tr><td>1</td><td>pierwsza</td><td>pierwszej</td></tr>
-                     <tr><td>2</td><td>druga</td><td>drugiej</td></tr>
-                     <tr><td>3</td><td>trzecia</td><td>trzeciej</td></tr>
-                     <tr><td>4</td><td>czwarta</td><td>czwartej</td></tr>
-                     <tr><td>5</td><td>piąta</td><td>piątej</td></tr>
-                     <tr><td>6</td><td>szósta</td><td>szóstej</td></tr>
-                     <tr><td>7</td><td>siódma</td><td>siódmej</td></tr>
-                     <tr><td>8</td><td>ósma</td><td>ósmej</td></tr>
-                     <tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td></tr>
-                     <tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td></tr>
-                     <tr><td>11</td><td>jedenasta</td><td>jedenastej</td></tr>
-                     <tr><td>12</td><td>dwunasta</td><td>dwunastej</td></tr></table></div>`
+              help: `<div class="help-sect">
+         <h3>👔 Formal Structure</h3>
+         <p><b>Format:</b> Godzina + Ordinal (1st, 2nd) + Cardinal (1, 2, 3).<br>
+         <i>Example: 14:15 = Godzina czternasta piętnasta.</i></p>
+         <p>Uses 24h Clock. Uses "zero" only for minutes 01-09.</p>
+       </div>
+       <div class="help-sect">
+         <h3>☕ Casual Structure</h3>
+         <ul>
+            <li><b>Po (After):</b> Minuty + po + Genitive Hour. <br><i>10:05 = Pięć po dziesiątej.</i></li>
+            <li><b>Wpół do (Half to):</b> Wpół do + Genitive Next Hour. <br><i>10:30 = Wpół do jedenastej.</i></li>
+            <li><b>Za (To):</b> Za + Minuty + Nominative Next Hour. <br><i>10:55 = Za pięć jedenasta.</i></li>
+            <li><b>Special:</b> 00:00 = Północ. 12:00 = Południe.</li>
+         </ul>
+       </div>
+       <div class="help-sect">
+         <h3>📊 Hour Cases (1-12)</h3>
+         <table><tr><th>#</th><th>Nom (Za...)</th><th>Gen (Po/Wpół...)</th></tr>
+         <tr><td>1</td><td>pierwsza</td><td>pierwszej</td></tr>
+         <tr><td>2</td><td>druga</td><td>drugiej</td></tr>
+         <tr><td>3</td><td>trzecia</td><td>trzeciej</td></tr>
+         <tr><td>4</td><td>czwarta</td><td>czwartej</td></tr>
+         <tr><td>5</td><td>piąta</td><td>piątej</td></tr>
+         <tr><td>6</td><td>szósta</td><td>szóstej</td></tr>
+         <tr><td>7</td><td>siódma</td><td>siódmej</td></tr>
+         <tr><td>8</td><td>ósma</td><td>ósmej</td></tr>
+         <tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td></tr>
+         <tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td></tr>
+         <tr><td>11</td><td>jedenasta</td><td>jedenastej</td></tr>
+         <tr><td>12</td><td>dwunasta</td><td>dwunastej</td></tr></table>
+       </div>`
         }
     };
 
