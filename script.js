@@ -176,7 +176,7 @@ function generateQuizOptions() {
         container.style.display = "none";
     }, 500);
 }
-         else {
+        } else {
                 btn.style.background = "#dc3545";
                 btn.style.color = "white";
                 btn.querySelectorAll('span').forEach(s => s.style.color = "white");
