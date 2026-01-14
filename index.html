@@ -241,7 +241,7 @@
     }, 1000);
 }
 
-    function updateDisplay(syncInput) {
+   function updateDisplay(syncInput) {
         document.getElementById('h-hand').style.transform = `rotate(${((hours % 12) * 30) + (minutes * 0.5)}deg)`;
         document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
         
@@ -261,18 +261,18 @@
         document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
         document.getElementById('help-content').innerHTML = d.help;
 
-       document.getElementById('polish-text').innerHTML = result.polish;
+        document.getElementById('polish-text').innerHTML = result.polish;
         document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
         
-      let e = "";
-        const s = seconds; // Ensure we have the current seconds value
+        let e = "";
+        const s = seconds;
 
         if (isFormal) {
-            // Formal English: 24h digital style
+            // Formal English: Digital Style (e.g., 14:05)
             e = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
             if (showSec) e += `:${s.toString().padStart(2, '0')}`;
         } else {
-            // Casual English: 12h descriptive style
+            // Casual English: Descriptive Style (12h)
             let h12 = hours % 12 || 12;
             let n12 = (hours + 1) % 12 || 12;
 
@@ -281,11 +281,17 @@
                 else if (hours === 12) e = "Noon";
                 else e = `${h12} o'clock`;
             } 
-            else if (minutes < 30) e = `${minutes} past ${h12}`;
-            else if (minutes === 30) e = `Half past ${h12}`;
-            else e = `${60 - minutes} to ${n12}`;
+            else if (minutes === 30) {
+                e = `Half past ${h12}`;
+            }
+            else if (minutes < 30) {
+                e = `${minutes} past ${h12}`;
+            }
+            else {
+                e = `${60 - minutes} to ${n12}`;
+            }
 
-            // Add seconds to casual English if SEC is toggled
+            // Append seconds in natural English if toggled
             if (showSec && s > 0) e += ` and ${s} seconds`;
         }
         
