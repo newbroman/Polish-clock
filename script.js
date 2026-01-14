@@ -9,8 +9,9 @@ const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "s
 const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
 const dict = {
-    EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-          };
+    EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF" },
+    PL: { title: "Nauka Czasu", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij Pomoc", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
+};
 
 function init() {
     const c = document.getElementById('clock-container');
@@ -41,7 +42,11 @@ function startDrag(e) {
         }
         updateDisplay(true);
     };
-    const stop = () => { window.removeEventListener('mousemove', move); window.removeEventListener('touchmove', move); };
+    const stop = () => { 
+        window.removeEventListener('mousemove', move); 
+        window.removeEventListener('touchmove', move); 
+        if (isQuiz) generateQuizOptions();
+    };
     window.addEventListener('mousemove', move); window.addEventListener('touchmove', move);
     window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
 }
@@ -79,26 +84,15 @@ function updateDisplay(syncInput) {
     const d = dict[currentLang] || dict['EN'];
     document.getElementById('app-title').innerText = d.title;
     const pt = document.getElementById('polish-text'), pht = document.getElementById('phonetic-text'), et = document.getElementById('english-text');
-    if (isQuiz && !isRevealed) { pt.innerText = d.ask; pht.innerText = ""; et.innerText = ""; document.getElementById('reveal-btn').style.display = "block"; }
-    else { pt.innerText = p; pht.innerText = showPh ? ph : ""; et.innerText = e; document.getElementById('reveal-btn').style.display = "none"; }
-}
-
-function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); isRevealed = !isQuiz; updateDisplay(true); }
-function toggleQuiz() { 
-    isQuiz = !isQuiz; 
-    isRevealed = !isQuiz; 
     
-    const quizContainer = document.getElementById('quiz-options');
-    const revealBtn = document.getElementById('reveal-btn');
-
-    if (isQuiz) {
-        generateQuizOptions();
-        revealBtn.style.display = "none"; // Hide manual reveal, use buttons instead
-    } else {
-        quizContainer.style.display = "none";
-        updateDisplay(true);
+    if (isQuiz && !isRevealed) { 
+        pt.innerText = d.ask; pht.innerText = ""; et.innerText = ""; 
+    } else { 
+        pt.innerText = p; pht.innerText = showPh ? ph : ""; et.innerText = e; 
     }
 }
+
+function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); isRevealed = !isQuiz; updateDisplay(true); if(isQuiz) generateQuizOptions(); }
 
 function rollTime() { 
     hours = Math.floor(Math.random() * 24); 
@@ -123,15 +117,16 @@ function toggleQuiz() {
     if (isQuiz) {
         generateQuizOptions();
         revealBtn.style.display = "none";
+        document.getElementById('quiz-toggle').innerText = (dict[currentLang] || dict['EN']).qOn;
     } else {
         quizContainer.style.display = "none";
+        document.getElementById('quiz-toggle').innerText = (dict[currentLang] || dict['EN']).qOff;
         updateDisplay(true);
     }
 }
 
 function generateQuizOptions() {
     const container = document.getElementById('quiz-options');
-    // We check which radio button is selected
     const isFormal = document.getElementById('formal').checked;
     
     const correctAnswer = getPolishTimeString(hours, minutes, isFormal);
@@ -152,7 +147,6 @@ function generateQuizOptions() {
     options.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerText = opt;
-        // Styles matched to your sub-button aesthetic
         btn.style.cssText = "padding:12px 4px; font-size:13px; border:1px solid #ccc; border-radius:8px; background:white; cursor:pointer; font-family:inherit;";
         
         btn.onclick = () => {
@@ -186,9 +180,8 @@ function getPolishTimeString(h, m, formal) {
         return `Za ${mAll[60-m]} ${hNom[n12]}`;
     }
 }
-function toggleHelp() { const m = document.getElementById('help-modal'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
-function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); }
-// Remove 'help' from the dict object above, then keep these functions:
+
+function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); if(isQuiz) generateQuizOptions(); }
 
 function togglePh() { 
     showPh = !showPh; 
@@ -203,6 +196,7 @@ function manualTime(val) {
         hours = Math.min(23, Math.max(0, ph)); 
         minutes = Math.min(59, Math.max(0, pm)); 
         updateDisplay(false); 
+        if(isQuiz) generateQuizOptions();
     } 
 }
 
@@ -237,6 +231,4 @@ async function toggleHelp() {
     } catch (error) {
         console.error('Error loading help:', error);
         content.innerHTML = "<p>Error loading help content.</p>";
-        modal.style.display = 'block';
-    }
-}
+        modal.style.display
