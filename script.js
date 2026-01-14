@@ -232,3 +232,5 @@ async function toggleHelp() {
         console.error('Error loading help:', error);
         content.innerHTML = "<p>Error loading help content.</p>";
         modal.style.display
+    }
+}
