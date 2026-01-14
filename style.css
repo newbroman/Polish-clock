@@ -90,3 +90,6 @@ th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
 .help-table th {
     background-color: #f8f9fa;
 }
+
+.nom-case { color: #e67e22 !important; font-weight: bold; }
+.gen-case { color: #9b59b6 !important; font-weight: bold; }
