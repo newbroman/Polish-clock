@@ -244,17 +244,16 @@ async function toggleHelp() {
 
     try {
         const response = await fetch(helpFile);
-        if (!response.ok) throw new Error('Help file not found');
+        if (!response.ok) throw new Error('File not found');
         let html = await response.text();
         
-        // Ensure a close button exists at the bottom
-        const closeBtnText = currentLang === 'PL' ? "Zamknij" : "Close";
-        html += `<br><button class="btn-main" style="width:100%; margin-top:15px;" onclick="toggleHelp()">${closeBtnText}</button>`;
+        // Add the Close Button at the bottom
+        const closeText = currentLang === 'PL' ? 'Zamknij' : 'Close';
+        content.innerHTML = html + `<button class="btn-main" style="margin-top:20px" onclick="toggleHelp()">${closeText}</button>`;
         
-        content.innerHTML = html;
         modal.style.display = 'block';
-    } catch (error) {
-        content.innerHTML = `<p>Error.</p><button onclick="toggleHelp()">Close</button>`;
+    } catch (e) {
+        content.innerHTML = "<p>Error loading help.</p>";
         modal.style.display = 'block';
     }
 }
