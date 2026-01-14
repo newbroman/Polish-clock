@@ -1,15 +1,18 @@
-/* LIGHT MODE (Default) */
+/* VARIABLES & THEMES */
 :root {
     --bg-color: #f8f9fa;
     --text-color: #212529;
     --container-bg: #ffffff;
     --table-header: #eeeeee;
     --table-border: #dddddd;
-    --nom-color: #e67e22; /* Standard Orange */
-    --gen-color: #9b59b6; /* Standard Purple */
+    --btn-sub: #e9ecef;
+    --accent: #dc3545; /* Polish Red */
+    --nom-color: #e67e22; 
+    --gen-color: #9b59b6;
+    /* The Flag Face */
+    --clock-face: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%);
 }
 
-/* DARK MODE (Automatic) */
 @media (prefers-color-scheme: dark) {
     :root {
         --bg-color: #121212;
@@ -17,15 +20,20 @@
         --container-bg: #1e1e1e;
         --table-header: #333333;
         --table-border: #444444;
-        --nom-color: #ff9f43; /* Brighter Orange for Dark */
-        --gen-color: #d1a3ff; /* Lighter Purple for Dark */
+        --btn-sub: #2d2d2d;
+        --nom-color: #ff9f43; 
+        --gen-color: #d1a3ff;
+        --clock-face: linear-gradient(to bottom, #dddddd 50%, #a01d2a 50%);
     }
 }
 
+/* LAYOUT */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
+    margin: 0;
     transition: background-color 0.3s, color 0.3s;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .container {
@@ -34,125 +42,84 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    padding: 20px;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
-h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); font-weight: 800; }
+/* CLOCK FACE (Restored Polish Flag) */
+#clock-container {
+    width: 220px; /* Scaled down for mobile quiz visibility */
+    height: 220px;
+    border: 5px solid var(--text-color);
+    border-radius: 50%;
+    position: relative;
+    background: var(--clock-face);
+    margin: 15px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
 
 .hand {
     position: absolute;
     bottom: 50%;
     left: 50%;
     transform-origin: bottom;
+    background: #212529;
     border-radius: 4px;
-    background: var(--text-color);
-}
-.mark {
-    background-color: var(--text-color);
-    opacity: 0.5;
+    z-index: 5;
+    border: 0.5px solid rgba(255,255,255,0.3);
 }
 
-#clock-container {
-    width: 250px;
-    height: 250px;
-    border: 4px solid var(--text-color);
-    border-radius: 50%;
-    position: relative;
+.hour-hand { width: 6px; height: 50px; margin-left: -3px; }
+.min-hand { width: 4px; height: 80px; margin-left: -2px; }
+
+/* BUTTONS & QUIZ */
+button { 
+    cursor: pointer; 
+    font-weight: 700; 
+    border-radius: 10px; 
+    border: 1px solid var(--table-border); 
+    padding: 10px; 
+    width: 100%; 
+    margin-bottom: 6px;
     background: var(--container-bg);
-    margin: 20px 0;
+    color: var(--text-color);
 }
 
-.hour-hand { width: 6px; height: 60px; margin-left: -3px; }
-.min-hand { width: 4px; height: 90px; margin-left: -2px; }
+.btn-main { background: var(--accent); color: white; border: none; }
+.btn-real { background: #007bff; color: white; border: none; }
+.btn-sub { background: var(--btn-sub); color: var(--text-color); padding: 6px; font-size: 0.65rem; width: auto; flex: 1; }
 
-.dot { 
-    width: 10px; height: 10px; background: #212529; position: absolute; 
-    top:50%; left:50%; transform: translate(-50%, -50%); 
-    border-radius: 50%; z-index: 10; border: 1.5px solid white; 
-}
+.top-row { display: flex; width: 100%; gap: 8px; margin-bottom: 10px; }
 
-#time-input-display { 
-    background: var(--card); color: var(--accent); font-family: monospace; 
-    font-size: 1.8rem; padding: 10px; border-radius: 8px; 
-    border: 2px solid var(--accent); width: 140px; text-align: center; 
-    margin: 5px auto 10px; display: block; 
-}
-
-.display-area { min-height: 115px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.polish-display { font-size: 0.95rem; font-weight: 700; color: var(--accent); line-height: 1.2; }
-.phonetic-display { font-size: 0.75rem; color: var(--phonetic); font-family: monospace; margin-top: 2px; font-weight: bold; min-height: 1em; }
-.english-display { font-size: 0.8rem; color: var(--eng-text); font-style: italic; margin-top: 4px; }
-
-button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; padding: 10px; width: 100%; margin-bottom: 6px; font-size: 0.85rem; }
-.btn-main { background: var(--accent); color: white; }
-.btn-real { background: #007bff; color: white; }
-.btn-sub { background: var(--btn-sub); color: var(--text); padding: 6px; font-size: 0.65rem; }
-
-.top-row {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+#quiz-options {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
     width: 100%;
+    margin-top: 10px;
 }
-.setting-row { display: flex; justify-content: space-around; font-size: 0.8rem; margin-bottom: 10px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; }
 
+/* HELP MODAL & TABLES */
 #help-modal {
     display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
-    max-height: 80vh;
+    max-height: 85vh;
     padding: 20px;
     background: var(--container-bg);
     color: var(--text-color);
-    border: 1px solid var(--table-border); /* Helps visibility in Dark Mode */
+    border: 1px solid var(--table-border);
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    z-index: 1000; /* Increased slightly to stay above all elements */
-    box-sizing: border-box;
+    z-index: 2000;
     overflow-y: auto;
+    box-sizing: border-box;
     text-align: left;
-    font-size: 0.85rem;
-    line-height: 1.4;
-}
-.help-sect { border-bottom: 1px solid #ddd; padding-bottom: 12px; margin-bottom: 12px; }
-.help-sect h3 { margin: 0 0 8px 0; color: var(--accent); font-size: 1rem; border-left: 4px solid var(--accent); padding-left: 8px; }
-table { width: 100%; font-size: 0.75rem; border-collapse: collapse; margin-top: 10px; }
-th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
-
-/* Grammar Case Coloring */
-.nom-case { color: #e67e22; font-weight: bold; } /* Orange for Nominative */
-.gen-case { color: #9b59b6; font-weight: bold; } /* Purple for Genitive */
-
-/* Table Styling */
-.help-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 0.9rem;
 }
 
+.help-table th { background: var(--table-header); }
 
-.help-table {
-    width: 100%;
-    border-collapse: collapse;
-    color: var(--text-color);
-    background-color: var(--container-bg);
-}
-
-.help-table th {
-    background-color: var(--table-header);
-    color: var(--text-color) !important;
-    border: 1px solid var(--table-border);
-}
-
-.help-table td {
-    border: 1px solid var(--table-border);
-}
-
-/* Ensure these override everything else */
-.nom-case { color: #ff9f43 !important; font-weight: bold; } /* Slightly brighter orange for dark mode */
-.gen-case { color: #cc99ff !important; font-weight: bold; } /* Slightly lighter purple for dark mode */
+/* GRAMMAR COLORS */
+.nom-case { color: var(--nom-color) !important; font-weight: bold; }
+.gen-case { color: var(--gen-color) !important; font-weight: bold; }
