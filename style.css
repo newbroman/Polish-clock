@@ -1,0 +1,72 @@
+:root { 
+    --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; 
+    --clock-border: #d1d1d1; --btn-sub: #e9ecef; --help-bg: #fff; 
+    --eng-text: #6c757d; --phonetic: #28a745; 
+}
+@media (prefers-color-scheme: dark) {
+    :root { 
+        --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; 
+        --clock-border: #444; --btn-sub: #333; --help-bg: #1e1e1e; 
+        --eng-text: #a0a0a0; --phonetic: #4cd137; 
+    }
+}
+body { 
+    font-family: -apple-system, sans-serif; background-color: var(--bg); 
+    color: var(--text); display: flex; justify-content: center; 
+    align-items: flex-start; min-height: 100vh; margin: 0; padding-top: 10px; 
+    touch-action: manipulation; 
+}
+.container { 
+    background: var(--card); padding: 1.1rem; border-radius: 20px; 
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 310px; 
+    text-align: center; position: relative; 
+}
+h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); font-weight: 800; }
+
+#clock-container { 
+    width: 140px; height: 140px; margin: 5px auto 10px; position: relative; 
+    border-radius: 50%; border: 6px solid var(--clock-border); 
+    background: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%); 
+    overflow: hidden; cursor: crosshair; touch-action: none; 
+}
+.mark { 
+    position: absolute; width: 2px; height: 8px; background: #212529; 
+    left: 50%; transform-origin: 50% 70px; 
+}
+.hand { 
+    position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; 
+    background: #212529; border-radius: 10px; pointer-events: none; 
+}
+.hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
+.min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
+.dot { 
+    width: 10px; height: 10px; background: #212529; position: absolute; 
+    top:50%; left:50%; transform: translate(-50%, -50%); 
+    border-radius: 50%; z-index: 10; border: 1.5px solid white; 
+}
+
+#time-input-display { 
+    background: var(--card); color: var(--accent); font-family: monospace; 
+    font-size: 1.8rem; padding: 10px; border-radius: 8px; 
+    border: 2px solid var(--accent); width: 140px; text-align: center; 
+    margin: 5px auto 10px; display: block; 
+}
+
+.display-area { min-height: 115px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.polish-display { font-size: 0.95rem; font-weight: 700; color: var(--accent); line-height: 1.2; }
+.phonetic-display { font-size: 0.75rem; color: var(--phonetic); font-family: monospace; margin-top: 2px; font-weight: bold; min-height: 1em; }
+.english-display { font-size: 0.8rem; color: var(--eng-text); font-style: italic; margin-top: 4px; }
+
+button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; padding: 10px; width: 100%; margin-bottom: 6px; font-size: 0.85rem; }
+.btn-main { background: var(--accent); color: white; }
+.btn-real { background: #007bff; color: white; }
+.btn-sub { background: var(--btn-sub); color: var(--text); padding: 6px; font-size: 0.65rem; }
+
+.top-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
+.setting-row { display: flex; justify-content: space-around; font-size: 0.8rem; margin-bottom: 10px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; }
+
+#help-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--help-bg); border-radius: 20px; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; font-size: 0.85rem; line-height: 1.4; }
+.help-sect { border-bottom: 1px solid #ddd; padding-bottom: 12px; margin-bottom: 12px; }
+.help-sect h3 { margin: 0 0 8px 0; color: var(--accent); font-size: 1rem; border-left: 4px solid var(--accent); padding-left: 8px; }
+table { width: 100%; font-size: 0.75rem; border-collapse: collapse; margin-top: 10px; }
+th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
