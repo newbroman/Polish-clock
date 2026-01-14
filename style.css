@@ -33,19 +33,18 @@ body {
 }
 h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); font-weight: 800; }
 
-#clock-container { 
-    width: 140px; height: 140px; margin: 5px auto 10px; position: relative; 
-    border-radius: 50%; border: 6px solid var(--clock-border); 
-    background: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%); 
-    overflow: hidden; cursor: crosshair; touch-action: none; 
+.hand {
+    background-color: var(--text-color); /* Hands match the text color */
 }
-.mark { 
-    position: absolute; width: 2px; height: 8px; background: #212529; 
-    left: 50%; transform-origin: 50% 70px; 
+
+.mark {
+    background-color: var(--text-color);
+    opacity: 0.5;
 }
-.hand { 
-    position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; 
-    background: #212529; border-radius: 10px; pointer-events: none; 
+
+#clock-container {
+    border: 4px solid var(--text-color);
+    background: var(--container-bg);
 }
 .hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
 .min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
