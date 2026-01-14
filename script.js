@@ -66,7 +66,7 @@ function updateDisplay(syncInput) {
         p = `Godzina ${hNom[hours]} ${mStr}`.trim();
         ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
         e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-    }} else {
+    } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
         // Wrapping hours in spans with grammar classes
         let hNomSpan = `<span class="nom-case">${hNom[h12]}</span>`;
