@@ -92,97 +92,33 @@
     </div>
 </div>
 
-<script>
-   let hours = 12, minutes = 0, seconds = 0, isQuiz = false, currentLang = 'EN', showPh = true, showSec = false, ticker = null;
+<script>let hours = 12, minutes = 0, seconds = 0, isQuiz = false, currentLang = 'EN', showPh = true, showSec = false, ticker = null;
 
     const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
-    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
+    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnasta", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
     const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
     const sPh = ["ze-ro", "yed-nah", "dv-yeh", "t-shih", "chter-ih", "pyench", "sheshch", "shed-yem", "osh-yem", "dyev-yench", "dyes-yench", "yed-en-ash-cheh", "dvan-ash-cheh", "t-shin-ash-cheh", "chter-nash-cheh", "pyent-nash-cheh", "shes-nash-cheh", "shed-yem-nash-cheh", "osh-yem-nash-cheh", "dyev-yent-nash-cheh", "dvad-zyesh-chah", "dvad-zyesh-chah yed-en", "dvad-zyesh-chah dv-yeh", "dvad-zyesh-chah t-shih", "dvad-zyesh-chah chter-ih", "dvad-zyesh-chah pyench", "dvad-zyesh-chah sheshch", "dvad-zyesh-chah shed-yem", "dvad-zyesh-chah osh-yem", "dvad-zyesh-chah dyev-yench", "t-shid-zyesh-chi", "t-shid-zyesh-chi yed-en", "t-shid-zyesh-chi dv-yeh", "t-shid-zyesh-chi t-shih", "t-shid-zyesh-chi chter-ih", "t-shid-zyesh-chi pyench", "t-shid-zyesh-chi sheshch", "t-shid-zyesh-chi shed-yem", "t-shid-zyesh-chi osh-yem", "t-shid-zyesh-chi dyev-yench", "chter-dyesh-chi", "chter-dyesh-chi yed-en", "chter-dyesh-chi dv-yeh", "chter-dyesh-chi t-shih", "chter-dyesh-chi chter-ih", "chter-dyesh-chi pyench", "chter-dyesh-chi sheshch", "chter-dyesh-chi shed-yem", "chter-dyesh-chi osh-yem", "chter-dyesh-chi dyev-yench", "pyench-dzyesh-ont", "pyench-dzyesh-ont yed-en", "pyench-dzyesh-ont dv-yeh", "pyench-dzyesh-ont t-shih", "pyench-dzyesh-ont chter-ih", "pyench-dzyesh-ont pyench", "pyench-dzyesh-ont sheshch", "pyench-dzyesh-ont shed-yem", "pyench-dzyesh-ont osh-yem", "pyench-dzyesh-ont dyev-yench"];
-   const hPh = ["poow-nots", "pyerv-shah", "droo-gah", "t-she-tsyah", "chvar-tah", "pyon-tah", "shoos-tah", "shood-mah", "oos-mah", "dyev-yon-tah", "dye-shon-tah", "yed-en-as-tah", "po-wood-nyeh", "t-shin-as-tah", "chter-nas-tah", "pyent-nas-tah", "shes-nas-tah", "shed-yem-nas-tah", "osh-yem-nas-tah", "dyev-yent-nas-tah", "dvoo-dye-stah", "dvoo-dye-stah pyerv-shah", "dvoo-dye-stah droo-gah", "dvoo-dye-stah t-she-tsyah"];
+    const hPh = ["poow-nots", "pyerv-shah", "droo-gah", "t-she-tsyah", "chvar-tah", "pyon-tah", "shoos-tah", "shood-mah", "oos-mah", "dyev-yon-tah", "dye-shon-tah", "yed-en-as-tah", "po-wood-nyeh", "t-shin-as-tah", "chter-nas-tah", "pyent-nas-tah", "shes-nas-tah", "shed-yem-nas-tah", "osh-yem-nas-tah", "dyev-yent-nas-tah", "dvoo-dye-stah", "dvoo-dye-stah pyerv-shah", "dvoo-dye-stah droo-gah", "dvoo-dye-stah t-she-tsyah"];
     const hGenPh = ["poow-not-shih", "pyerv-shey", "droo-gyey", "t-she-tsyey", "chvar-tey", "pyon-tey", "shoos-tey", "shood-mey", "oos-mey", "dyev-yon-tey", "dye-shon-tey", "yed-en-as-tey", "po-wood-nyah", "t-shin-as-tey", "chter-nas-tey", "pyent-nas-tey", "shes-nas-tey", "shed-yem-nas-tey", "osh-yem-nas-tey", "dyev-yent-nas-tey", "dvoo-dye-stey", "dvoo-dye-stey pyerv-shey", "dvoo-dye-stey droo-gyey", "dvoo-dye-stey t-she-tsyey"];
-                 
+
     const dict = {
         EN: { 
             title: "Say the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-            help: `<div class="help-sect">
-                <h3>🎮 How to use the interface</h3>
-                <ul>
-                    <li><b>Setting Time:</b> Drag the <b>Outer Ring</b> for minutes or the <b>Inner Area</b> for hours. You can also type the time directly into the digital box (HH:MM:SS).</li>
-                    <li><b>Modes:</b> Use the <b>Casual/Formal</b> buttons to switch logic. <b>Casual</b> is 12h-based; <b>Formal</b> is 24h-based.</li>
-                    <li><b>SEC Button:</b> Displays the grey seconds hand and adds spelled-out seconds to the text and phonetic display.</li>
-                    <li><b>Quiz:</b> Toggle this to test yourself. You must pick the correct Polish phrase before the answer and audio are revealed.</li>
-                </ul>
-            </div>
-            <div class="help-sect">
-                <h3>👔 Formal phrase structure (24h)</h3>
-                <p>Used for schedules, TV, and official business. It is always 24-hour based.</p>
-                <p><b>Structure:</b> Godzina + <span style="color:#e67e22;font-weight:bold;">[Ordinal Hour]</span> + <span style="color:#007bff;font-weight:bold;">[Cardinal Minutes]</span>.</p>
-                <ul><li><i>16:20</i> = Godzina <span style="color:#e67e22;">szesnasta</span> <span style="color:#007bff;">dwadzieścia</span>.</li>
-                <li><i>08:05</i> = Godzina <span style="color:#e67e22;">ósma</span> <span style="color:#007bff;"><b>zero</b> pięć</span>.</li></ul>
-            </div>
-            <div class="help-sect">
-                <h3>☕ Casual phrase structure (12h)</h3>
-                <p>Used in daily conversation. It uses a 12-hour clock and three specific prepositions:</p>
-                <ul>
-                    <li><b>Po (After):</b> For minutes 01–29. <br><i>Structure: <span style="color:#007bff;font-weight:bold;">[Mins]</span> + po + <span style="color:#dc3545;font-weight:bold;">[Genitive Hour]</span>.</i><br>Example: 5:10 = <span style="color:#007bff;">Dziesięć</span> po <span style="color:#dc3545;">piątej</span>.</li>
-                    <li><b>Wpół do (Half to):</b> Specifically for 30 minutes past. <br><i>Structure: Wpół do + <span style="color:#dc3545;font-weight:bold;">[Genitive NEXT Hour]</span>.</i><br>Example: 5:30 = Wpół do <span style="color:#dc3545;">szóstej</span>.</li>
-                    <li><b>Za (Before):</b> For minutes 31–59. <br><i>Structure: Za + <span style="color:#007bff;font-weight:bold;">[Mins remaining]</span> + <span style="color:#28a745;font-weight:bold;">[Nominative NEXT Hour]</span>.</i><br>Example: 5:45 (15 to 6) = Za <span style="color:#007bff;">piętnaście</span> <span style="color:#28a745;">szósta</span>.</li>
-                </ul>
-            </div>
-            <div class="help-sect">
-                <h3>📊 Grammar Table</h3>
-                <table>
-                    <thead><tr><th>Hr</th><th style="color:#28a745;">Nominative (with 'Za')</th><th style="color:#dc3545;">Genitive (with 'Po/Wpół')</th></tr></thead>
-                    <tbody>
-                        <tr><td>1</td><td style="color:#28a745;">pierwsza</td><td style="color:#dc3545;">pierwszej</td></tr>
-                        <tr><td>2</td><td style="color:#28a745;">druga</td><td style="color:#dc3545;">drugiej</td></tr>
-                        <tr><td>3</td><td style="color:#28a745;">trzecia</td><td style="color:#dc3545;">trzeciej</td></tr>
-                        <tr><td>4</td><td style="color:#28a745;">czwarta</td><td style="color:#dc3545;">czwartej</td></tr>
-                        <tr><td>5</td><td style="color:#28a745;">piąta</td><td style="color:#dc3545;">piątej</td></tr>
-                        <tr><td>6</td><td style="color:#28a745;">szósta</td><td style="color:#dc3545;">szóstej</td></tr>
-                        <tr><td>7</td><td style="color:#28a745;">siódma</td><td style="color:#dc3545;">siódmej</td></tr>
-                        <tr><td>8</td><td style="color:#28a745;">ósma</td><td style="color:#dc3545;">ósmej</td></tr>
-                        <tr><td>9</td><td style="color:#28a745;">dziewiąta</td><td style="color:#dc3545;">dziewiątej</td></tr>
-                        <tr><td>10</td><td style="color:#28a745;">dziesiąta</td><td style="color:#dc3545;">dziesiątej</td></tr>
-                        <tr><td>11</td><td style="color:#28a745;">jedenasta</td><td style="color:#dc3545;">jedenastej</td></tr>
-                        <tr><td>12</td><td style="color:#28a745;">dwunasta</td><td style="color:#dc3545;">dwunastej</td></tr>
-                    </tbody>
-                </table>
-            </div>`
+            help: `<div class="help-sect"><h3>🎮 How to use</h3><ul><li>Drag hands or type HH:MM.</li><li><b>SEC:</b> Adds seconds hand and text.</li><li><b>Quiz:</b> Test your knowledge.</li></ul></div>`
         },
         PL: { 
             title: "Powiedz która godzina", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ",
-            help: `<div class="help-sect">
-                <h3>🎮 Obsługa interfejsu</h3>
-                <ul>
-                    <li><b>Ustawianie czasu:</b> Przeciągnij <b>zewnętrzny pierścień</b> (minuty) lub <b>wewnętrzny</b> (godziny).</li>
-                    <li><b>Tryby:</b> Przełączaj między czasem <b>Potocznym</b> a <b>Oficjalnym</b>.</li>
-                </ul>
-            </div>
-            <div class="help-sect">
-                <h3>👔 Struktura oficjalna (24h)</h3>
-                <p><b>Struktura:</b> Godzina + <span style="color:#e67e22;font-weight:bold;">[Porządkowy]</span> + <span style="color:#007bff;font-weight:bold;">[Główny]</span>.</p>
-            </div>
-            <div class="help-sect">
-                <h3>☕ Struktura potoczna (12h)</h3>
-                <ul>
-                    <li><b>Po:</b> <span style="color:#007bff;font-weight:bold;">Minuty</span> + po + <span style="color:#dc3545;font-weight:bold;">[Godzina w Dopełniaczu]</span>.</li>
-                    <li><b>Wpół do:</b> Wpół do + <span style="color:#dc3545;font-weight:bold;">[Następna godzina w Dopełniaczu]</span>.</li>
-                    <li><b>Za:</b> Za + <span style="color:#007bff;font-weight:bold;">Minuty</span> + <span style="color:#28a745;font-weight:bold;">[Następna godzina w Mianowniku]</span>.</li>
-                </ul>
-            </div>`
+            help: `<div class="help-sect"><h3>🎮 Obsługa</h3><ul><li>Ustaw czas ręcznie lub wylosuj.</li><li><b>SEC:</b> Pokazuje sekundy.</li><li><b>Quiz:</b> Sprawdź się!</li></ul></div>`
         }
     };
+
     function translateTime(h, m, formal) {
         const s = seconds;
         let resPL = "", resPh = "";
         
         if (formal) {
-            // Formal (24h)
             resPL = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
             resPh = `Goh-jee-nah ${hPh[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
-            
             if (showSec && s > 0) { 
                 resPL += ` i <span style="color:#007bff">${mAll[s]}</span> sekund`; 
                 resPh += ` ee ${sPh[s]} sek-oont`; 
@@ -190,7 +126,6 @@
             return { polish: resPL, phonetic: resPh };
         }
 
-        // Casual (12h)
         let h12 = h % 12 || 12;
         let n12 = (h + 1) % 12 || 12;
 
@@ -218,32 +153,10 @@
         return { polish: resPL, phonetic: resPh };
     }
 
-    function toggleSec() {
-        showSec = !showSec;
-        document.getElementById('s-hand').classList.toggle('show-sec', showSec);
-        updateDisplay(true);
-    }
-
-   function startTicker() {
-    if(ticker) clearInterval(ticker);
-    ticker = setInterval(() => {
-        if(showSec) {
-            const now = new Date();
-            seconds = now.getSeconds();
-            // If seconds hit 0, sync minutes/hours too
-            if (seconds === 0) {
-                minutes = now.getMinutes();
-                hours = now.getHours();
-            }
-            document.getElementById('s-hand').style.transform = `rotate(${seconds * 6}deg)`;
-            updateDisplay(true);
-        }
-    }, 1000);
-}
-
-   function updateDisplay(syncInput) {
+    function updateDisplay(syncInput) {
         document.getElementById('h-hand').style.transform = `rotate(${((hours % 12) * 30) + (minutes * 0.5)}deg)`;
         document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
+        if(showSec) document.getElementById('s-hand').style.transform = `rotate(${seconds * 6}deg)`;
         
         let timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         if(showSec) timeStr += `:${seconds.toString().padStart(2, '0')}`;
@@ -251,8 +164,8 @@
         
         const isFormal = document.getElementById('formal').checked;
         const result = translateTime(hours, minutes, isFormal);
-        
         const d = dict[currentLang];
+
         document.getElementById('app-title').innerText = d.title;
         document.getElementById('btn-real').innerText = d.actual;
         document.getElementById('btn-random').innerText = d.random;
@@ -265,48 +178,50 @@
         document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
         
         let e = "";
-        const s = seconds;
-
         if (isFormal) {
-            // Formal English: Digital Style (e.g., 14:05)
-            e = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-            if (showSec) e += `:${s.toString().padStart(2, '0')}`;
+            e = timeStr;
         } else {
-            // Casual English: Descriptive Style (12h)
             let h12 = hours % 12 || 12;
             let n12 = (hours + 1) % 12 || 12;
-
             if (minutes === 0) {
                 if (hours === 0 || hours === 24) e = "Midnight";
                 else if (hours === 12) e = "Noon";
                 else e = `${h12} o'clock`;
-            } 
-            else if (minutes === 30) {
-                e = `Half past ${h12}`;
-            }
-            else if (minutes < 30) {
-                e = `${minutes} past ${h12}`;
-            }
-            else {
-                e = `${60 - minutes} to ${n12}`;
-            }
-
-            // Append seconds in natural English if toggled
-            if (showSec && s > 0) e += ` and ${s} seconds`;
+            } else if (minutes === 30) e = `Half past ${h12}`;
+            else if (minutes < 30) e = `${minutes} past ${h12}`;
+            else e = `${60 - minutes} to ${n12}`;
+            
+            if (showSec && seconds > 0) e += ` and ${seconds} seconds`;
         }
-        
         document.getElementById('english-text').innerText = e;
     }
-        
+
     function init() {
         const c = document.getElementById('clock-container');
         for (let i = 0; i < 12; i++) {
             const m = document.createElement('div'); m.className = 'mark';
             m.style.transform = `rotate(${i * 30}deg)`; c.appendChild(m);
         }
-        document.getElementById('casual').checked = true;
         setRealTime();
         startTicker(); 
+    }
+
+    function toggleSec() {
+        showSec = !showSec;
+        document.getElementById('s-hand').classList.toggle('show-sec', showSec);
+        updateDisplay(true);
+    }
+
+    function startTicker() {
+        if(ticker) clearInterval(ticker);
+        ticker = setInterval(() => {
+            if(showSec) {
+                const now = new Date();
+                seconds = now.getSeconds();
+                if (seconds === 0) { minutes = now.getMinutes(); hours = now.getHours(); }
+                updateDisplay(true);
+            }
+        }, 1000);
     }
 
     function startDrag(e) {
@@ -328,34 +243,24 @@
         window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
     }
 
-  function generateQuiz() {
+    function generateQuiz() {
         const isFormal = document.getElementById('formal').checked;
         const rawCorrect = translateTime(hours, minutes, isFormal).polish;
-        
-        // We generate 4 options
         const options = [rawCorrect];
         while(options.length < 4) {
             let rh = Math.floor(Math.random() * 24), rm = Math.floor(Math.random() * 60);
             let opt = translateTime(rh, rm, isFormal).polish;
             if(!options.includes(opt)) options.push(opt);
         }
-        
         options.sort(() => Math.random() - 0.5);
         const container = document.getElementById('quiz-options');
         container.innerHTML = "";
-        
         options.forEach(opt => {
             const b = document.createElement('button');
             b.className = 'quiz-opt';
-            // innerHTML allows the <span> colors from translateTime to render on the buttons
             b.innerHTML = opt; 
-            
             b.onclick = () => {
-                // We strip HTML tags to check if the text matches the correct answer
-                const strippedOpt = b.innerHTML.replace(/<[^>]*>?/gm, '');
-                const strippedCorrect = rawCorrect.replace(/<[^>]*>?/gm, '');
-                
-                if(strippedOpt === strippedCorrect) {
+                if(b.innerHTML === rawCorrect) {
                     b.classList.add('correct');
                     setTimeout(() => {
                         document.getElementById('result-area').style.display = "block";
@@ -363,13 +268,10 @@
                         updateDisplay(false);
                         speak(1);
                     }, 500);
-                } else {
-                    b.classList.add('wrong');
-                }
+                } else b.classList.add('wrong');
             };
             container.appendChild(b);
         });
-        
         document.getElementById('result-area').style.display = "none";
         container.style.display = "grid";
     }
