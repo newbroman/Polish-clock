@@ -63,12 +63,12 @@ function updateDisplay(syncInput) {
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
         let phStr = (minutes > 0 && minutes < 10) ? "ze-ro " + mAllPh[minutes] : (minutes === 0 ? "" : mAllPh[minutes]);
-        p = `Godzina ${hNom[hours]} ${mStr}`.trim();
+        // Formal uses Nominative (Orange)
+        p = `Godzina <span class="nom-case">${hNom[hours]}</span> ${mStr}`.trim();
         ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
         e = `${hours}:${minutes.toString().padStart(2, '0')}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
-        // Wrapping hours in spans with grammar classes
         let hNomSpan = `<span class="nom-case">${hNom[h12]}</span>`;
         let nNomSpan = `<span class="nom-case">${hNom[n12]}</span>`;
         let hGenSpan = `<span class="gen-case">${hGen[h12]}</span>`;
@@ -94,6 +94,7 @@ function updateDisplay(syncInput) {
             e = `${d} to ${n12 || 12}`;
         }
     }
+
     const d = dict[currentLang] || dict['EN'];
     document.getElementById('app-title').innerText = d.title;
     const pt = document.getElementById('polish-text'), pht = document.getElementById('phonetic-text'), et = document.getElementById('english-text');
