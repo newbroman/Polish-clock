@@ -93,3 +93,30 @@ function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); upda
 function togglePh() { showPh = !showPh; updateDisplay(true); }
 function manualTime(val) { if(!val.includes(':')) return; const [h, m] = val.split(':'); let ph = parseInt(h), pm = parseInt(m); if(!isNaN(ph) && !isNaN(pm)) { hours = Math.min(23, Math.max(0, ph)); minutes = Math.min(59, Math.max(0, pm)); updateDisplay(false); } }
 function speak(r) { window.speechSynthesis.cancel(); let t = document.getElementById('polish-text').innerText; if (t.includes("?")) return; const m = new SpeechSynthesisUtterance(t); m.lang = 'pl-PL'; m.rate = r; window.speechSynthesis.speak(m); }
+
+async function toggleHelp() {
+    const modal = document.getElementById('help-modal');
+    const content = document.getElementById('help-content');
+
+    // If modal is open, just close it
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+        return;
+    }
+
+    // Determine which file to grab based on your existing currentLang variable
+    const helpFile = currentLang === 'PL' ? 'help_pl.html' : 'help_en.html';
+
+    try {
+        const response = await fetch(helpFile);
+        if (!response.ok) throw new Error('Help file not found');
+        const html = await response.text();
+        
+        content.innerHTML = html;
+        modal.style.display = 'block';
+    } catch (error) {
+        console.error('Error loading help:', error);
+        content.innerHTML = "<p>Error loading help content.</p>";
+        modal.style.display = 'block';
+    }
+}
