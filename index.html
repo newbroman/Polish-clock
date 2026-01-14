@@ -1,713 +1,238 @@
 <!DOCTYPE html>
-
 <html lang="pl">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <title>Say Say the Time in Polish</title>
-
+    <title>Polish Time Learner</title>
     <link rel="manifest" href="manifest.json">
-
     <meta name="theme-color" content="#dc3545">
-
     <style>
-
-        :root { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; --clock-border: #d1d1d1; --btn-sub: #e9ecef; --help-bg: #fff; --eng-text: #6c757d; --phonetic: #28a745; --correct: #28a745; --wrong: #dc3545; }
-
+        :root { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --accent: #dc3545; --clock-border: #d1d1d1; --btn-sub: #e9ecef; --help-bg: #fff; --eng-text: #6c757d; --phonetic: #28a745; }
         @media (prefers-color-scheme: dark) {
-
             :root { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --clock-border: #444; --btn-sub: #333; --help-bg: #1e1e1e; --eng-text: #a0a0a0; --phonetic: #4cd137; }
-
         }
-
         body { font-family: -apple-system, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; padding-top: 10px; touch-action: manipulation; }
-
         .container { background: var(--card); padding: 1.1rem; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 310px; text-align: center; position: relative; }
-
         h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); font-weight: 800; }
-
         #clock-container { width: 140px; height: 140px; margin: 5px auto 10px; position: relative; border-radius: 50%; border: 6px solid var(--clock-border); background: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%); overflow: hidden; cursor: crosshair; touch-action: none; }
-
         .mark { position: absolute; width: 2px; height: 8px; background: #212529; left: 50%; transform-origin: 50% 70px; }
-
-        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: #212529; border-radius: 10px; pointer-events: none; box-shadow: 0 0 2px rgba(0,0,0,0.2); }
-
+        .hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom; background: #212529; border-radius: 10px; pointer-events: none; }
         .hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
-
         .min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
-
-        .sec-hand { width: 2px; height: 58px; margin-left: -1px;  background: #808080; z-index: 3; display: none; border-radius: 2px; }
-
-        .show-sec { display: block !important; }
-
         .dot { width: 10px; height: 10px; background: #212529; position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 10; border: 1.5px solid white; }
-
         #time-input-display { background: var(--card); color: var(--accent); font-family: monospace; font-size: 1.8rem; padding: 10px; border-radius: 8px; border: 2px solid var(--accent); width: 140px; text-align: center; margin: 5px auto 10px; display: block; }
-
-        .display-area { min-height: 135px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-
+        .display-area { min-height: 115px; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .polish-display { font-size: 0.95rem; font-weight: 700; color: var(--accent); line-height: 1.2; }
-
-        .phonetic-display { font-size: 0.75rem; color: var(--phonetic); font-family: monospace; margin-top: 2px; font-weight: bold; min-height: 1.2em; }
-
+        .phonetic-display { font-size: 0.75rem; color: var(--phonetic); font-family: monospace; margin-top: 2px; font-weight: bold; min-height: 1em; }
         .english-display { font-size: 0.8rem; color: var(--eng-text); font-style: italic; margin-top: 4px; }
-
-        #quiz-options { display: grid; grid-template-columns: 1fr; gap: 6px; width: 100%; margin-top: 10px; }
-
-        .quiz-opt { background: var(--btn-sub); color: var(--text); padding: 8px; font-size: 0.75rem; border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-weight: 600; width: 100%; }
-
-        .quiz-opt.correct { background: var(--correct); color: white; }
-
-        .quiz-opt.wrong { background: var(--wrong); color: white; }
-
         button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; padding: 10px; width: 100%; margin-bottom: 6px; font-size: 0.85rem; }
-
         .btn-main { background: var(--accent); color: white; }
-
         .btn-real { background: #007bff; color: white; }
-
-        .btn-sub { background: var(--btn-sub); color: var(--text); padding: 6px 2px; font-size: 0.62rem; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-radius: 8px; }
-
-        .top-row { display: flex; justify-content: space-between; gap: 3px; margin-bottom: 12px; width: 100%; }
-
+        .btn-sub { background: var(--btn-sub); color: var(--text); padding: 6px; font-size: 0.65rem; }
+        .top-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
         .setting-row { display: flex; justify-content: space-around; font-size: 0.8rem; margin-bottom: 10px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; }
-
         #help-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--help-bg); border-radius: 20px; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; text-align: left; font-size: 0.85rem; line-height: 1.4; }
-
         .help-sect { border-bottom: 1px solid #ddd; padding-bottom: 12px; margin-bottom: 12px; }
-
         .help-sect h3 { margin: 0 0 8px 0; color: var(--accent); font-size: 1rem; border-left: 4px solid var(--accent); padding-left: 8px; }
-
         table { width: 100%; font-size: 0.75rem; border-collapse: collapse; margin-top: 10px; }
-
-        th, td { border: 1px solid #ddd; padding: 4px; text-align: left; }
-
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
     </style>
-
 </head>
-
 <body onload="init()">
-
 <div class="container">
-
-   <h1 id="app-title">Say the Time in Polish</h1>
-
-   <div class="top-row">
-
-       <button class="btn-sub" onclick="toggleLang()">EN/PL</button>
-
-       <button class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">Quiz</button>
-
-       <button class="btn-sub" id="sec-toggle" onclick="toggleSec()">SEC</button>
-
-       <button class="btn-sub" id="ph-toggle" onclick="togglePh()">Phon</button>
-
-       <button class="btn-sub" onclick="toggleHelp()">❓</button>
-
-   </div>
-
+    <h1 id="app-title">Polish Time Learner</h1>
+    <div class="top-row">
+        <button class="btn-sub" onclick="toggleLang()">EN/PL</button>
+        <button class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">Quiz</button>
+        <button class="btn-sub" id="ph-toggle" onclick="togglePh()">Phon</button>
+        <button class="btn-sub" onclick="toggleHelp()">❓</button>
+    </div>
 
     <div id="clock-container" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
-
         <div class="dot"></div>
-
         <div class="hand hour-hand" id="h-hand"></div>
-
         <div class="hand min-hand" id="m-hand"></div>
-
-        <div class="hand sec-hand" id="s-hand"></div>
-
     </div>
-
     
-
     <input type="text" id="time-input-display" placeholder="12:00" oninput="manualTime(this.value)">
 
-
     <div class="display-area">
-
-        <div id="quiz-options" style="display:none;"></div>
-
-        <div id="result-area">
-
-            <div class="polish-display" id="polish-text"></div>
-
-            <div class="phonetic-display" id="phonetic-text"></div>
-
-            <div class="english-display" id="english-text"></div>
-
-        </div>
-
+        <div class="polish-display" id="polish-text"></div>
+        <div class="phonetic-display" id="phonetic-text"></div>
+        <div class="english-display" id="english-text"></div>
+        <button id="reveal-btn" style="display:none; background:#28a745; color:white; margin-top:5px;" onclick="revealAnswer()">REVEAL</button>
     </div>
-
 
     <div class="setting-row">
-
-        <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay(true); if(isQuiz) generateQuiz();"> Casual</label>
-
-        <label><input type="radio" name="mode" id="formal" onchange="updateDisplay(true); if(isQuiz) generateQuiz();"> Formal</label>
-
+        <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay(true)"> Casual</label>
+        <label><input type="radio" name="mode" id="formal" onchange="updateDisplay(true)"> Formal</label>
     </div>
-
 
     <button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
-
     <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
-
     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-
         <button class="btn-sub" id="btn-listen" onclick="speak(1)">🔊 LISTEN</button>
-
         <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
-
     </div>
-
 
     <div id="help-modal">
-
         <h2 id="help-title">Guide / Poradnik</h2>
-
         <div id="help-content"></div>
-
         <button class="btn-main" id="help-close" onclick="toggleHelp()">Close</button>
-
     </div>
-
 </div>
 
-
 <script>
-
-   let hours = 12, minutes = 0, seconds = 0, isQuiz = false, currentLang = 'EN', showPh = true, showSec = false, ticker = null;
-
-
-    const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
-
-    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnasta", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
-
-    const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
-
-    const sPh = ["ze-ro", "yed-nah", "dv-yeh", "t-shih", "chter-ih", "pyench", "sheshch", "shed-yem", "osh-yem", "dyev-yench", "dyes-yench", "yed-en-ash-cheh", "dvan-ash-cheh", "t-shin-ash-cheh", "chter-nash-cheh", "pyent-nash-cheh", "shes-nash-cheh", "shed-yem-nash-cheh", "osh-yem-nash-cheh", "dyev-yent-nash-cheh", "dvad-zyesh-chah", "dvad-zyesh-chah yed-en", "dvad-zyesh-chah dv-yeh", "dvad-zyesh-chah t-shih", "dvad-zyesh-chah chter-ih", "dvad-zyesh-chah pyench", "dvad-zyesh-chah sheshch", "dvad-zyesh-chah shed-yem", "dvad-zyesh-chah osh-yem", "dvad-zyesh-chah dyev-yench", "t-shid-zyesh-chi", "t-shid-zyesh-chi yed-en", "t-shid-zyesh-chi dv-yeh", "t-shid-zyesh-chi t-shih", "t-shid-zyesh-chi chter-ih", "t-shid-zyesh-chi pyench", "t-shid-zyesh-chi sheshch", "t-shid-zyesh-chi shed-yem", "t-shid-zyesh-chi osh-yem", "t-shid-zyesh-chi dyev-yench", "chter-dyesh-chi", "chter-dyesh-chi yed-en", "chter-dyesh-chi dv-yeh", "chter-dyesh-chi t-shih", "chter-dyesh-chi chter-ih", "chter-dyesh-chi pyench", "chter-dyesh-chi sheshch", "chter-dyesh-chi shed-yem", "chter-dyesh-chi osh-yem", "chter-dyesh-chi dyev-yench", "pyench-dzyesh-ont", "pyench-dzyesh-ont yed-en", "pyench-dzyesh-ont dv-yeh", "pyench-dzyesh-ont t-shih", "pyench-dzyesh-ont chter-ih", "pyench-dzyesh-ont pyench", "pyench-dzyesh-ont sheshch", "pyench-dzyesh-ont shed-yem", "pyench-dzyesh-ont osh-yem", "pyench-dzyesh-ont dyev-yench"];
-
-    
-
-    const dict = {
-
-        EN: { 
-
-            title: "Say the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-
-            help: `<div class="help-sect">
-
-                <h3>🎮 How to use the interface</h3>
-
-                <ul>
-
-                    <li><b>Setting Time:</b> Drag the <b>Outer Ring</b> for minutes or the <b>Inner Area</b> for hours. You can also type the time directly into the digital box (HH:MM:SS).</li>
-
-                    <li><b>Modes:</b> Use the <b>Casual/Formal</b> buttons to switch logic. <b>Casual</b> is 12h-based; <b>Formal</b> is 24h-based.</li>
-
-                    <li><b>SEC Button:</b> Displays the grey seconds hand and adds spelled-out seconds to the text and phonetic display.</li>
-
-                    <li><b>Quiz:</b> Toggle this to test yourself. You must pick the correct Polish phrase before the answer and audio are revealed.</li>
-
-                </ul>
-
-            </div>
-
-            <div class="help-sect">
-
-                <h3>👔 Formal phrase structure (24h)</h3>
-
-                <p>Used for schedules, TV, and official business. It is always 24-hour based.</p>
-
-                <p><b>Structure:</b> Godzina + <span style="color:#e67e22;font-weight:bold;">[Ordinal Hour]</span> + <span style="color:#007bff;font-weight:bold;">[Cardinal Minutes]</span>.</p>
-
-                <ul><li><i>16:20</i> = Godzina <span style="color:#e67e22;">szesnasta</span> <span style="color:#007bff;">dwadzieścia</span>.</li>
-
-                <li><i>08:05</i> = Godzina <span style="color:#e67e22;">ósma</span> <span style="color:#007bff;"><b>zero</b> pięć</span>.</li></ul>
-
-            </div>
-
-            <div class="help-sect">
-
-                <h3>☕ Casual phrase structure (12h)</h3>
-
-                <p>Used in daily conversation. It uses a 12-hour clock and three specific prepositions:</p>
-
-                <ul>
-
-                    <li><b>Po (After):</b> For minutes 01–29. <br><i>Structure: <span style="color:#007bff;font-weight:bold;">[Mins]</span> + po + <span style="color:#dc3545;font-weight:bold;">[Genitive Hour]</span>.</i><br>Example: 5:10 = <span style="color:#007bff;">Dziesięć</span> po <span style="color:#dc3545;">piątej</span>.</li>
-
-                    <li><b>Wpół do (Half to):</b> Specifically for 30 minutes past. <br><i>Structure: Wpół do + <span style="color:#dc3545;font-weight:bold;">[Genitive NEXT Hour]</span>.</i><br>Example: 5:30 = Wpół do <span style="color:#dc3545;">szóstej</span>.</li>
-
-                    <li><b>Za (Before):</b> For minutes 31–59. <br><i>Structure: Za + <span style="color:#007bff;font-weight:bold;">[Mins remaining]</span> + <span style="color:#28a745;font-weight:bold;">[Nominative NEXT Hour]</span>.</i><br>Example: 5:45 (15 to 6) = Za <span style="color:#007bff;">piętnaście</span> <span style="color:#28a745;">szósta</span>.</li>
-
-                </ul>
-
-            </div>
-
-            <div class="help-sect">
-
-                <h3>📊 Grammar Table</h3>
-
-                <table>
-
-                    <thead><tr><th>Hr</th><th style="color:#28a745;">Nominative (with 'Za')</th><th style="color:#dc3545;">Genitive (with 'Po/Wpół')</th></tr></thead>
-
-                    <tbody>
-
-                        <tr><td>1</td><td style="color:#28a745;">pierwsza</td><td style="color:#dc3545;">pierwszej</td></tr>
-
-                        <tr><td>2</td><td style="color:#28a745;">druga</td><td style="color:#dc3545;">drugiej</td></tr>
-
-                        <tr><td>3</td><td style="color:#28a745;">trzecia</td><td style="color:#dc3545;">trzeciej</td></tr>
-
-                        <tr><td>4</td><td style="color:#28a745;">czwarta</td><td style="color:#dc3545;">czwartej</td></tr>
-
-                        <tr><td>5</td><td style="color:#28a745;">piąta</td><td style="color:#dc3545;">piątej</td></tr>
-
-                        <tr><td>6</td><td style="color:#28a745;">szósta</td><td style="color:#dc3545;">szóstej</td></tr>
-
-                        <tr><td>7</td><td style="color:#28a745;">siódma</td><td style="color:#dc3545;">siódmej</td></tr>
-
-                        <tr><td>8</td><td style="color:#28a745;">ósma</td><td style="color:#dc3545;">ósmej</td></tr>
-
-                        <tr><td>9</td><td style="color:#28a745;">dziewiąta</td><td style="color:#dc3545;">dziewiątej</td></tr>
-
-                        <tr><td>10</td><td style="color:#28a745;">dziesiąta</td><td style="color:#dc3545;">dziesiątej</td></tr>
-
-                        <tr><td>11</td><td style="color:#28a745;">jedenasta</td><td style="color:#dc3545;">jedenastej</td></tr>
-
-                        <tr><td>12</td><td style="color:#28a745;">dwunasta</td><td style="color:#dc3545;">dwunastej</td></tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>`
-
-        },
-
-        PL: { 
-
-            title: "Powiedz która godzina", actual: "AKTUALNY CZAS", random: "LOSUJ CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ",
-
-            help: `<div class="help-sect">
-
-                <h3>🎮 Obsługa interfejsu</h3>
-
-                <ul>
-
-                    <li><b>Ustawianie czasu:</b> Przeciągnij <b>zewnętrzny pierścień</b> (minuty) lub <b>wewnętrzny</b> (godziny).</li>
-
-                    <li><b>Tryby:</b> Przełączaj między czasem <b>Potocznym</b> a <b>Oficjalnym</b>.</li>
-
-                </ul>
-
-            </div>
-
-            <div class="help-sect">
-
-                <h3>👔 Struktura oficjalna (24h)</h3>
-
-                <p><b>Struktura:</b> Godzina + <span style="color:#e67e22;font-weight:bold;">[Porządkowy]</span> + <span style="color:#007bff;font-weight:bold;">[Główny]</span>.</p>
-
-            </div>
-
-            <div class="help-sect">
-
-                <h3>☕ Struktura potoczna (12h)</h3>
-
-                <ul>
-
-                    <li><b>Po:</b> <span style="color:#007bff;font-weight:bold;">Minuty</span> + po + <span style="color:#dc3545;font-weight:bold;">[Godzina w Dopełniaczu]</span>.</li>
-
-                    <li><b>Wpół do:</b> Wpół do + <span style="color:#dc3545;font-weight:bold;">[Następna godzina w Dopełniaczu]</span>.</li>
-
-                    <li><b>Za:</b> Za + <span style="color:#007bff;font-weight:bold;">Minuty</span> + <span style="color:#28a745;font-weight:bold;">[Następna godzina w Mianowniku]</span>.</li>
-
-                </ul>
-
-            </div>`
-
-        }
-
-    };
-
-    function translateTime(h, m, formal) {
-
-        const s = seconds;
-
-        let secPL = `<span style="color:#007bff">${mAll[s]}</span> sekundy`; // Simplified for display logic
-
-        
-
-       if (formal) {
-
-            // Orange (#e67e22) for Ordinal Hours, Blue (#007bff) for Cardinal Minutes
-
-            let res = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
-
-            let ph = `Goh-jee-nah ${hNom[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
-
-            if (showSec && s > 0) { 
-
-                res += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
-
-                ph += ` ee ${sPh[s]}`; 
-
-            }
-
-            return { polish: res, phonetic: ph };
-
-        }
-
-
-        let h12 = h % 12 || 12;
-
-        let n12 = (h + 1) % 12 || 12;
-
-        let resPL = "", resPh = "";
-
-
-        if (m === 0) { 
-
-            resPL = (h === 0) ? "północ" : (h === 12) ? "południe" : `<span style="color:#28a745">${hNom[h12]}</span>`; 
-
-            resPh = (h === 0) ? "poow-nots" : (h === 12) ? "po-wood-nyeh" : hNom[h12]; 
-
-        } else if (m <= 30) {
-
-            if (m === 30) { 
-
-                resPL = `wpół do <span style="color:#dc3545">${hGen[n12]}</span>`; 
-
-                resPh = `vpoow doh ${hGen[n12]}`; 
-
-            } else { 
-
-                resPL = `<span style="color:#007bff">${mAll[m]}</span> po <span style="color:#dc3545">${hGen[h12]}</span>`; 
-
-                resPh = `${sPh[m]} poh ${hGen[h12]}`; 
-
-            }
-
-        } else {
-
-            let minsTo = 60 - m;
-
-            resPL = `za <span style="color:#007bff">${mAll[minsTo]}</span> <span style="color:#28a745">${hNom[n12]}</span>`; 
-
-            resPh = `zah ${sPh[minsTo]} ${hNom[n12]}`;
-
-        }
-
-
-        if (showSec && s > 0) { 
-
-            resPL += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
-
-            resPh += ` ee ${sPh[s]}`; 
-
-        }
-
-        return { polish: resPL, phonetic: resPh };
-
-    }
-
-
-    function toggleSec() {
-
-        showSec = !showSec;
-
-        document.getElementById('s-hand').classList.toggle('show-sec', showSec);
-
-        updateDisplay(true);
-
-    }
-
-
-    function startTicker() {
-
-        if(ticker) clearInterval(ticker);
-
-        ticker = setInterval(() => {
-
-            if(showSec) {
-
-                seconds = new Date().getSeconds();
-
-                document.getElementById('s-hand').style.transform = `rotate(${seconds * 6}deg)`;
-
-                updateDisplay(true);
-
-            }
-
-        }, 1000);
-
-    }
-
-
-    function updateDisplay(syncInput) {
-
-        document.getElementById('h-hand').style.transform = `rotate(${((hours % 12) * 30) + (minutes * 0.5)}deg)`;
-
-        document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
-
-        
-
-        let timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-
-        if(showSec) timeStr += `:${seconds.toString().padStart(2, '0')}`;
-
-        if(syncInput) document.getElementById('time-input-display').value = timeStr;
-
-        
-
-        const isFormal = document.getElementById('formal').checked;
-
-        const result = translateTime(hours, minutes, isFormal);
-
-        
-
-        const d = dict[currentLang];
-
-        document.getElementById('app-title').innerText = d.title;
-
-        document.getElementById('btn-real').innerText = d.actual;
-
-        document.getElementById('btn-random').innerText = d.random;
-
-        document.getElementById('btn-listen').innerText = d.listen;
-
-        document.getElementById('btn-slow').innerText = d.slow;
-
-        document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
-
-        document.getElementById('help-content').innerHTML = d.help;
-
-
-       document.getElementById('polish-text').innerHTML = result.polish;
-
-        document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
-
-        
-
-       let e = "";
-
-        if (isFormal) {
-
-            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-
-        } else {
-
-            let h12 = hours % 12 || 12;
-
-            let n12 = (hours + 1) % 12 || 12;
-
-            if (minutes === 0) e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12} o'clock`;
-
-            else if (minutes < 30) e = `${minutes} past ${h12}`;
-
-            else if (minutes === 30) e = `Half past ${h12}`;
-
-            else e = `${60 - minutes} to ${n12}`;
-
-        }
-
-        document.getElementById('english-text').innerText = e;
-
-    }
+    let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
 
     function init() {
-
-        const c = document.getElementById('clock-container');
-
-        for (let i = 0; i < 12; i++) {
-
-            const m = document.createElement('div'); m.className = 'mark';
-
-            m.style.transform = `rotate(${i * 30}deg)`; c.appendChild(m);
-
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                reg.onupdatefound = () => {
+                    const install = reg.installing;
+                    install.onstatechange = () => {
+                        if (install.state === 'installed' && navigator.serviceWorker.controller) window.location.reload();
+                    };
+                };
+            });
         }
-
-        document.getElementById('casual').checked = true;
-
-        setRealTime();
-
-        startTicker(); 
-
+        const c = document.getElementById('clock-container');
+        for (let i = 0; i < 12; i++) {
+            const m = document.createElement('div'); m.className = 'mark';
+            m.style.transform = `rotate(${i * 30}deg)`; c.appendChild(m);
+        }
+        setRealTime(); 
     }
-
 
     function startDrag(e) {
-
         e.preventDefault();
-
         const move = (ev) => {
-
             const rect = document.getElementById('clock-container').getBoundingClientRect();
-
             const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
-
             const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
-
             const x = cx - rect.left - rect.width / 2;
-
             const y = cy - rect.top - rect.height / 2;
-
             const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-
             const norm = (angle < 0) ? angle + 360 : angle;
+            const dist = Math.sqrt(x*x + y*y);
 
-            if (Math.sqrt(x*x + y*y) < 35) { hours = (Math.round(norm / 30) % 12) + (hours >= 12 ? 12 : 0); }
-
-            else { minutes = Math.round(norm / 6) % 60; }
-
+            if (dist < 35) {
+                let newH = Math.round(norm / 30) % 12;
+                if (hours >= 12) newH += 12;
+                hours = newH;
+            } else {
+                minutes = Math.round(norm / 6) % 60;
+            }
             updateDisplay(true);
-
         };
-
-        const stop = () => { window.removeEventListener('mousemove', move); window.removeEventListener('touchmove', move); if(isQuiz) generateQuiz(); };
-
+        const stop = () => { window.removeEventListener('mousemove', move); window.removeEventListener('touchmove', move); };
         window.addEventListener('mousemove', move); window.addEventListener('touchmove', move);
-
         window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
-
     }
 
+    const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
+    const hNomPh = ["poow-nots", "pyerv-shah", "droo-gah", "tshe-tsyah", "chvar-tah", "pyon-tah", "shoos-tah", "shood-mah", "oos-mah", "je-vyon-tah", "je-shon-tah", "ye-de-nas-tah", "po-wood-nye", "tshi-nas-tah", "chter-nas-tah", "pyent-nas-tah", "shes-nas-tah", "she-dem-nas-tah", "o-shem-nas-tah", "je-vyet-nas-tah", "dvoo-jest-ah", "dvoo-jest-ah pyerv-shah", "dvoo-jest-ah droo-gah", "dvoo-jest-ah tshe-tsyah"];
+    const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
+    const hGenPh = ["poow-no-tsi", "pyerv-shey", "droo-gyey", "tshe-tsiey", "chvar-tey", "pyon-tey", "shoos-tey", "shood-mey", "oos-mey", "je-vyon-tey", "je-shon-tey", "ye-de-nas-tey", "po-wood-nyah", "tshi-nas-tey", "chter-nas-tey", "pyent-nas-tey", "shes-nas-tey", "she-dem-nas-tey", "o-shem-nas-tey", "je-vyet-nas-tey", "dvoo-jes-tey", "dvoo-jes-tey pyerv-shey", "dvoo-jes-tey droo-gyey", "dvoo-jes-tey tshe-tsiey"];
+    const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
+    const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
-  function generateQuiz() {
-
-        const isFormal = document.getElementById('formal').checked;
-
-        const rawCorrect = translateTime(hours, minutes, isFormal).polish;
-
-        
-
-        // We generate 4 options
-
-        const options = [rawCorrect];
-
-        while(options.length < 4) {
-
-            let rh = Math.floor(Math.random() * 24), rm = Math.floor(Math.random() * 60);
-
-            let opt = translateTime(rh, rm, isFormal).polish;
-
-            if(!options.includes(opt)) options.push(opt);
-
+    const dict = {
+        EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF",
+              help: `<div class="help-sect"><h3>🎮 Interaction</h3>
+                     <ul><li><b>Dragging:</b> Move the outer ring for minutes, inner circle for hours. The hands move together like a real clock.</li>
+                     <li><b>Manual:</b> Type directly into the box (e.g., 16:45) to see the translation instantly.</li></ul></div>
+                     <div class="help-sect"><h3>👔 Formal Logic (24h)</h3>
+                     <p>Used for schedules and media. <b>Godzina + Ordinal Hr + Cardinal Min.</b></p>
+                     <ul><li><i>14:05</i> = Godzina czternasta <b>zero</b> pięć.</li><li>"Zero" only for minutes 01-09.</li></ul></div>
+                     <div class="help-sect"><h3>☕ Casual Logic (12h)</h3>
+                     <p>Used in conversation. <b>Never uses "zero".</b></p>
+                     <ul><li><b>Po (Past):</b> Minutes + po + Genitive Hour.</li>
+                     <li><b>Wpół do (Half to):</b> Wpół do + Genitive NEXT Hour.</li>
+                     <li><b>Za (To):</b> Za + Minutes + Nominative NEXT Hour.</li></ul></div>
+                     <div class="help-sect"><h3>📊 Grammar Table (1-12)</h3>
+                     <table><tr><th>Hr</th><th>Nom (Za...)</th><th>Gen (Po/Wpół)</th><th>Phonetic (Gen)</th></tr>
+                     <tr><td>1</td><td>pierwsza</td><td>pierwszej</td><td>pyerv-shey</td></tr>
+                     <tr><td>2</td><td>druga</td><td>drugiej</td><td>droo-gyey</td></tr>
+                     <tr><td>3</td><td>trzecia</td><td>trzeciej</td><td>tshe-tsiey</td></tr>
+                     <tr><td>4</td><td>czwarta</td><td>czwartej</td><td>chvar-tey</td></tr>
+                     <tr><td>5</td><td>piąta</td><td>piątej</td><td>pyon-tey</td></tr>
+                     <tr><td>6</td><td>szósta</td><td>szóstej</td><td>shoos-tey</td></tr>
+                     <tr><td>7</td><td>siódma</td><td>siódmej</td><td>shood-mey</td></tr>
+                     <tr><td>8</td><td>ósma</td><td>ósmej</td><td>oos-mey</td></tr>
+                     <tr><td>9</td><td>dziewiąta</td><td>dziewiątej</td><td>je-vyon-tey</td></tr>
+                     <tr><td>10</td><td>dziesiąta</td><td>dziesiątej</td><td>je-shon-tey</td></tr>
+                     <tr><td>11</td><td>jedenasta</td><td>jedenastej</td><td>ye-de-nas-tey</td></tr>
+                     <tr><td>12</td><td>dwunasta</td><td>dwunastej</td><td>dvoo-nas-tey</td></tr></table></div>`
         }
-
-        
-
-        options.sort(() => Math.random() - 0.5);
-
-        const container = document.getElementById('quiz-options');
-
-        container.innerHTML = "";
-
-        
-
-        options.forEach(opt => {
-
-            const b = document.createElement('button');
-
-            b.className = 'quiz-opt';
-
-            // innerHTML allows the <span> colors from translateTime to render on the buttons
-
-            b.innerHTML = opt; 
-
-            
-
-            b.onclick = () => {
-
-                // We strip HTML tags to check if the text matches the correct answer
-
-                const strippedOpt = b.innerHTML.replace(/<[^>]*>?/gm, '');
-
-                const strippedCorrect = rawCorrect.replace(/<[^>]*>?/gm, '');
-
-                
-
-                if(strippedOpt === strippedCorrect) {
-
-                    b.classList.add('correct');
-
-                    setTimeout(() => {
-
-                        document.getElementById('result-area').style.display = "block";
-
-                        document.getElementById('quiz-options').style.display = "none";
-
-                        updateDisplay(false);
-
-                        speak(1);
-
-                    }, 500);
-
-                } else {
-
-                    b.classList.add('wrong');
-
-                }
-
-            };
-
-            container.appendChild(b);
-
-        });
-
-        
-
-        document.getElementById('result-area').style.display = "none";
-
-        container.style.display = "grid";
-
-    }
-
+    };
 
     function manualTime(val) {
-
-        const parts = val.split(':');
-
-        if (parts.length < 2) return;
-
-        let ph = parseInt(parts[0]), pm = parseInt(parts[1]);
-
-        if (!isNaN(ph) && !isNaN(pm)) {
-
+        if(!val.includes(':')) return;
+        const [h, m] = val.split(':');
+        let ph = parseInt(h), pm = parseInt(m);
+        if(!isNaN(ph) && !isNaN(pm)) {
             hours = Math.min(23, Math.max(0, ph));
-
             minutes = Math.min(59, Math.max(0, pm));
-
-            updateDisplay(true);
-
-            if (isQuiz) generateQuiz();
-
+            updateDisplay(false);
         }
-
     }
 
-
-    function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); updateDisplay(true); if(isQuiz) generateQuiz(); }
-
-    function rollTime() { hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60); updateDisplay(true); if(isQuiz) generateQuiz(); }
-
-    function toggleQuiz() { isQuiz = !isQuiz; if(isQuiz) generateQuiz(); else { document.getElementById('result-area').style.display = "block"; document.getElementById('quiz-options').style.display = "none"; updateDisplay(true); } }
-
+    function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); isRevealed = !isQuiz; document.getElementById('casual').checked = true; updateDisplay(true); }
+    function rollTime() { hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60); isRevealed = !isQuiz; updateDisplay(true); }
+    function revealAnswer() { isRevealed = true; updateDisplay(true); speak(1); }
+    function toggleQuiz() { isQuiz = !isQuiz; isRevealed = !isQuiz; updateDisplay(true); }
     function toggleHelp() { const m = document.getElementById('help-modal'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
-
     function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); }
+    function togglePh() { showPh = !showPh; document.getElementById('ph-toggle').style.background = showPh ? '' : 'rgba(0,0,0,0.3)'; updateDisplay(true); }
 
-    function togglePh() { showPh = !showPh; updateDisplay(true); }
+    function updateDisplay(syncInput) {
+        const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
+        document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
+        document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
+        if(syncInput) document.getElementById('time-input-display').value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        
+        const isFormal = document.getElementById('formal').checked;
+        let p = "", ph = "", e = "";
 
-    function speak(r) { window.speechSynthesis.cancel(); const m = new SpeechSynthesisUtterance(document.getElementById('polish-text').innerText); m.lang = 'pl-PL'; m.rate = r; window.speechSynthesis.speak(m); }
+        if (isFormal) {
+            let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
+            let phStr = (minutes > 0 && minutes < 10) ? "ze-ro " + mAllPh[minutes] : (minutes === 0 ? "" : mAllPh[minutes]);
+            p = `Godzina ${hNom[hours]} ${mStr}`.trim();
+            ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
+            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+        } else {
+            let h12 = hours % 12, n12 = (hours + 1) % 12;
+            if (minutes === 0) {
+                p = hours===0?"Północ":hours===12?"Południe":hNom[h12];
+                ph = hours===0?"poow-nots":hours===12?"po-wood-nye":hNomPh[h12];
+                e = hours===0?"Midnight":hours===12?"Noon":`${h12||12} o'clock`;
+            } else if (minutes < 30) {
+                p = `${mAll[minutes]} po ${hGen[h12]}`; ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`; e = `${minutes} past ${h12 || 12}`;
+            } else if (minutes === 30) {
+                p = `Wpół do ${hGen[n12]}`; ph = `vpoow doh ${hGenPh[n12]}`; e = `Half past ${h12 || 12}`;
+            } else {
+                let d = 60 - minutes; p = `Za ${mAll[d]} ${hNom[n12]}`; ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`; e = `${d} to ${n12 || 12}`;
+            }
+        }
 
-</script> 
+        const d = dict[currentLang] || dict['EN'];
+        document.getElementById('app-title').innerText = d.title;
+        document.getElementById('btn-real').innerText = d.actual;
+        document.getElementById('btn-random').innerText = d.random;
+        document.getElementById('btn-listen').innerText = d.listen;
+        document.getElementById('btn-slow').innerText = d.slow;
+        document.getElementById('reveal-btn').innerText = d.reveal;
+        document.getElementById('help-close').innerText = d.close;
+        document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
+        document.getElementById('help-content').innerHTML = d.help;
+
+        const pt = document.getElementById('polish-text'), pht = document.getElementById('phonetic-text'), et = document.getElementById('english-text');
+        if (isQuiz && !isRevealed) { pt.innerText = d.ask; pht.innerText = ""; et.innerText = ""; document.getElementById('reveal-btn').style.display = "block"; }
+        else { pt.innerText = p; pht.innerText = showPh ? ph : ""; et.innerText = e; document.getElementById('reveal-btn').style.display = "none"; }
+    }
+
+    function speak(r) { window.speechSynthesis.cancel(); let t = document.getElementById('polish-text').innerText; if (t.includes("?")) return; const m = new SpeechSynthesisUtterance(t.replace(/\s+/g, ' ').trim()); m.lang = 'pl-PL'; m.rate = r; window.speechSynthesis.speak(m); }
+</script>
+</body>
+</html>
