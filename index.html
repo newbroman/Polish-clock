@@ -176,10 +176,14 @@
         const s = seconds;
         let secPL = `<span style="color:#007bff">${mAll[s]}</span> sekundy`; // Simplified for display logic
         
-        if (formal) {
+       if (formal) {
+            // Orange (#e67e22) for Ordinal Hours, Blue (#007bff) for Cardinal Minutes
             let res = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
             let ph = `Goh-jee-nah ${hNom[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
-            if (showSec && s > 0) { res += ` i ${secPL}`; ph += ` ee ${sPh[s]}`; }
+            if (showSec && s > 0) { 
+                res += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
+                ph += ` ee ${sPh[s]}`; 
+            }
             return { polish: res, phonetic: ph };
         }
 
@@ -325,7 +329,7 @@
                     b.classList.add('correct');
                     setTimeout(() => {
                         document.getElementById('result-area').style.display = "block";
-                        container.style.display = "none";
+                        document.getElementById('quiz-options').style.display = "none";
                         updateDisplay(false);
                         speak(1);
                     }, 500);
