@@ -99,7 +99,9 @@
     const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
     const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "siedem", "osiem", "dziewięć", "dziesięć", "jedenaście", "dwanaście", "trzynaście", "czternaście", "piętnaście", "szesnaście", "siedemnaście", "osiemnaście", "dziewiętnaście", "dwadzieścia", "dwadzieścia jeden", "dwadzieścia dwie", "dwadzieścia trzy", "dwadzieścia cztery", "dwadzieścia pięć", "dwadzieścia sześć", "dwadzieścia siedem", "dwadzieścia osiem", "dwadzieścia dziewięć", "trzydzieści", "trzydzieści jeden", "trzydzieści dwie", "trzydzieści trzy", "trzydzieści cztery", "trzydzieści pięć", "trzydzieści sześć", "trzydzieści siedem", "trzydzieści osiem", "trzydzieści dziewięć", "czterdzieści", "czterdzieści jeden", "czterdzieści dwie", "czterdzieści trzy", "czterdzieści cztery", "czterdzieści pięć", "czterdzieści sześć", "czterdzieści siedem", "czterdzieści osiem", "czterdzieści dziewięć", "pięćdziesiąt", "pięćdziesiąt jeden", "pięćdziesiąt dwie", "pięćdziesiąt trzy", "pięćdziesiąt cztery", "pięćdziesiąt pięć", "pięćdziesiąt sześć", "pięćdziesiąt siedem", "pięćdziesiąt osiem", "pięćdziesiąt dziewięć"];
     const sPh = ["ze-ro", "yed-nah", "dv-yeh", "t-shih", "chter-ih", "pyench", "sheshch", "shed-yem", "osh-yem", "dyev-yench", "dyes-yench", "yed-en-ash-cheh", "dvan-ash-cheh", "t-shin-ash-cheh", "chter-nash-cheh", "pyent-nash-cheh", "shes-nash-cheh", "shed-yem-nash-cheh", "osh-yem-nash-cheh", "dyev-yent-nash-cheh", "dvad-zyesh-chah", "dvad-zyesh-chah yed-en", "dvad-zyesh-chah dv-yeh", "dvad-zyesh-chah t-shih", "dvad-zyesh-chah chter-ih", "dvad-zyesh-chah pyench", "dvad-zyesh-chah sheshch", "dvad-zyesh-chah shed-yem", "dvad-zyesh-chah osh-yem", "dvad-zyesh-chah dyev-yench", "t-shid-zyesh-chi", "t-shid-zyesh-chi yed-en", "t-shid-zyesh-chi dv-yeh", "t-shid-zyesh-chi t-shih", "t-shid-zyesh-chi chter-ih", "t-shid-zyesh-chi pyench", "t-shid-zyesh-chi sheshch", "t-shid-zyesh-chi shed-yem", "t-shid-zyesh-chi osh-yem", "t-shid-zyesh-chi dyev-yench", "chter-dyesh-chi", "chter-dyesh-chi yed-en", "chter-dyesh-chi dv-yeh", "chter-dyesh-chi t-shih", "chter-dyesh-chi chter-ih", "chter-dyesh-chi pyench", "chter-dyesh-chi sheshch", "chter-dyesh-chi shed-yem", "chter-dyesh-chi osh-yem", "chter-dyesh-chi dyev-yench", "pyench-dzyesh-ont", "pyench-dzyesh-ont yed-en", "pyench-dzyesh-ont dv-yeh", "pyench-dzyesh-ont t-shih", "pyench-dzyesh-ont chter-ih", "pyench-dzyesh-ont pyench", "pyench-dzyesh-ont sheshch", "pyench-dzyesh-ont shed-yem", "pyench-dzyesh-ont osh-yem", "pyench-dzyesh-ont dyev-yench"];
-    
+   const hPh = ["poow-nots", "pyerv-shah", "droo-gah", "t-she-tsyah", "chvar-tah", "pyon-tah", "shoos-tah", "shood-mah", "oos-mah", "dyev-yon-tah", "dye-shon-tah", "yed-en-as-tah", "po-wood-nyeh", "t-shin-as-tah", "chter-nas-tah", "pyent-nas-tah", "shes-nas-tah", "shed-yem-nas-tah", "osh-yem-nas-tah", "dyev-yent-nas-tah", "dvoo-dye-stah", "dvoo-dye-stah pyerv-shah", "dvoo-dye-stah droo-gah", "dvoo-dye-stah t-she-tsyah"];
+    const hGenPh = ["poow-not-shih", "pyerv-shey", "droo-gyey", "t-she-tsyey", "chvar-tey", "pyon-tey", "shoos-tey", "shood-mey", "oos-mey", "dyev-yon-tey", "dye-shon-tey", "yed-en-as-tey", "po-wood-nyah", "t-shin-as-tey", "chter-nas-tey", "pyent-nas-tey", "shes-nas-tey", "shed-yem-nas-tey", "osh-yem-nas-tey", "dyev-yent-nas-tey", "dvoo-dye-stey", "dvoo-dye-stey pyerv-shey", "dvoo-dye-stey droo-gyey", "dvoo-dye-stey t-she-tsyey"];
+                 
     const dict = {
         EN: { 
             title: "Say the Time in Polish", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", qOn: "Quiz: ON", qOff: "Quiz: OFF",
@@ -176,38 +178,36 @@
         const s = seconds;
         let secPL = `<span style="color:#007bff">${mAll[s]}</span> sekundy`; // Simplified for display logic
         
-       if (formal) {
-            // Orange (#e67e22) for Ordinal Hours, Blue (#007bff) for Cardinal Minutes
-            let res = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
-            let ph = `Goh-jee-nah ${hNom[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
-            if (showSec && s > 0) { 
-                res += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
-                ph += ` ee ${sPh[s]}`; 
-            }
-            return { polish: res, phonetic: ph };
-        }
-
+      if (formal) {
+    let res = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
+    let ph = `Goh-jee-nah ${hPh[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
+    if (showSec && s > 0) { 
+        res += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
+        ph += ` ee ${sPh[s]}`; 
+    }
+    return { polish: res, phonetic: ph };
+}
         let h12 = h % 12 || 12;
         let n12 = (h + 1) % 12 || 12;
         let resPL = "", resPh = "";
 
-        if (m === 0) { 
+       if (m === 0) { 
             resPL = (h === 0) ? "północ" : (h === 12) ? "południe" : `<span style="color:#28a745">${hNom[h12]}</span>`; 
-            resPh = (h === 0) ? "poow-nots" : (h === 12) ? "po-wood-nyeh" : hNom[h12]; 
+            resPh = (h === 0) ? "poow-nots" : (h === 12) ? "po-wood-nyeh" : hPh[h12]; // Uses hPh
         } else if (m <= 30) {
             if (m === 30) { 
                 resPL = `wpół do <span style="color:#dc3545">${hGen[n12]}</span>`; 
-                resPh = `vpoow doh ${hGen[n12]}`; 
+                resPh = `vpoow doh ${hGenPh[n12]}`; // Uses hGenPh
             } else { 
                 resPL = `<span style="color:#007bff">${mAll[m]}</span> po <span style="color:#dc3545">${hGen[h12]}</span>`; 
-                resPh = `${sPh[m]} poh ${hGen[h12]}`; 
+                resPh = `${sPh[m]} poh ${hGenPh[h12]}`; // Uses hGenPh
             }
         } else {
             let minsTo = 60 - m;
             resPL = `za <span style="color:#007bff">${mAll[minsTo]}</span> <span style="color:#28a745">${hNom[n12]}</span>`; 
-            resPh = `zah ${sPh[minsTo]} ${hNom[n12]}`;
+            resPh = `zah ${sPh[minsTo]} ${hPh[n12]}`; // Uses hPh
         }
-
+       
         if (showSec && s > 0) { 
             resPL += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
             resPh += ` ee ${sPh[s]}`; 
@@ -261,19 +261,34 @@
        document.getElementById('polish-text').innerHTML = result.polish;
         document.getElementById('phonetic-text').innerText = showPh ? result.phonetic : "";
         
-       let e = "";
+      let e = "";
+        const s = seconds; // Ensure we have the current seconds value
+
         if (isFormal) {
-            e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+            // Formal English: 24h digital style
+            e = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            if (showSec) e += `:${s.toString().padStart(2, '0')}`;
         } else {
+            // Casual English: 12h descriptive style
             let h12 = hours % 12 || 12;
             let n12 = (hours + 1) % 12 || 12;
-            if (minutes === 0) e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12} o'clock`;
+
+            if (minutes === 0) {
+                if (hours === 0 || hours === 24) e = "Midnight";
+                else if (hours === 12) e = "Noon";
+                else e = `${h12} o'clock`;
+            } 
             else if (minutes < 30) e = `${minutes} past ${h12}`;
             else if (minutes === 30) e = `Half past ${h12}`;
             else e = `${60 - minutes} to ${n12}`;
+
+            // Add seconds to casual English if SEC is toggled
+            if (showSec && s > 0) e += ` and ${s} seconds`;
         }
+        
         document.getElementById('english-text').innerText = e;
-    }
+        )
+        
     function init() {
         const c = document.getElementById('clock-container');
         for (let i = 0; i < 12; i++) {
