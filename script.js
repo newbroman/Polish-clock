@@ -10,8 +10,7 @@ const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh
 
 const dict = {
     EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF",
-          help: `<div class="help-sect"><h3>🎮 Interaction</h3><ul><li><b>Dragging:</b> Move the outer ring for minutes, inner circle for hours.</li><li><b>Manual:</b> Type directly into the box (e.g., 16:45).</li></ul></div><div class="help-sect"><h3>👔 Formal Logic (24h)</h3><p>Godzina + Ordinal Hr + Cardinal Min.</p></div><div class="help-sect"><h3>☕ Casual Logic (12h)</h3><ul><li><b>Po:</b> Past</li><li><b>Wpół do:</b> Half to</li><li><b>Za:</b> To</li></ul></div>` }
-};
+          };
 
 function init() {
     const c = document.getElementById('clock-container');
@@ -90,21 +89,43 @@ function revealAnswer() { isRevealed = true; updateDisplay(true); speak(1); }
 function toggleQuiz() { isQuiz = !isQuiz; isRevealed = !isQuiz; updateDisplay(true); }
 function toggleHelp() { const m = document.getElementById('help-modal'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
 function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); }
-function togglePh() { showPh = !showPh; updateDisplay(true); }
-function manualTime(val) { if(!val.includes(':')) return; const [h, m] = val.split(':'); let ph = parseInt(h), pm = parseInt(m); if(!isNaN(ph) && !isNaN(pm)) { hours = Math.min(23, Math.max(0, ph)); minutes = Math.min(59, Math.max(0, pm)); updateDisplay(false); } }
-function speak(r) { window.speechSynthesis.cancel(); let t = document.getElementById('polish-text').innerText; if (t.includes("?")) return; const m = new SpeechSynthesisUtterance(t); m.lang = 'pl-PL'; m.rate = r; window.speechSynthesis.speak(m); }
+// Remove 'help' from the dict object above, then keep these functions:
+
+function togglePh() { 
+    showPh = !showPh; 
+    updateDisplay(true); 
+}
+
+function manualTime(val) { 
+    if(!val.includes(':')) return; 
+    const [h, m] = val.split(':'); 
+    let ph = parseInt(h), pm = parseInt(m); 
+    if(!isNaN(ph) && !isNaN(pm)) { 
+        hours = Math.min(23, Math.max(0, ph)); 
+        minutes = Math.min(59, Math.max(0, pm)); 
+        updateDisplay(false); 
+    } 
+}
+
+function speak(r) { 
+    window.speechSynthesis.cancel(); 
+    let t = document.getElementById('polish-text').innerText; 
+    if (t.includes("?")) return; 
+    const m = new SpeechSynthesisUtterance(t); 
+    m.lang = 'pl-PL'; 
+    m.rate = r; 
+    window.speechSynthesis.speak(m); 
+}
 
 async function toggleHelp() {
     const modal = document.getElementById('help-modal');
     const content = document.getElementById('help-content');
 
-    // If modal is open, just close it
     if (modal.style.display === 'block') {
         modal.style.display = 'none';
         return;
     }
 
-    // Determine which file to grab based on your existing currentLang variable
     const helpFile = currentLang === 'PL' ? 'help_pl.html' : 'help_en.html';
 
     try {
