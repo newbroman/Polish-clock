@@ -29,25 +29,43 @@ body {
 }
 
 .container {
-    background-color: var(--container-bg);
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
 }
+
 h1 { font-size: 1.1rem; margin: 0 0 10px 0; color: var(--accent); font-weight: 800; }
 
 .hand {
-    background-color: var(--text-color); /* Hands match the text color */
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    border-radius: 4px;
+    background: var(--text-color);
 }
-
 .mark {
     background-color: var(--text-color);
     opacity: 0.5;
 }
 
 #clock-container {
+    width: 250px;
+    height: 250px;
     border: 4px solid var(--text-color);
+    border-radius: 50%;
+    position: relative;
     background: var(--container-bg);
+    margin: 20px 0;
 }
-.hour-hand { width: 6px; height: 35px; margin-left: -3px; z-index: 2; }
-.min-hand { width: 3px; height: 50px; margin-left: -1.5px; z-index: 1; }
+
+.hour-hand { width: 6px; height: 60px; margin-left: -3px; }
+.min-hand { width: 4px; height: 90px; margin-left: -2px; }
+
 .dot { 
     width: 10px; height: 10px; background: #212529; position: absolute; 
     top:50%; left:50%; transform: translate(-50%, -50%); 
@@ -71,7 +89,12 @@ button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; p
 .btn-real { background: #007bff; color: white; }
 .btn-sub { background: var(--btn-sub); color: var(--text); padding: 6px; font-size: 0.65rem; }
 
-.top-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 10px; }
+.top-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
 .setting-row { display: flex; justify-content: space-around; font-size: 0.8rem; margin-bottom: 10px; padding: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; }
 
 #help-modal {
