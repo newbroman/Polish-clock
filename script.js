@@ -165,15 +165,17 @@ function generateQuizOptions() {
         btn.style.cssText = "padding:12px 4px; font-size:13px; border:1px solid #ccc; border-radius:8px; background:white; cursor:pointer; font-family:inherit;";
         
         btn.onclick = () => {
-            if (opt === correctAnswer) {
-                btn.style.background = "#28a745";
-                btn.style.color = "white";
-                // Color the spans white so they are readable on the green background
-                btn.querySelectorAll('span').forEach(s => s.style.color = "white");
-                setTimeout(() => {
-                    revealAnswer();
-                    container.style.display = "none";
-                }, 500);
+           if (opt === correctAnswer) {
+    btn.style.background = "#28a745";
+    btn.style.color = "white";
+    // This turns the colored spans white so they pop against the green
+    btn.querySelectorAll('span').forEach(s => s.style.setProperty('color', 'white', 'important'));
+    
+    setTimeout(() => {
+        revealAnswer();
+        container.style.display = "none";
+    }, 500);
+}
             } else {
                 btn.style.background = "#dc3545";
                 btn.style.color = "white";
