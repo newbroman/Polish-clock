@@ -84,9 +84,98 @@ function updateDisplay(syncInput) {
 }
 
 function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); isRevealed = !isQuiz; updateDisplay(true); }
-function rollTime() { hours = Math.floor(Math.random() * 24); minutes = Math.floor(Math.random() * 60); isRevealed = !isQuiz; updateDisplay(true); }
-function revealAnswer() { isRevealed = true; updateDisplay(true); speak(1); }
-function toggleQuiz() { isQuiz = !isQuiz; isRevealed = !isQuiz; updateDisplay(true); }
+function toggleQuiz() { 
+    isQuiz = !isQuiz; 
+    isRevealed = !isQuiz; 
+    
+    const quizContainer = document.getElementById('quiz-options');
+    const revealBtn = document.getElementById('reveal-btn');
+
+    if (isQuiz) {
+        generateQuizOptions();
+        revealBtn.style.display = "none"; // Hide manual reveal, use buttons instead
+    } else {
+        quizContainer.style.display = "none";
+        updateDisplay(true);
+    }
+}
+
+function rollTime() { 
+    hours = Math.floor(Math.random() * 24); 
+    minutes = Math.floor(Math.random() * 60); 
+    isRevealed = !isQuiz; 
+    updateDisplay(true); 
+    
+    if (isQuiz) {
+        generateQuizOptions();
+    }
+}
+
+function generateQuizOptions() {
+    const container = document.getElementById('quiz-options');
+    const isFormal = document.getElementById('formal').checked;
+    
+    // Get the correct answer string based on current clock time
+    const correctAnswer = getPolishTimeString(hours, minutes, isFormal);
+    let options = [correctAnswer];
+
+    // Generate 3 unique wrong answers
+    while (options.length < 4) {
+        let rH = Math.floor(Math.random() * 24);
+        let rM = Math.floor(Math.random() * 60);
+        let wrongOpt = getPolishTimeString(rH, rM, isFormal);
+        
+        if (!options.includes(wrongOpt)) {
+            options.push(wrongOpt);
+        }
+    }
+
+    // Shuffle the array
+    options.sort(() => Math.random() - 0.5);
+
+    // Build the buttons
+    container.innerHTML = "";
+    container.style.display = "grid";
+    
+    options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.style.cssText = "padding:12px 6px; font-size:14px; border:1px solid #ccc; border-radius:5px; background:white; cursor:pointer;";
+        
+        btn.onclick = () => {
+            if (opt === correctAnswer) {
+                btn.style.background = "#28a745";
+                btn.style.color = "white";
+                setTimeout(() => {
+                    revealAnswer(); // Shows the text and plays audio
+                    container.style.display = "none";
+                }, 500);
+            } else {
+                btn.style.background = "#dc3545";
+                btn.style.color = "white";
+                btn.disabled = true;
+            }
+        };
+        container.appendChild(btn);
+    });
+    
+    // Ensure display area shows "How to say?"
+    updateDisplay(false);
+}
+
+// Helper to calculate the string without updating the UI
+function getPolishTimeString(h, m, formal) {
+    if (formal) {
+        let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
+        return `Godzina ${hNom[h]} ${mStr}`.trim();
+    } else {
+        let h12 = h % 12, n12 = (h + 1) % 12;
+        if (m === 0) return h===0 ? "Północ" : h===12 ? "Południe" : hNom[h12];
+        if (m < 30) return `${mAll[m]} po ${hGen[h12]}`;
+        if (m === 30) return `Wpół do ${hGen[n12]}`;
+        return `Za ${mAll[60-m]} ${hNom[n12]}`;
+    }
+}
 function toggleHelp() { const m = document.getElementById('help-modal'); m.style.display = m.style.display === 'block' ? 'none' : 'block'; }
 function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); }
 // Remove 'help' from the dict object above, then keep these functions:
