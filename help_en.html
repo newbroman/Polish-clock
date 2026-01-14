@@ -1,58 +1,81 @@
 <div class="help-sect">
-    <h3>🎮 Interaction</h3>
+    <h3>📱 How to Use</h3>
     <ul>
-        <li><b>Dragging:</b> Move the outer ring for minutes, inner circle for hours.</li>
-        <li><b>Manual:</b> Type directly into the box (e.g., 16:45).</li>
+        <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
+        <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the box.</li>
+        <li><b>EN/PL:</b> Switch the interface and help language.</li>
+        <li><b>Phon:</b> Toggle the phonetic "sounds-like" guide.</li>
+        <li><b>Quiz Mode:</b> Test yourself! Pick the correct Polish phrase for the time shown on the clock. The buttons are color-coded: <span style="color:#28a745">Green</span> for correct, <span style="color:#dc3545">Red</span> for wrong.</li>
     </ul>
 </div>
 
-<hr>
-
 <div class="help-sect">
-    <h3>👔 Formal Logic (24h)</h3>
-    <p>Used for schedules and official announcements.</p>
-    <p><i>Structure:</i> Godzina + <b>Ordinal Hour</b> + <b>Cardinal Minute</b>.</p>
-    <ul>
-        <li>14:10 — Godzina czternasta dziesięć</li>
-        <li>08:05 — Godzina ósma zero pięć</li>
-    </ul>
-</div>
-
-<hr>
-
-<div class="help-sect">
-    <h3>☕ Casual Grammar (12h)</h3>
-    <p>In casual speech, the <b>Hour</b> changes its ending based on the preposition used.</p>
-    
+    <h3>👔 Formal Grammar (24h)</h3>
+    <p>Used for official schedules and digital clocks. It is mathematically precise.</p>
     <table class="help-table">
         <thead>
             <tr>
-                <th>Time Context</th>
+                <th>Part</th>
+                <th>Number Type</th>
+                <th>Case</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Hour</td>
+                <td><b>Ordinal</b> (1st, 2nd...)</td>
+                <td class="nom-case">Nominative (Orange)</td>
+                <td>Godzina <span class="nom-case">siedemnasta</span></td>
+            </tr>
+            <tr>
+                <td>Minute</td>
+                <td><b>Cardinal</b> (1, 2, 3...)</td>
+                <td>Nominative (Black)</td>
+                <td>dziesięć (17:10)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="help-sect">
+    <h3>☕ Casual Grammar (12h)</h3>
+    <p>Used in daily conversation. The hour changes ending based on the word before it.</p>
+    <table class="help-table">
+        <thead>
+            <tr>
+                <th>Word Used</th>
+                <th>Number Type</th>
                 <th>Case Used</th>
                 <th>Example</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>On the hour</td>
-                <td class="nom-case">Nominative</td>
-                <td><span class="nom-case">Pierwsza</span> (1:00)</td>
+                <td>(On the hour)</td>
+                <td><b>Ordinal</b></td>
+                <td class="nom-case">Nominative (Orange)</td>
+                <td><span class="nom-case">Czwarta</span> (4:00)</td>
             </tr>
             <tr>
                 <td><b>Po</b> (Past)</td>
-                <td class="gen-case">Genitive</td>
-                <td>Pięć po <span class="gen-case">pierwszej</span> (1:05)</td>
+                <td><b>Ordinal</b></td>
+                <td class="gen-case">Genitive (Purple)</td>
+                <td>Pięć po <span class="gen-case">czwartej</span> (4:05)</td>
             </tr>
             <tr>
-                <td><b>Wpół do</b> (Half to)</td>
-                <td class="gen-case">Genitive</td>
-                <td>Wpół do <span class="gen-case">drugiej</span> (1:30)</td>
+                <td><b>Wpół do</b> (Half)</td>
+                <td><b>Ordinal</b></td>
+                <td class="gen-case">Genitive (Purple)</td>
+                <td>Wpół do <span class="gen-case">piątej</span> (4:30)</td>
             </tr>
             <tr>
                 <td><b>Za</b> (To)</td>
-                <td class="nom-case">Nominative</td>
-                <td>Za pięć <span class="nom-case">druga</span> (1:55)</td>
+                <td><b>Ordinal</b></td>
+                <td class="nom-case">Nominative (Orange)</td>
+                <td>Za pięć <span class="nom-case">piąta</span> (4:55)</td>
             </tr>
         </tbody>
     </table>
+    <p><small>*Note: Minutes are always <b>Cardinal</b> numbers in casual mode.</small></p>
 </div>
