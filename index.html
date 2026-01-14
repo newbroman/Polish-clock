@@ -294,26 +294,48 @@
         window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
     }
 
-    function generateQuiz() {
+  function generateQuiz() {
         const isFormal = document.getElementById('formal').checked;
-        const correct = translateTime(hours, minutes, isFormal).polish;
-        const options = [correct];
+        const rawCorrect = translateTime(hours, minutes, isFormal).polish;
+        
+        // We generate 4 options
+        const options = [rawCorrect];
         while(options.length < 4) {
             let rh = Math.floor(Math.random() * 24), rm = Math.floor(Math.random() * 60);
             let opt = translateTime(rh, rm, isFormal).polish;
             if(!options.includes(opt)) options.push(opt);
         }
+        
         options.sort(() => Math.random() - 0.5);
         const container = document.getElementById('quiz-options');
         container.innerHTML = "";
+        
         options.forEach(opt => {
-            const b = document.createElement('button'); b.className = 'quiz-opt'; b.innerText = opt;
+            const b = document.createElement('button');
+            b.className = 'quiz-opt';
+            // innerHTML allows the <span> colors from translateTime to render on the buttons
+            b.innerHTML = opt; 
+            
             b.onclick = () => {
-                if(opt === correct) { b.classList.add('correct'); setTimeout(() => { document.getElementById('result-area').style.display = "block"; container.style.display = "none"; updateDisplay(false); speak(1); }, 500); }
-                else b.classList.add('wrong');
+                // We strip HTML tags to check if the text matches the correct answer
+                const strippedOpt = b.innerHTML.replace(/<[^>]*>?/gm, '');
+                const strippedCorrect = rawCorrect.replace(/<[^>]*>?/gm, '');
+                
+                if(strippedOpt === strippedCorrect) {
+                    b.classList.add('correct');
+                    setTimeout(() => {
+                        document.getElementById('result-area').style.display = "block";
+                        container.style.display = "none";
+                        updateDisplay(false);
+                        speak(1);
+                    }, 500);
+                } else {
+                    b.classList.add('wrong');
+                }
             };
             container.appendChild(b);
         });
+        
         document.getElementById('result-area').style.display = "none";
         container.style.display = "grid";
     }
