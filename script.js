@@ -66,21 +66,34 @@ function updateDisplay(syncInput) {
         p = `Godzina ${hNom[hours]} ${mStr}`.trim();
         ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
         e = `${hours}:${minutes.toString().padStart(2, '0')}`;
-    } else {
+    }} else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
+        // Wrapping hours in spans with grammar classes
+        let hNomSpan = `<span class="nom-case">${hNom[h12]}</span>`;
+        let nNomSpan = `<span class="nom-case">${hNom[n12]}</span>`;
+        let hGenSpan = `<span class="gen-case">${hGen[h12]}</span>`;
+        let nGenSpan = `<span class="gen-case">${hGen[n12]}</span>`;
+
         if (minutes === 0) {
-            p = hours===0?"Północ":hours===12?"Południe":hNom[h12];
-            ph = hours===0?"poow-nots":hours===12?"po-wood-nye":hNomPh[h12];
-            e = hours===0?"Midnight":hours===12?"Noon":`${h12||12} o'clock`;
+            let specialH = hours === 0 ? "Północ" : hours === 12 ? "Południe" : hNom[h12];
+            p = `<span class="nom-case">${specialH}</span>`;
+            ph = hours === 0 ? "poow-nots" : hours === 12 ? "po-wood-nye" : hNomPh[h12];
+            e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12 || 12} o'clock`;
         } else if (minutes < 30) {
-            p = `${mAll[minutes]} po ${hGen[h12]}`; ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`; e = `${minutes} past ${h12 || 12}`;
+            p = `${mAll[minutes]} po ${hGenSpan}`; 
+            ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`; 
+            e = `${minutes} past ${h12 || 12}`;
         } else if (minutes === 30) {
-            p = `Wpół do ${hGen[n12]}`; ph = `vpoow doh ${hGenPh[n12]}`; e = `Half past ${h12 || 12}`;
+            p = `Wpół do ${nGenSpan}`; 
+            ph = `vpoow doh ${hGenPh[n12]}`; 
+            e = `Half past ${h12 || 12}`;
         } else {
-            let d = 60 - minutes; p = `Za ${mAll[d]} ${hNom[n12]}`; ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`; e = `${d} to ${n12 || 12}`;
+            let d = 60 - minutes; 
+            p = `Za ${mAll[d]} ${nNomSpan}`; 
+            ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`; 
+            e = `${d} to ${n12 || 12}`;
         }
     }
-
     const d = dict[currentLang] || dict['EN'];
     document.getElementById('app-title').innerText = d.title;
     const pt = document.getElementById('polish-text'), pht = document.getElementById('phonetic-text'), et = document.getElementById('english-text');
