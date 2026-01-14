@@ -176,41 +176,44 @@
     };
     function translateTime(h, m, formal) {
         const s = seconds;
-        let secPL = `<span style="color:#007bff">${mAll[s]}</span> sekundy`; // Simplified for display logic
+        let resPL = "", resPh = "";
         
-      if (formal) {
-    let res = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
-    let ph = `Goh-jee-nah ${hPh[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
-    if (showSec && s > 0) { 
-        res += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
-        ph += ` ee ${sPh[s]}`; 
-    }
-    return { polish: res, phonetic: ph };
-}
+        if (formal) {
+            // Formal (24h)
+            resPL = `Godzina <span style="color:#e67e22">${hNom[h]}</span>${m === 0 ? "" : (m < 10 ? " <span style="color:#007bff">zero</span> " : " ") + '<span style="color:#007bff">' + mAll[m] + '</span>'}`;
+            resPh = `Goh-jee-nah ${hPh[h]}${m === 0 ? "" : (m < 10 ? " ze-ro " : " ") + sPh[m]}`;
+            
+            if (showSec && s > 0) { 
+                resPL += ` i <span style="color:#007bff">${mAll[s]}</span> sekund`; 
+                resPh += ` ee ${sPh[s]} sek-oont`; 
+            }
+            return { polish: resPL, phonetic: resPh };
+        }
+
+        // Casual (12h)
         let h12 = h % 12 || 12;
         let n12 = (h + 1) % 12 || 12;
-        let resPL = "", resPh = "";
 
-       if (m === 0) { 
-            resPL = (h === 0) ? "północ" : (h === 12) ? "południe" : `<span style="color:#28a745">${hNom[h12]}</span>`; 
-            resPh = (h === 0) ? "poow-nots" : (h === 12) ? "po-wood-nyeh" : hPh[h12]; // Uses hPh
+        if (m === 0) { 
+            resPL = (h % 24 === 0) ? "północ" : (h === 12) ? "południe" : `<span style="color:#28a745">${hNom[h12]}</span>`; 
+            resPh = (h % 24 === 0) ? "poow-nots" : (h === 12) ? "po-wood-nyeh" : hPh[h12];
         } else if (m <= 30) {
             if (m === 30) { 
                 resPL = `wpół do <span style="color:#dc3545">${hGen[n12]}</span>`; 
-                resPh = `vpoow doh ${hGenPh[n12]}`; // Uses hGenPh
+                resPh = `vpoow doh ${hGenPh[n12]}`;
             } else { 
                 resPL = `<span style="color:#007bff">${mAll[m]}</span> po <span style="color:#dc3545">${hGen[h12]}</span>`; 
-                resPh = `${sPh[m]} poh ${hGenPh[h12]}`; // Uses hGenPh
+                resPh = `${sPh[m]} poh ${hGenPh[h12]}`;
             }
         } else {
             let minsTo = 60 - m;
             resPL = `za <span style="color:#007bff">${mAll[minsTo]}</span> <span style="color:#28a745">${hNom[n12]}</span>`; 
-            resPh = `zah ${sPh[minsTo]} ${hPh[n12]}`; // Uses hPh
+            resPh = `zah ${sPh[minsTo]} ${hPh[n12]}`;
         }
-       
+        
         if (showSec && s > 0) { 
-            resPL += ` i <span style="color:#007bff">${mAll[s]}</span>`; 
-            resPh += ` ee ${sPh[s]}`; 
+            resPL += ` i <span style="color:#007bff">${mAll[s]}</span> sekund`; 
+            resPh += ` ee ${sPh[s]} sek-oont`; 
         }
         return { polish: resPL, phonetic: resPh };
     }
@@ -287,7 +290,7 @@
         }
         
         document.getElementById('english-text').innerText = e;
-        )
+    }
         
     function init() {
         const c = document.getElementById('clock-container');
