@@ -101,7 +101,7 @@ function updateDisplay(syncInput) {
     if (isQuiz && !isRevealed) { 
         pt.innerText = d.ask; pht.innerText = ""; et.innerText = ""; 
     } else { 
-        pt.innerText = p; pht.innerText = showPh ? ph : ""; et.innerText = e; 
+        pt.innerHTML = p; pht.innerText = showPh ? ph : ""; et.innerText = e; 
     }
 }
 
@@ -159,7 +159,7 @@ function generateQuizOptions() {
     
     options.forEach(opt => {
         const btn = document.createElement('button');
-        btn.innerText = opt;
+        btn.innerHTML = opt;
         btn.style.cssText = "padding:12px 4px; font-size:13px; border:1px solid #ccc; border-radius:8px; background:white; cursor:pointer; font-family:inherit;";
         
         btn.onclick = () => {
