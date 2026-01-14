@@ -160,13 +160,16 @@ function generateQuizOptions() {
     
     options.forEach(opt => {
         const btn = document.createElement('button');
-        btn.innerHTML = opt;
+        // CRITICAL: Use innerHTML so the color spans work
+        btn.innerHTML = opt; 
         btn.style.cssText = "padding:12px 4px; font-size:13px; border:1px solid #ccc; border-radius:8px; background:white; cursor:pointer; font-family:inherit;";
         
         btn.onclick = () => {
             if (opt === correctAnswer) {
                 btn.style.background = "#28a745";
                 btn.style.color = "white";
+                // Color the spans white so they are readable on the green background
+                btn.querySelectorAll('span').forEach(s => s.style.color = "white");
                 setTimeout(() => {
                     revealAnswer();
                     container.style.display = "none";
@@ -174,6 +177,7 @@ function generateQuizOptions() {
             } else {
                 btn.style.background = "#dc3545";
                 btn.style.color = "white";
+                btn.querySelectorAll('span').forEach(s => s.style.color = "white");
                 btn.disabled = true;
             }
         };
@@ -185,13 +189,17 @@ function generateQuizOptions() {
 function getPolishTimeString(h, m, formal) {
     if (formal) {
         let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
-        return `Godzina ${hNom[h]} ${mStr}`.trim();
+        // Formal Hours are always Nominative (Orange)
+        return `Godzina <span class="nom-case">${hNom[h]}</span> ${mStr}`.trim();
     } else {
         let h12 = h % 12, n12 = (h + 1) % 12;
-        if (m === 0) return h===0 ? "Północ" : h===12 ? "Południe" : hNom[h12];
-        if (m < 30) return `${mAll[m]} po ${hGen[h12]}`;
-        if (m === 30) return `Wpół do ${hGen[n12]}`;
-        return `Za ${mAll[60-m]} ${hNom[n12]}`;
+        if (m === 0) {
+            let spec = h === 0 ? "Północ" : h === 12 ? "Południe" : hNom[h12];
+            return `<span class="nom-case">${spec}</span>`;
+        }
+        if (m < 30) return `${mAll[m]} po <span class="gen-case">${hGen[h12]}</span>`;
+        if (m === 30) return `Wpół do <span class="gen-case">${hGen[n12]}</span>`;
+        return `Za ${mAll[60-m]} <span class="nom-case">${hNom[n12]}</span>`;
     }
 }
 
