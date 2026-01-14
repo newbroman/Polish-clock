@@ -70,3 +70,26 @@ button { cursor: pointer; font-weight: 700; border-radius: 10px; border: none; p
 .help-sect h3 { margin: 0 0 8px 0; color: var(--accent); font-size: 1rem; border-left: 4px solid var(--accent); padding-left: 8px; }
 table { width: 100%; font-size: 0.75rem; border-collapse: collapse; margin-top: 10px; }
 th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+
+/* Grammar Case Coloring */
+.nom-case { color: #e67e22; font-weight: bold; } /* Orange for Nominative */
+.gen-case { color: #9b59b6; font-weight: bold; } /* Purple for Genitive */
+
+/* Table Styling */
+.help-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+.help-table th, .help-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.help-table th {
+    background-color: #f8f9fa;
+}
+
+.nom-case { color: #e67e22 !important; font-weight: bold; }
+.gen-case { color: #9b59b6 !important; font-weight: bold; }
