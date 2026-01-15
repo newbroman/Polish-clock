@@ -27,6 +27,7 @@ function init() {
         m.className = 'mark';
         // Each mark is rotated 30 degrees (360 / 12)
         m.style.transform = `rotate(${i * 30}deg)`;
+        m.style.transformOrigin = `1px 72.5px`;
         c.appendChild(m);
     }
 
