@@ -112,8 +112,10 @@ function updateDisplay(syncInput) {
         pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
+}
 
 function startDrag(e) {
+   isLive = false;
     e.preventDefault();
     const clock = document.getElementById('clock-container');
     const move = (ev) => {
@@ -244,6 +246,7 @@ function getCorrectStr(h, m, formal) {
     }
 }
 function manualTime(val) {
+    isLive = false;
     if(!val.includes(':')) return;
     const parts = val.split(':');
     let ph = parseInt(parts[0]), pm = parseInt(parts[1]);
