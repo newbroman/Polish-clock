@@ -45,8 +45,8 @@ body {
 /* CLOCK FACE (Restored Polish Flag) */
 /* CLOCK WITH TICKS */
 #clock-container {
-    width: 220px;
-    height: 220px;
+    width: 145px;
+    height: 145px;
     border: 5px solid var(--text-color);
     border-radius: 50%;
     position: relative;
@@ -83,7 +83,7 @@ body {
     width: 2px;
     height: 95px;
     margin-left: -1px;
-    background: #ff0000; 
+    background:#808080; 
     z-index: 8;
     transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44); /* Smooth tick */
 }
@@ -111,6 +111,19 @@ button {
 .btn-real { background: #007bff; color: white; }
 .top-row { display: flex; width: 100%; gap: 8px; margin-bottom: 5px; }
 .top-row button { padding: 8px; font-size: 0.75rem; }
+.audio-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+.audio-row button {
+    flex: 1;
+    background: #333; /* Darker grey to match screenshot */
+    color: #eee;
+    font-size: 0.8rem;
+    padding: 10px;
+}
 
 #quiz-options {
     display: none;
@@ -149,14 +162,53 @@ button {
     display: inline-block;
 }
 
+To achieve the precise layout and styling from your mobile screenshot, we need to adjust the sizing, color logic, and specific CSS properties.
+
+Here are the updates for your project.
+1. Updated style.css
+
+This includes the 66% smaller clock, the red digital text, the bordered second hand, and the darker quiz button for dark mode.
+CSS
+
+/* Update Clock Size */
+#clock-container {
+    width: 145px;  /* 66% of the original 220px */
+    height: 145px;
+    border: 4px solid var(--text-color);
+    border-radius: 50%;
+    position: relative;
+    background: var(--clock-face);
+    margin: 10px auto;
+}
+
+/* Second Hand with Border/Contrast */
+.sec-hand {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    width: 2px;
+    height: 65px;
+    margin-left: -1px;
+    background: #ff4d4d;
+    /* White border/outline to stand out on the red half */
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.8);
+    z-index: 8;
+}
+
+/* Digital Clock Styling */
 #time-input-display {
-    border: none;
+    color: #ff4d4d !important; /* Force Red text */
+    font-size: 2.2rem;
+    font-weight: bold;
+    border: 2px solid #dc3545;
+    border-radius: 12px;
+    padding: 10px;
     background: transparent;
-    font-size: 2.5rem;
-    color: var(--text-color);
     text-align: center;
     width: 200px;
-    font-family: 'Courier New', monospace;
+    display: block;
+    margin: 15px auto;
 }
 
 /* Grammar Colors */
