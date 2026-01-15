@@ -57,35 +57,36 @@ function updateDisplay(syncInput) {
     if (syncInput) document.getElementById('time-input-display').value = timeStr;
 
     // 3. Grammar Logic
-    const isFormal = document.getElementById('formal').checked;
+  const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
-    let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
+    
+    // Wrap seconds in cardinal color
+    let sStr = (showSec && seconds > 0) ? ` i <span class="cardinal-num">${mAll[seconds]}</span> sekund` : "";
 
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        p = `<span class="nom-case">Godzina ${hNom[hours]} ${mStr}${sStr}</span>`;
-        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}${showSec && seconds > 0 ? ' i ' + mAllPh[seconds] : ''}`;
+        // Wrap formal minutes in cardinal color
+        let mCard = minutes > 0 ? `<span class="cardinal-num">${mStr}</span>` : "";
+        
+        p = `<span class="nom-case">Godzina ${hNom[hours]}</span> ${mCard}${sStr}`;
+        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}`;
         e = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
+        
         if (minutes === 0) {
             let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
             p = `<span class="nom-case">${spec}</span>${sStr}`;
-            ph = `${hNomPh[h12]}`;
-            e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12 || 12} o'clock`;
         } else if (minutes < 30) {
-            p = `<span class="gen-case">${mAll[minutes]} po ${hGen[h12]}</span>${sStr}`;
-            ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`;
-            e = `${minutes} past ${h12 || 12}`;
+            // Minutes (Cardinal) + "po" hour (Genitive)
+            p = `<span class="cardinal-num">${mAll[minutes]}</span> <span class="gen-case">po ${hGen[h12]}</span>${sStr}`;
         } else if (minutes === 30) {
+            // "w pół do" hour (Genitive) - "pół" is part of the phrase here
             p = `<span class="gen-case">w pół do ${hGen[n12]}</span>${sStr}`;
-            ph = `fpoow do ${hGenPh[n12]}`;
-            e = `Half past ${h12 || 12}`;
         } else {
             let d = 60 - minutes;
-            p = `<span class="nom-case">za ${mAll[d]} ${hNom[n12]}</span>${sStr}`;
-            ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`;
-            e = `${d} to ${n12 || 12}`;
+            // "za" (Nom) + Minutes (Cardinal) + Hour (Nom)
+            p = `<span class="nom-case">za</span> <span class="cardinal-num">${mAll[d]}</span> <span class="nom-case">${hNom[n12]}</span>${sStr}`;
         }
     }
 
