@@ -30,18 +30,16 @@ function init() {
     }
 
     setRealTime(); 
-    setInterval(() => {
+ setInterval(() => {
         if (!isQuiz) {
             const now = new Date();
             seconds = now.getSeconds();
-            if (seconds === 0) {
-                hours = now.getHours();
-                minutes = now.getMinutes();
-                updateDisplay(true);
-            } else {
-                const sHand = document.getElementById('s-hand');
-                if (sHand) sHand.style.transform = `rotate(${seconds * 6}deg)`;
-            }
+            hours = now.getHours();
+            minutes = now.getMinutes();
+
+            // Always update the display every second to keep digital clock 
+            // and translations in sync with the ticking hand
+            updateDisplay(true);
         }
     }, 1000);
 }
@@ -54,12 +52,18 @@ function updateDisplay(syncInput) {
     let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
 
     if (isFormal) {
+        // 1. Polish String Logic
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        // Wrap everything in Orange (Nominative)
+        
+        // 2. Wrap entire phrase in Orange (Nominative)
         p = `<span class="nom-case">Godzina ${hNom[hours]} ${mStr}${sStr}</span>`;
-        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}`;
-        e = `${hours}:${pad(minutes)}${showSec ? ':'+pad(seconds) : ''}`;
-    } else {
+        
+        // 3. Phonetics
+        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}${showSec && seconds > 0 ? ' i ' + mAllPh[seconds] : ''}`;
+        
+        // 4. English Translation (Now uses pad for all units to match digital display)
+        e = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
+       } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
         if (minutes === 0) {
             let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
