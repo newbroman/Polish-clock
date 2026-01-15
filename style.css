@@ -242,3 +242,30 @@ body {
     font-style: italic;
     margin-top: 5px;
 }
+
+#help-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.9rem; /* Reduced font size for a tidier look */
+    text-align: center; /* Centers all content */
+}
+
+#help-content th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6; /* Bold line under headings */
+    padding: 10px;
+    text-align: center;
+}
+
+#help-content td {
+    padding: 8px;
+    border-bottom: 1px solid #eee; /* Light lines between rows */
+    vertical-align: middle;
+}
+
+/* Specific color for minutes/cardinals in help page */
+.cardinal-num {
+    color: #3498db;
+    font-weight: bold;
+}
