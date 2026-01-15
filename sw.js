@@ -1,4 +1,4 @@
-const CACHE_NAME = 'polish-clock-v75';
+const CACHE_NAME = 'polish-clock-v76';
 // IMPORTANT: Update this to your GitHub repository name
 const GH_PATH = '/Polish-clock'; 
 
