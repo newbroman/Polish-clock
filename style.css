@@ -173,3 +173,37 @@ body {
     width: 100%;
     margin: 15px 0;
 }
+.display-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontal centering */
+    text-align: center;
+    width: 100%;
+    min-height: 100px; /* Prevents layout jump when text appears */
+    margin-top: 15px;
+}
+
+.polish-display {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.phonetic-display {
+    color: #2ecc71; /* Green like your reference */
+    font-family: monospace;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.english-display {
+    opacity: 0.7;
+    font-style: italic;
+    font-size: 1rem;
+}
+
+/* Ensure the grammar spans inherit the bold font */
+.nom-case, .gen-case {
+    font-weight: bold;
+}
