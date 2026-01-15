@@ -1,5 +1,6 @@
 // 1. Global State
 let hours = 12, minutes = 0, seconds = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true, showSec = false;
+let isLive = true;
 
 // 2. Data Sets
 const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
@@ -30,8 +31,9 @@ function init() {
     }
 
     setRealTime(); 
-    setInterval(() => {
-        if (!isQuiz) {
+   setInterval(() => {
+        // Only update if isLive is true AND we aren't in a quiz
+        if (isLive && !isQuiz) {
             const now = new Date();
             seconds = now.getSeconds();
             hours = now.getHours();
@@ -94,20 +96,45 @@ function updateDisplay(syncInput) {
     }
 
     // 4. Update UI
-    const d = dict[currentLang];
+   const d = dict[currentLang];
     const pt = document.getElementById('polish-text');
     const pht = document.getElementById('phonetic-text');
     const et = document.getElementById('english-text');
 
     if (isQuiz && !isRevealed) {
-        pt.innerText = d.ask; pht.innerText = ""; et.innerText = "";
+        // Strict hiding during Quiz
+        pt.innerText = d.ask; 
+        pht.innerHTML = "&nbsp;"; // Use non-breaking space to keep layout height
+        et.innerHTML = "&nbsp;"; 
     } else {
+        // Normal Display
         pt.innerHTML = p; 
         pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
+
+3. Polish UI Refinement
+
+I noticed in your getCorrectStr function (used for the quiz buttons), the minutes don't have the blue color tags yet. To keep it consistent with your help page [cite: 2026-01-13]:
+JavaScript
+
+function getCorrectStr(h, m, formal) {
+    if (formal) {
+        let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
+        // Wrap the minute string in the blue class
+        let mCard = mStr ? `<span class="cardinal-num">${mStr}</span>` : "";
+        return `Godzina <span class="nom-case">${hNom[h]}</span> ${mCard}`.trim();
+    } else {
+        let h12 = h % 12, n12 = (h + 1) % 12;
+        if (m === 0) return `<span class="nom-case">${hNom[h12]}</span>`;
+        // Wrap minutes in blue cardinal-num class
+        if (m < 30) return `<span class="cardinal-num">${mAll[m]}</span> po <span class="gen-case">${hGen[h12]}</span>`;
+        if (m === 30) return `w pół do <span class="gen-case">${hGen[n12]}</span>`;
+        return `za <span class="cardinal-num">${mAll[60-m]}</span> <span class="nom-case">${hNom[n12]}</span>`;
+    }
 }
 
+Would you like me to also add a "Lock" icon to the digital input to show when the Live Clock is paused?
 function startDrag(e) {
     e.preventDefault();
     const clock = document.getElementById('clock-container');
@@ -142,6 +169,7 @@ function startDrag(e) {
 }
 
 function setRealTime() {
+    isLive = true; // Resume live updates
     const n = new Date();
     hours = n.getHours(); minutes = n.getMinutes(); seconds = n.getSeconds();
     isRevealed = !isQuiz;
@@ -149,6 +177,7 @@ function setRealTime() {
 }
 
 function rollTime() {
+    isLive = false; // Stop live updates so the random time stays
     hours = Math.floor(Math.random() * 24);
     minutes = Math.floor(Math.random() * 60);
     seconds = 0;
