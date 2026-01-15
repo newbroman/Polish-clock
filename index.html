@@ -16,13 +16,13 @@
 <body onload="init()">
 <div class="container">
     <h1 id="app-title">Polish Time Learner</h1>
-    <div class="top-row">
-        <button class="btn-sub" onclick="toggleLang()">EN/PL</button>
-        <button class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">Quiz</button>
-        <button class="btn-sub" id="sec-toggle" onclick="toggleSec()">Sec: OFF</button>
-        <button class="btn-sub" id="ph-toggle" onclick="togglePh()">Phon</button>
-        <button class="btn-sub" onclick="toggleHelp()">❓</button>
-    </div>
+   <div class="top-row">
+    <button type="button" class="btn-sub" onclick="event.stopPropagation(); toggleLang()">EN/PL</button>
+    <button type="button" class="btn-sub" id="quiz-toggle" onclick="toggleQuiz()">Quiz: OFF</button>
+    <button type="button" class="btn-sub" id="sec-toggle" onclick="toggleSec()">Sec: OFF</button>
+    <button type="button" class="btn-sub" id="ph-toggle" onclick="togglePh()">Phon</button>
+    <button type="button" class="btn-sub" onclick="toggleHelp()">❓</button>
+</div>
 
    <div id="clock-container" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
     <div class="dot"></div>
@@ -51,8 +51,8 @@
 <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
 
 <div class="audio-row">
-    <button class="btn-sub" id="btn-listen" onclick="speak(1)">🔊 LISTEN</button>
-    <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
+    <button type="button" class="btn-sub" id="btn-listen" onclick="speak(1)">🔊 LISTEN</button>
+    <button type="button" class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
 </div>
 
     <div id="help-modal">
