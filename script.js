@@ -175,6 +175,8 @@ function speak(r) {
 
 function toggleSec() {
     showSec = !showSec;
+    // Force isRevealed to false if we are in a quiz so it stays hidden
+    if (isQuiz) isRevealed = false; 
     document.getElementById('sec-toggle').innerText = showSec ? "Sec: ON" : "Sec: OFF";
     updateDisplay(true);
 }
@@ -268,6 +270,7 @@ async function toggleHelp() {
 
 function toggleLang() {
     currentLang = (currentLang === 'EN' ? 'PL' : 'EN');
+    if (isQuiz) isRevealed = false; // Keep quiz hidden after language swap
     const d = dict[currentLang];
     document.getElementById('app-title').innerText = d.title;
     document.getElementById('btn-real').innerText = d.actual;
