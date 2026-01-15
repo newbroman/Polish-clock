@@ -107,8 +107,6 @@ button {
     color: var(--text-color);
 }
 
-.btn-main { background: var(--accent); color: white; }
-.btn-real { background: #007bff; color: white; }
 .top-row { display: flex; width: 100%; gap: 8px; margin-bottom: 5px; }
 .top-row button { padding: 8px; font-size: 0.75rem; }
 .audio-row {
@@ -118,11 +116,11 @@ button {
     max-width: 400px;
 }
 .audio-row button {
-    flex: 1;
-    background: #333; /* Darker grey to match screenshot */
-    color: #eee;
-    font-size: 0.8rem;
-    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
 }
 
 #quiz-options {
@@ -190,7 +188,7 @@ CSS
     width: 2px;
     height: 65px;
     margin-left: -1px;
-    background: #ff4d4d;
+    background: #808080;
     /* White border/outline to stand out on the red half */
     box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.8);
     z-index: 8;
@@ -224,3 +222,38 @@ CSS
 #polish-text { font-size: 1.4rem; margin-bottom: 5px; }
 #phonetic-text { color: #2ecc71; font-family: monospace; } /* Green like the phone pic */
 #english-text { opacity: 0.7; font-style: italic; }
+
+setting-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 15px 0;
+    color: var(--text-color);
+}
+
+/* Big Blue/Red Buttons */
+.btn-real, .btn-main {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-real { background-color: #007bff; } /* Actual Time Blue */
+.btn-main { background-color: #dc3545; } /* Random Time Red */
+
+.btn-sub {
+    background-color: #333333; /* Dark grey like the screenshot */
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+}
