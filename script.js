@@ -1,4 +1,4 @@
-let hours = 12, minutes = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
+let hours = 12, minutes = 0, seconds = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
 
 // Data Sets
 const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
@@ -15,18 +15,48 @@ const dict = {
 
 function init() {
     const c = document.getElementById('clock-container');
-    // Clear existing to prevent duplicates on reload
+    
+    // 1. Clear any existing marks to avoid duplicates on refresh
     const existingMarks = c.querySelectorAll('.mark');
     existingMarks.forEach(m => m.remove());
 
+    // 2. Generate the 12 hour ticks
     for (let i = 0; i < 12; i++) {
         const m = document.createElement('div');
         m.className = 'mark';
+        // Each mark is rotated 30 degrees (360 / 12)
         m.style.transform = `rotate(${i * 30}deg)`;
         c.appendChild(m);
     }
+
+    // 3. Set the initial time
     setRealTime(); 
+
+    // 4. Start the ticking engine for the second hand
+    setInterval(() => {
+        // Only auto-tick if we aren't in a quiz
+        if (!isQuiz) {
+            const now = new Date();
+            
+            // Sync internal state with the system clock
+            seconds = now.getSeconds();
+            
+            // Check if we need to update the minute/hour hands
+            if (seconds === 0) {
+                hours = now.getHours();
+                minutes = now.getMinutes();
+                updateDisplay(true); // Full refresh for grammar spans
+            } else {
+                // Just update the second hand rotation for performance
+                const sHand = document.getElementById('s-hand');
+                if (sHand) {
+                    sHand.style.transform = `rotate(${seconds * 6}deg)`;
+                }
+            }
+        }
+    }, 1000);
 }
+
 function startDrag(e) {
     e.preventDefault();
     const move = (ev) => {
@@ -58,8 +88,12 @@ function startDrag(e) {
 
 function updateDisplay(syncInput) {
     const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
+    const mRotation = minutes * 6;
+    const sRotation = seconds * 6; // Add this line
+
     document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
-    document.getElementById('m-hand').style.transform = `rotate(${minutes * 6}deg)`;
+    document.getElementById('m-hand').style.transform = `rotate(${mRotation}deg)`;
+    document.getElementById('s-hand').style.transform = `rotate(${sRotation}deg)`;
     if(syncInput) document.getElementById('time-input-display').value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
     
     const isFormal = document.getElementById('formal').checked;
@@ -111,7 +145,15 @@ function updateDisplay(syncInput) {
     }
 }
 
-function setRealTime() { const n = new Date(); hours = n.getHours(); minutes = n.getMinutes(); isRevealed = !isQuiz; updateDisplay(true); if(isQuiz) generateQuizOptions(); }
+function setRealTime() { 
+    const n = new Date(); 
+    hours = n.getHours(); 
+    minutes = n.getMinutes(); 
+    seconds = n.getSeconds(); // Add this line
+    isRevealed = !isQuiz; 
+    updateDisplay(true); 
+    if(isQuiz) generateQuizOptions(); 
+}
 
 function rollTime() { 
     hours = Math.floor(Math.random() * 24); 
