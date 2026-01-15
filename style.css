@@ -273,7 +273,8 @@ body {
 #app-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #333;
+    color: #FF000;
+    text-shadow: 0 0 10px rgba(255, 49, 49, 0.5);
     margin-bottom: 20px;
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
