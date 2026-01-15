@@ -1,7 +1,8 @@
+// 1. Global State
 let hours = 12, minutes = 0, seconds = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
-let showSec = false; // Add this to your global variables at the top
+let showSec = false;
 
-// Data Sets
+// 2. Data Sets
 const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
 const hNomPh = ["poow-nots", "pyerv-shah", "droo-gah", "tshe-tsyah", "chvar-tah", "pyon-tah", "shoos-tah", "shood-mah", "oos-mah", "je-vyon-tah", "je-shon-tah", "ye-de-nas-tah", "po-wood-nye", "tshi-nas-tah", "chter-nas-tah", "pyent-nas-tah", "shes-nas-tah", "she-dem-nas-tah", "o-shem-nas-tah", "je-vyet-nas-tah", "dvoo-jest-ah", "dvoo-jest-ah pyerv-shah", "dvoo-jest-ah droo-gah", "dvoo-jest-ah tshe-tsyah"];
 const hGen = ["północy", "pierwszej", "drugiej", "trzeciej", "czwartej", "piątej", "szóstej", "siódmej", "ósmej", "dziewiątej", "dziesiątej", "jedenastej", "południa", "trzynastej", "czternastej", "piętnastej", "szesnastej", "siedemnastej", "osiemnastej", "dziewiętnastej", "dwudziestej", "dwudziestej pierwszej", "dwudziestej drugiej", "dwudziestej trzeciej"];
@@ -11,87 +12,38 @@ const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh
 
 const dict = {
     EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF" },
-    PL: { title: "Nauka Czasu", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij Pomoc", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
+    PL: { title: "Nauka Czasu", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
 };
 
+// 3. Functions
 function init() {
     const c = document.getElementById('clock-container');
-    
-    // 1. Clear any existing marks to avoid duplicates on refresh
     const existingMarks = c.querySelectorAll('.mark');
     existingMarks.forEach(m => m.remove());
 
-    // 2. Generate the 12 hour ticks
     for (let i = 0; i < 12; i++) {
         const m = document.createElement('div');
         m.className = 'mark';
-        // Each mark is rotated 30 degrees (360 / 12)
         m.style.transform = `rotate(${i * 30}deg)`;
         m.style.transformOrigin = `1px 72.5px`;
         c.appendChild(m);
     }
 
-    // 3. Set the initial time
     setRealTime(); 
-
-    // 4. Start the ticking engine for the second hand
     setInterval(() => {
-        // Only auto-tick if we aren't in a quiz
         if (!isQuiz) {
             const now = new Date();
-            
-            // Sync internal state with the system clock
             seconds = now.getSeconds();
-            
-            // Check if we need to update the minute/hour hands
             if (seconds === 0) {
                 hours = now.getHours();
                 minutes = now.getMinutes();
-                updateDisplay(true); // Full refresh for grammar spans
+                updateDisplay(true);
             } else {
-                // Just update the second hand rotation for performance
                 const sHand = document.getElementById('s-hand');
-                if (sHand) {
-                    sHand.style.transform = `rotate(${seconds * 6}deg)`;
-                }
+                if (sHand) sHand.style.transform = `rotate(${seconds * 6}deg)`;
             }
         }
     }, 1000);
-}
-
-function startDrag(e) {
-    e.preventDefault();
-    const move = (ev) => {
-        const rect = document.getElementById('clock-container').getBoundingClientRect();
-        const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
-        const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
-        const x = cx - rect.left - rect.width / 2;
-        const y = cy - rect.top - rect.height / 2;
-        const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-        const norm = (angle < 0) ? angle + 360 : angle;
-        const dist = Math.sqrt(x*x + y*y);
-        if (dist < 35) {
-            let newH = Math.round(norm / 30) % 12;
-            if (hours >= 12) newH += 12;
-            hours = newH;
-        } else {
-            minutes = Math.round(norm / 6) % 60;
-        }
-        updateDisplay(true);
-    };
-    const stop = () => { 
-        window.removeEventListener('mousemove', move); 
-        window.removeEventListener('touchmove', move); 
-        if (isQuiz) generateQuizOptions();
-    };
-    window.addEventListener('mousemove', move); window.addEventListener('touchmove', move);
-    window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
-}
-
-function toggleSec() {
-    showSec = !showSec;
-    document.getElementById('sec-toggle').innerText = showSec ? "Sec: ON" : "Sec: OFF";
-    updateDisplay(true);
 }
 
 function updateDisplay(syncInput) {
@@ -146,33 +98,6 @@ function updateDisplay(syncInput) {
     const et = document.getElementById('english-text');
 
     if (isQuiz && !isRevealed) {
-        pt.innerText = d.ask; 
-        pht.innerText = ""; 
-        et.innerText = "";
-    } else {
-        pt.innerHTML = p; 
-        pht.innerText = showPh ? ph : ""; 
-        et.innerText = e;
-    }
-}
-
-    // 4. Update the actual Text Elements
-    const pt = document.getElementById('polish-text');
-    const pht = document.getElementById('phonetic-text');
-    const et = document.getElementById('english-text');
-
-    pt.innerHTML = p; 
-    pht.innerText = showPh ? ph : ""; 
-    et.innerText = e;
-}
-
-    // 4. Update Screen Elements
-    const d = dict[currentLang] || dict['EN'];
-    const pt = document.getElementById('polish-text');
-    const pht = document.getElementById('phonetic-text');
-    const et = document.getElementById('english-text');
-
-    if (isQuiz && !isRevealed) {
         pt.innerText = d.ask; pht.innerText = ""; et.innerText = "";
     } else {
         pt.innerHTML = p; 
@@ -181,43 +106,85 @@ function updateDisplay(syncInput) {
     }
 }
 
-function setRealTime() { 
-    const n = new Date(); 
-    hours = n.getHours(); 
-    minutes = n.getMinutes(); 
-    seconds = n.getSeconds(); // Add this line
-    isRevealed = !isQuiz; 
-    updateDisplay(true); 
-    if(isQuiz) generateQuizOptions(); 
+async function toggleHelp() {
+    const modal = document.getElementById('help-modal');
+    const content = document.getElementById('help-content');
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+        return;
+    }
+    const helpFile = currentLang === 'PL' ? 'help_pl.html' : 'help_en.html';
+    try {
+        const response = await fetch(helpFile);
+        if (!response.ok) throw new Error();
+        content.innerHTML = await response.text();
+        modal.style.display = 'block';
+    } catch (e) {
+        content.innerHTML = "<p>Error loading help.</p>";
+        modal.style.display = 'block';
+    }
 }
 
-function rollTime() { 
-    hours = Math.floor(Math.random() * 24); 
-    minutes = Math.floor(Math.random() * 60); 
-    isRevealed = !isQuiz; 
-    updateDisplay(true); 
-    if (isQuiz) generateQuizOptions(); 
+// Ensure other missing functions are present
+function toggleLang() {
+    currentLang = (currentLang === 'EN' ? 'PL' : 'EN');
+    const d = dict[currentLang];
+    document.getElementById('app-title').innerText = d.title;
+    document.getElementById('btn-real').innerText = d.actual;
+    document.getElementById('btn-random').innerText = d.random;
+    document.getElementById('btn-listen').innerText = d.listen;
+    document.getElementById('btn-slow').innerText = d.slow;
+    document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
+    document.getElementById('help-close').innerText = d.close;
+    updateDisplay(true);
+    if(isQuiz) generateQuizOptions();
 }
 
-function revealAnswer() { 
-    isRevealed = true; 
-    updateDisplay(true); 
-    speak(1); 
+function setRealTime() {
+    const n = new Date();
+    hours = n.getHours(); minutes = n.getMinutes(); seconds = n.getSeconds();
+    isRevealed = !isQuiz;
+    updateDisplay(true);
 }
 
-function toggleQuiz() { 
-    isQuiz = !isQuiz; 
-    isRevealed = !isQuiz; 
-    const quizContainer = document.getElementById('quiz-options');
-    const revealBtn = document.getElementById('reveal-btn');
+function rollTime() {
+    hours = Math.floor(Math.random() * 24);
+    minutes = Math.floor(Math.random() * 60);
+    isRevealed = !isQuiz;
+    updateDisplay(true);
+    if (isQuiz) generateQuizOptions();
+}
 
+function speak(r) {
+    window.speechSynthesis.cancel();
+    let t = document.getElementById('polish-text').innerText;
+    if (t.includes("?")) return;
+    const m = new SpeechSynthesisUtterance(t);
+    m.lang = 'pl-PL'; m.rate = r;
+    window.speechSynthesis.speak(m);
+}
+
+function toggleSec() {
+    showSec = !showSec;
+    document.getElementById('sec-toggle').innerText = showSec ? "Sec: ON" : "Sec: OFF";
+    updateDisplay(true);
+}
+
+function togglePh() {
+    showPh = !showPh;
+    updateDisplay(true);
+}
+
+function toggleQuiz() {
+    isQuiz = !isQuiz;
+    isRevealed = !isQuiz;
+    const container = document.getElementById('quiz-options');
     if (isQuiz) {
         generateQuizOptions();
-        revealBtn.style.display = "none";
-        document.getElementById('quiz-toggle').innerText = (dict[currentLang] || dict['EN']).qOn;
+        document.getElementById('quiz-toggle').innerText = dict[currentLang].qOn;
     } else {
-        quizContainer.style.display = "none";
-        document.getElementById('quiz-toggle').innerText = (dict[currentLang] || dict['EN']).qOff;
+        container.style.display = "none";
+        document.getElementById('quiz-toggle').innerText = dict[currentLang].qOff;
         updateDisplay(true);
     }
 }
@@ -225,138 +192,67 @@ function toggleQuiz() {
 function generateQuizOptions() {
     const container = document.getElementById('quiz-options');
     const isFormal = document.getElementById('formal').checked;
-    
     const correctAnswer = getPolishTimeString(hours, minutes, isFormal);
     let options = [correctAnswer];
-
     while (options.length < 4) {
         let rH = Math.floor(Math.random() * 24);
         let rM = Math.floor(Math.random() * 60);
-        let wrongOpt = getPolishTimeString(rH, rM, isFormal);
-        if (!options.includes(wrongOpt)) options.push(wrongOpt);
+        let wrong = getPolishTimeString(rH, rM, isFormal);
+        if (!options.includes(wrong)) options.push(wrong);
     }
-
     options.sort(() => Math.random() - 0.5);
-
     container.innerHTML = "";
     container.style.display = "grid";
-    
     options.forEach(opt => {
         const btn = document.createElement('button');
-        btn.innerHTML = opt; 
-        btn.style.cssText = "padding:12px 4px; font-size:13px; border:1px solid #ccc; border-radius:8px; background:white; cursor:pointer; font-family:inherit;";
-        
+        btn.innerHTML = opt;
         btn.onclick = () => {
             if (opt === correctAnswer) {
                 btn.style.background = "#28a745";
-                btn.style.color = "white";
-                btn.querySelectorAll('span').forEach(s => s.style.setProperty('color', 'white', 'important'));
-                
-                setTimeout(() => {
-                    revealAnswer();
-                    container.style.display = "none";
-                }, 500);
+                setTimeout(() => { isRevealed = true; updateDisplay(true); container.style.display="none"; }, 500);
             } else {
                 btn.style.background = "#dc3545";
-                btn.style.color = "white";
-                btn.querySelectorAll('span').forEach(s => s.style.setProperty('color', 'white', 'important'));
                 btn.disabled = true;
             }
         };
         container.appendChild(btn);
     });
-    updateDisplay(false);
 }
 
 function getPolishTimeString(h, m, formal) {
     if (formal) {
         let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
-        // Formal Hours are always Nominative (Orange)
         return `Godzina <span class="nom-case">${hNom[h]}</span> ${mStr}`.trim();
     } else {
         let h12 = h % 12, n12 = (h + 1) % 12;
-        if (m === 0) {
-            let spec = h === 0 ? "Północ" : h === 12 ? "Południe" : hNom[h12];
-            return `<span class="nom-case">${spec}</span>`;
-        }
+        if (m === 0) return `<span class="nom-case">${hNom[h12]}</span>`;
         if (m < 30) return `${mAll[m]} po <span class="gen-case">${hGen[h12]}</span>`;
-        if (m === 30) return `Wpół do <span class="gen-case">${hGen[n12]}</span>`;
-        return `Za ${mAll[60-m]} <span class="nom-case">${hNom[n12]}</span>`;
+        if (m === 30) return `w pół do <span class="gen-case">${hGen[n12]}</span>`;
+        return `za ${mAll[60-m]} <span class="nom-case">${hNom[n12]}</span>`;
     }
 }
 
-function toggleLang() {
-    // 1. Switch language
-    currentLang = (currentLang === 'EN' ? 'PL' : 'EN');
-    const d = dict[currentLang];
-
-    // 2. Update Header
-    document.getElementById('app-title').innerText = d.title;
-
-    // 3. Update Main Buttons
-    document.getElementById('btn-real').innerText = d.actual;
-    document.getElementById('btn-random').innerText = d.random;
-    document.getElementById('btn-listen').innerText = d.listen;
-    document.getElementById('btn-slow').innerText = d.slow;
-    
-    // 4. Update Quiz Toggle text
-    document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
-
-    // 5. Update Help Button (if you have a label for it)
-    document.getElementById('help-close').innerText = d.close;
-
-    // 6. Refresh the phrase display
-    updateDisplay(true);
-    
-    // 7. If quiz is active, regenerate options in the new language
-    if(isQuiz) generateQuizOptions();
-}
-
-function manualTime(val) { 
-    if(!val.includes(':')) return; 
-    const [h, m] = val.split(':'); 
-    let ph = parseInt(h), pm = parseInt(m); 
-    if(!isNaN(ph) && !isNaN(pm)) { 
-        hours = Math.min(23, Math.max(0, ph)); 
-        minutes = Math.min(59, Math.max(0, pm)); 
-        updateDisplay(false); 
-        if(isQuiz) generateQuizOptions();
-    } 
-}
-
-function speak(r) { 
-    window.speechSynthesis.cancel(); 
-    let t = document.getElementById('polish-text').innerText; 
-    if (t.includes("?")) return; 
-    const m = new SpeechSynthesisUtterance(t); 
-    m.lang = 'pl-PL'; 
-    m.rate = r; 
-    window.speechSynthesis.speak(m); 
-}
-
-async function toggleHelp() {
-    const modal = document.getElementById('help-modal');
-    const content = document.getElementById('help-content');
-
-    if (modal.style.display === 'block') {
-        modal.style.display = 'none';
-        return;
-    }
-
-    const helpFile = currentLang === 'PL' ? 'help_pl.html' : 'help_en.html';
-
-    try {
-        const response = await fetch(helpFile);
-        if (!response.ok) throw new Error('File not found');
-        let html = await response.text();
-        
-        // This was the missing line:
-        content.innerHTML = html; 
-        
-        modal.style.display = 'block';
-    } catch (e) {
-        console.error(e);
-        content.innerHTML = `<p>Error loading help (${helpFile}). Please ensure the file exists in the same folder.</p>`;
-        modal.style.display = 'block';
-    }
+function startDrag(e) {
+    e.preventDefault();
+    const move = (ev) => {
+        const rect = document.getElementById('clock-container').getBoundingClientRect();
+        const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+        const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+        const x = cx - rect.left - rect.width / 2;
+        const y = cy - rect.top - rect.height / 2;
+        const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
+        const norm = (angle < 0) ? angle + 360 : angle;
+        const dist = Math.sqrt(x*x + y*y);
+        if (dist < 35) {
+            let newH = Math.round(norm / 30) % 12;
+            if (hours >= 12) newH += 12;
+            hours = newH;
+        } else {
+            minutes = Math.round(norm / 6) % 60;
+        }
+        updateDisplay(true);
+    };
+    const stop = () => { window.removeEventListener('mousemove', move); window.removeEventListener('touchmove', move); if (isQuiz) generateQuizOptions(); };
+    window.addEventListener('mousemove', move); window.addEventListener('touchmove', move);
+    window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
 }
