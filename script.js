@@ -54,13 +54,13 @@ function updateDisplay(syncInput) {
     const sHand = document.getElementById('s-hand');
     if (sHand) sHand.style.transform = `rotate(${sRotation}deg)`;
 
-    const pad = (n) => n.toString().padStart(2, '0');
     const timeStr = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     if (syncInput) document.getElementById('time-input-display').value = timeStr;
 
     // 2. Text Logic
     const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
+    // Note: Minutes (cardinal-num) are always blue
     let sStr = (showSec && seconds > 0) ? ` i <span class="cardinal-num">${mAll[seconds]}</span> sekund` : "";
 
     if (isFormal) {
@@ -71,7 +71,7 @@ function updateDisplay(syncInput) {
         e = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
-        let displayH = h12 || 12; // For English 12-hour format
+        let displayH = h12 || 12;
         let nextH = n12 || 12;
 
         if (minutes === 0) {
@@ -95,24 +95,22 @@ function updateDisplay(syncInput) {
         }
     }
 
-    // 4. Update UI
-   const d = dict[currentLang];
+    // 3. UI Update (Strict Quiz Hiding)
+    const d = dict[currentLang];
     const pt = document.getElementById('polish-text');
     const pht = document.getElementById('phonetic-text');
     const et = document.getElementById('english-text');
 
     if (isQuiz && !isRevealed) {
-        // Strict hiding during Quiz
         pt.innerText = d.ask; 
-        pht.innerHTML = "&nbsp;"; // Use non-breaking space to keep layout height
+        pht.innerHTML = "&nbsp;"; 
         et.innerHTML = "&nbsp;"; 
     } else {
-        // Normal Display
         pt.innerHTML = p; 
         pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
-}
+} // Properly closed
 
 function startDrag(e) {
    isLive = false;
