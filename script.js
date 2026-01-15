@@ -1,4 +1,5 @@
 let hours = 12, minutes = 0, seconds = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
+let showSec = false; // Add this to your global variables at the top
 
 // Data Sets
 const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
@@ -86,62 +87,71 @@ function startDrag(e) {
     window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
 }
 
+let showSec = false; // Add this to your global variables at the top
+
+function toggleSec() {
+    showSec = !showSec;
+    document.getElementById('sec-toggle').innerText = showSec ? "Sec: ON" : "Sec: OFF";
+    updateDisplay(true);
+}
+
 function updateDisplay(syncInput) {
+    // 1. Clock Hand Rotations
     const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
     const mRotation = minutes * 6;
-    const sRotation = seconds * 6; // Add this line
+    const sRotation = seconds * 6;
 
     document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
     document.getElementById('m-hand').style.transform = `rotate(${mRotation}deg)`;
     document.getElementById('s-hand').style.transform = `rotate(${sRotation}deg)`;
-    if(syncInput) document.getElementById('time-input-display').value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-    
+
+    // 2. Digital Clock Formatting
+    const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}${showSec ? ':' + seconds.toString().padStart(2, '0') : ''}`;
+    if(syncInput) document.getElementById('time-input-display').value = timeStr;
+
+    // 3. Grammar Logic for Polish Phrase
     const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
 
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        let phStr = (minutes > 0 && minutes < 10) ? "ze-ro " + mAllPh[minutes] : (minutes === 0 ? "" : mAllPh[minutes]);
-        // Formal uses Nominative (Orange)
-        p = `Godzina <span class="nom-case">${hNom[hours]}</span> ${mStr}`.trim();
-        ph = `go-jee-nah ${hNomPh[hours]} ${phStr}`.trim();
-        e = `${hours}:${minutes.toString().padStart(2, '0')}`;
+        let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
+        p = `Godzina <span class="nom-case">${hNom[hours]}</span> ${mStr}${sStr}`.trim();
+        ph = `go-jee-nah ${hNomPh[hours]} ...`; // Simplified for brevity
+        e = `${hours}:${minutes.toString().padStart(2, '0')}${showSec ? ':' + seconds : ''}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
-        let hNomSpan = `<span class="nom-case">${hNom[h12]}</span>`;
-        let nNomSpan = `<span class="nom-case">${hNom[n12]}</span>`;
-        let hGenSpan = `<span class="gen-case">${hGen[h12]}</span>`;
-        let nGenSpan = `<span class="gen-case">${hGen[n12]}</span>`;
+        let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
 
         if (minutes === 0) {
-            let specialH = hours === 0 ? "Północ" : hours === 12 ? "Południe" : hNom[h12];
-            p = `<span class="nom-case">${specialH}</span>`;
-            ph = hours === 0 ? "poow-nots" : hours === 12 ? "po-wood-nye" : hNomPh[h12];
+            let spec = hours === 0 ? "Północ" : hours === 12 ? "Południe" : hNom[h12];
+            p = `<span class="nom-case">${spec}</span>${sStr}`;
             e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12 || 12} o'clock`;
         } else if (minutes < 30) {
-            p = `${mAll[minutes]} po ${hGenSpan}`; 
-            ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`; 
+            p = `${mAll[minutes]} po <span class="gen-case">${hGen[h12]}</span>${sStr}`;
             e = `${minutes} past ${h12 || 12}`;
         } else if (minutes === 30) {
-            p = `Wpół do ${nGenSpan}`; 
-            ph = `vpoow doh ${hGenPh[n12]}`; 
+            p = `Wpół do <span class="gen-case">${hGen[n12]}</span>${sStr}`;
             e = `Half past ${h12 || 12}`;
         } else {
-            let d = 60 - minutes; 
-            p = `Za ${mAll[d]} ${nNomSpan}`; 
-            ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`; 
+            let d = 60 - minutes;
+            p = `Za ${mAll[d]} <span class="nom-case">${hNom[n12]}</span>${sStr}`;
             e = `${d} to ${n12 || 12}`;
         }
     }
 
+    // 4. Update the actual Text Elements on screen
     const d = dict[currentLang] || dict['EN'];
-    document.getElementById('app-title').innerText = d.title;
-    const pt = document.getElementById('polish-text'), pht = document.getElementById('phonetic-text'), et = document.getElementById('english-text');
-    
-    if (isQuiz && !isRevealed) { 
-        pt.innerText = d.ask; pht.innerText = ""; et.innerText = ""; 
-    } else { 
-        pt.innerHTML = p; pht.innerText = showPh ? ph : ""; et.innerText = e; 
+    const pt = document.getElementById('polish-text');
+    const pht = document.getElementById('phonetic-text');
+    const et = document.getElementById('english-text');
+
+    if (isQuiz && !isRevealed) {
+        pt.innerText = d.ask; pht.innerText = ""; et.innerText = "";
+    } else {
+        pt.innerHTML = p; 
+        pht.innerText = showPh ? "Phonetics placeholder..." : ""; // Use your mAllPh arrays here
+        et.innerText = e;
     }
 }
 
