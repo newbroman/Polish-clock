@@ -1,3 +1,31 @@
+<style>
+    #help-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 0.9rem; /* Tidier font size */
+        text-align: center; /* Centered content */
+    }
+
+    #help-content th {
+        background-color: transparent; /* Transparent header for all modes */
+        border-bottom: 2px solid #dee2e6;
+        padding: 12px;
+        text-align: center;
+    }
+
+    #help-content td {
+        padding: 10px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+        text-align: center;
+    }
+
+    /* Grammar Colors */
+    .cardinal-num { color: #3498db; font-weight: bold; } /* Blue */
+    .nom-case { color: var(--nom-color); } /* Orange */
+    .gen-case { color: var(--gen-color); } /* Purple */
+</style>
+
 <div class="help-sect">
     <h3>📱 How to Use</h3>
     <ul>
@@ -10,7 +38,7 @@
 </div>
 
 <div class="help-sect">
-    <h3>👔 Formal Grammar (24h)</h3>
+    <h3>👔 <span class="nom-case">Formal</span> Grammar (24h)</h3>
     <p>Used for official schedules and digital clocks. It is mathematically precise.</p>
     <table class="help-table">
         <thead>
@@ -23,24 +51,24 @@
         </thead>
         <tbody>
             <tr>
-                <td>Hour</td>
-                <td><b>Ordinal</b> (1st, 2nd...)</td>
+                <td><span class="nom-case">Hour</span></td>
+                <td><b class="nom-case">Ordinal</b></td>
                 <td class="nom-case">Nominative (Orange)</td>
-                <td>Godzina <span class="nom-case">siedemnasta</span></td>
+                <td><span class="nom-case">Godzina</span> <span class="nom-case">siedemnasta</span></td>
             </tr>
             <tr>
-                <td>Minute</td>
-                <td><b>Cardinal</b> (1, 2, 3...)</td>
-                <td>Nominative (Black)</td>
-                <td>dziesięć (17:10)</td>
+                <td><span class="cardinal-num">Minute</span></td>
+                <td><b class="cardinal-num">Cardinal</b></td>
+                <td><span class="cardinal-num">Blue</span></td>
+                <td><span class="cardinal-num">dziesięć</span> (17:10)</td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <div class="help-sect">
-    <h3>☕ Casual Grammar (12h)</h3>
-    <p>Used in daily conversation. The hour changes ending based on the word before it.</p>
+    <h3>☕ <span class="gen-case">Casual</span> Grammar (12h)</h3>
+    <p>Used in daily conversation. The <span class="nom-case">hour</span> changes ending based on the word before it.</p>
     <table class="help-table">
         <thead>
             <tr>
@@ -52,30 +80,33 @@
         </thead>
         <tbody>
             <tr>
-                <td>(On the hour)</td>
-                <td><b>Ordinal</b></td>
+                <td>(On the <span class="nom-case">hour</span>)</td>
+                <td><b class="nom-case">Ordinal</b></td>
                 <td class="nom-case">Nominative (Orange)</td>
                 <td><span class="nom-case">Czwarta</span> (4:00)</td>
             </tr>
             <tr>
-                <td><b>Po</b> (Past)</td>
-                <td><b>Ordinal</b></td>
+                <td><b class="gen-case">Po</b> (Past)</td>
+                <td><b class="nom-case">Ordinal</b></td>
                 <td class="gen-case">Genitive (Purple)</td>
-                <td>Pięć po <span class="gen-case">czwartej</span> (4:05)</td>
+                <td><span class="cardinal-num">pięć</span> <span class="gen-case">po</span> <span class="gen-case">czwartej</span> (4:05)</td>
             </tr>
             <tr>
-                <td><b>Wpół do</b> (Half)</td>
-                <td><b>Ordinal</b></td>
+                <td><b class="gen-case">Wpół do</b> (Half)</td>
+                <td><b class="nom-case">Ordinal</b></td>
                 <td class="gen-case">Genitive (Purple)</td>
-                <td>Wpół do <span class="gen-case">piątej</span> (4:30)</td>
+                <td><span class="gen-case">wpół do</span> <span class="gen-case">piątej</span> (4:30)</td>
             </tr>
             <tr>
-                <td><b>Za</b> (To)</td>
-                <td><b>Ordinal</b></td>
+                <td><b class="nom-case">Za</b> (To)</td>
+                <td><b class="nom-case">Ordinal</b></td>
                 <td class="nom-case">Nominative (Orange)</td>
-                <td>Za pięć <span class="nom-case">piąta</span> (4:55)</td>
+                <td><span class="nom-case">za</span> <span class="cardinal-num">pięć</span> <span class="nom-case">piąta</span> (4:55)</td>
             </tr>
         </tbody>
     </table>
-    <p><small>*Note: Minutes are always <b>Cardinal</b> numbers in casual mode.</small></p>
+    <p>
+        <small>*Note: <span class="cardinal-num">minutes</span> are always 
+        <b class="cardinal-num">cardinal</b> numbers in <span class="gen-case">casual</span> mode.</small>
+    </p>
 </div>
