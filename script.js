@@ -113,28 +113,6 @@ function updateDisplay(syncInput) {
         et.innerText = e;
     }
 
-3. Polish UI Refinement
-
-I noticed in your getCorrectStr function (used for the quiz buttons), the minutes don't have the blue color tags yet. To keep it consistent with your help page [cite: 2026-01-13]:
-JavaScript
-
-function getCorrectStr(h, m, formal) {
-    if (formal) {
-        let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
-        // Wrap the minute string in the blue class
-        let mCard = mStr ? `<span class="cardinal-num">${mStr}</span>` : "";
-        return `Godzina <span class="nom-case">${hNom[h]}</span> ${mCard}`.trim();
-    } else {
-        let h12 = h % 12, n12 = (h + 1) % 12;
-        if (m === 0) return `<span class="nom-case">${hNom[h12]}</span>`;
-        // Wrap minutes in blue cardinal-num class
-        if (m < 30) return `<span class="cardinal-num">${mAll[m]}</span> po <span class="gen-case">${hGen[h12]}</span>`;
-        if (m === 30) return `w pół do <span class="gen-case">${hGen[n12]}</span>`;
-        return `za <span class="cardinal-num">${mAll[60-m]}</span> <span class="nom-case">${hNom[n12]}</span>`;
-    }
-}
-
-Would you like me to also add a "Lock" icon to the digital input to show when the Live Clock is paused?
 function startDrag(e) {
     e.preventDefault();
     const clock = document.getElementById('clock-container');
