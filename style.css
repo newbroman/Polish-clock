@@ -78,9 +78,18 @@ body {
     overflow: hidden; /* Ensures the flag doesn't bleed out */
 }
 .mark {
-    background-color: white !important; /* Changed from black to white for visibility on the black stripe */
+    background-color: #ffffff !important; /* Pure white for the black stripe */
+    opacity: 1;
+    position: absolute;
+    width: 2px;
+    height: 10px; /* Slightly longer for better visibility */
+    left: 50%;
+    margin-left: -1px;
+    transform-origin: 1px 72.5px; /* Centers for 145px clock */
     z-index: 2;
-
+    /* This shadow ensures they are visible even on the yellow/gold stripe */
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8); 
+}
 .hand {
     /* Adding a light border to hands so they stand out on all flag colors */
     box-shadow: 0 0 2px rgba(255,255,255,0.8);
