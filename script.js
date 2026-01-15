@@ -114,6 +114,7 @@ function updateDisplay(syncInput) {
         pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
+}
 
 function startDrag(e) {
    isLive = false;
