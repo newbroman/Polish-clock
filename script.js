@@ -10,8 +10,8 @@ const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "s
 const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
 const dict = {
-    EN: { title: "Polish Time Learner", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF" },
-    PL: { title: "Nauka Czasu", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
+    EN: { title: "Say the Time in Polishr", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF" },
+    PL: { title: "Powiedz Kótra Godzina po Polsku", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
 };
 
 // Utility
@@ -42,7 +42,7 @@ function init() {
 }
 
 function updateDisplay(syncInput) {
-    // 1. Hands
+    // 1. Hands & Digital Sync
     const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
     const mRotation = minutes * 6;
     const sRotation = seconds * 6;
@@ -52,40 +52,44 @@ function updateDisplay(syncInput) {
     const sHand = document.getElementById('s-hand');
     if (sHand) sHand.style.transform = `rotate(${sRotation}deg)`;
 
-    // 2. Digital Input
+    const pad = (n) => n.toString().padStart(2, '0');
     const timeStr = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     if (syncInput) document.getElementById('time-input-display').value = timeStr;
 
-    // 3. Grammar Logic
-  const isFormal = document.getElementById('formal').checked;
+    // 2. Text Logic
+    const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
-    
-    // Seconds in cardinal blue
     let sStr = (showSec && seconds > 0) ? ` i <span class="cardinal-num">${mAll[seconds]}</span> sekund` : "";
 
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
         let mCard = minutes > 0 ? `<span class="cardinal-num">${mStr}</span>` : "";
-        
-        // "Godzina [Hour]" is Orange, Minutes are Blue
         p = `<span class="nom-case">Godzina ${hNom[hours]}</span> ${mCard}${sStr}`;
+        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}`;
         e = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
-        
+        let displayH = h12 || 12; // For English 12-hour format
+        let nextH = n12 || 12;
+
         if (minutes === 0) {
             let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
             p = `<span class="nom-case">${spec}</span>${sStr}`;
+            ph = `${hNomPh[h12]}`;
+            e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${displayH} o'clock`;
         } else if (minutes < 30) {
-            // Minutes (Blue) + "po [Hour]" (Purple)
             p = `<span class="cardinal-num">${mAll[minutes]}</span> <span class="gen-case">po ${hGen[h12]}</span>${sStr}`;
+            ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`;
+            e = `${minutes} past ${displayH}`;
         } else if (minutes === 30) {
-            // "w pół do [Hour]" (Purple)
             p = `<span class="gen-case">w pół do ${hGen[n12]}</span>${sStr}`;
+            ph = `fpoow do ${hGenPh[n12]}`;
+            e = `Half past ${displayH}`;
         } else {
             let d = 60 - minutes;
-            // "za" (Orange) + Minutes (Blue) + Hour (Orange)
             p = `<span class="nom-case">za</span> <span class="cardinal-num">${mAll[d]}</span> <span class="nom-case">${hNom[n12]}</span>${sStr}`;
+            ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`;
+            e = `${d} to ${nextH}`;
         }
     }
 
