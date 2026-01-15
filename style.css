@@ -91,24 +91,17 @@ body {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.8); 
 }
 .hand {
-    /* Adding a light border to hands so they stand out on all flag colors */
-    box-shadow: 0 0 2px rgba(255,255,255,0.8);
+   background: #ffffff; /* Change hands to white */
+    border: 1px solid #000; /* Thin black border so they show on the white/gold sections */
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5); /* Slight outer glow */
 }
 
 .hour-hand { width: 6px; height: 40px; margin-left: -3px; }
 .min-hand { width: 4px; height: 60px; margin-left: -2px; }
 
 .sec-hand {
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    transform-origin: bottom;
-    width: 2px;
-    height: 65px;
-    margin-left: -1px;
-    background: #808080; 
-    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.8);
-    z-index: 8;
+    background: var(--vivid-red) !important;
+    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.9);
 }
 
 /* DIGITAL CLOCK (Red text) */
