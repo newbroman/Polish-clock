@@ -78,6 +78,21 @@ body {
 
 .hour-hand { width: 6px; height: 50px; margin-left: -3px; }
 .min-hand { width: 4px; height: 80px; margin-left: -2px; }
+/* Second Hand - Thin and Red */
+.sec-hand {
+    width: 2px;
+    height: 95px;
+    margin-left: -1px;
+    background: #ff0000; 
+    z-index: 8;
+    transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44); /* Smooth tick */
+}
+
+/* Ensure the center dot covers the hand pivot */
+.dot {
+    z-index: 10;
+}
+
 
 /* BUTTONS & QUIZ */
 button { 
