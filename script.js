@@ -1,6 +1,5 @@
 // 1. Global State
-let hours = 12, minutes = 0, seconds = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true;
-let showSec = false;
+let hours = 12, minutes = 0, seconds = 0, isQuiz = false, isRevealed = true, currentLang = 'EN', showPh = true, showSec = false;
 
 // 2. Data Sets
 const hNom = ["północ", "pierwsza", "druga", "trzecia", "czwarta", "piąta", "szósta", "siódma", "ósma", "dziewiąta", "dziesiąta", "jedenasta", "południe", "trzynasta", "czternasta", "piętnasta", "szesnasta", "siedemnasta", "osiemnasta", "dziewiętnasta", "dwudziesta", "dwudziesta pierwsza", "dwudziesta druga", "dwudziesta trzecia"];
@@ -15,74 +14,74 @@ const dict = {
     PL: { title: "Nauka Czasu", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
 };
 
-// 3. Functions
+// Utility
+const pad = (n) => n.toString().padStart(2, '0');
+
 function init() {
     const c = document.getElementById('clock-container');
-    const existingMarks = c.querySelectorAll('.mark');
-    existingMarks.forEach(m => m.remove());
+    c.querySelectorAll('.mark').forEach(m => m.remove());
 
     for (let i = 0; i < 12; i++) {
         const m = document.createElement('div');
         m.className = 'mark';
         m.style.transform = `rotate(${i * 30}deg)`;
-        m.style.transformOrigin = `1px 72.5px`;
+        m.style.transformOrigin = `1px 72.5px`; // Ensure this matches your CSS circle
         c.appendChild(m);
     }
 
     setRealTime(); 
- setInterval(() => {
+    setInterval(() => {
         if (!isQuiz) {
             const now = new Date();
             seconds = now.getSeconds();
             hours = now.getHours();
             minutes = now.getMinutes();
-
-            // Always update the display every second to keep digital clock 
-            // and translations in sync with the ticking hand
             updateDisplay(true);
         }
     }, 1000);
 }
 
 function updateDisplay(syncInput) {
-    // ... (Clock hand rotations stay the same) ...
+    // 1. Hands
+    const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
+    const mRotation = minutes * 6;
+    const sRotation = seconds * 6;
 
+    document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
+    document.getElementById('m-hand').style.transform = `rotate(${mRotation}deg)`;
+    const sHand = document.getElementById('s-hand');
+    if (sHand) sHand.style.transform = `rotate(${sRotation}deg)`;
+
+    // 2. Digital Input
+    const timeStr = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
+    if (syncInput) document.getElementById('time-input-display').value = timeStr;
+
+    // 3. Grammar Logic
     const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
     let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
 
     if (isFormal) {
-        // 1. Polish String Logic
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        
-        // 2. Wrap entire phrase in Orange (Nominative)
         p = `<span class="nom-case">Godzina ${hNom[hours]} ${mStr}${sStr}</span>`;
-        
-        // 3. Phonetics
         ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}${showSec && seconds > 0 ? ' i ' + mAllPh[seconds] : ''}`;
-        
-        // 4. English Translation (Now uses pad for all units to match digital display)
         e = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
-       } else {
+    } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
         if (minutes === 0) {
             let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
-            // Just the hour name in Orange
             p = `<span class="nom-case">${spec}</span>${sStr}`;
             ph = `${hNomPh[h12]}`;
             e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12 || 12} o'clock`;
         } else if (minutes < 30) {
-            // Entire "past" phrase in Purple (Genitive)
             p = `<span class="gen-case">${mAll[minutes]} po ${hGen[h12]}</span>${sStr}`;
             ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`;
             e = `${minutes} past ${h12 || 12}`;
         } else if (minutes === 30) {
-            // "Half to" phrase in Purple (Genitive)
             p = `<span class="gen-case">w pół do ${hGen[n12]}</span>${sStr}`;
             ph = `fpoow do ${hGenPh[n12]}`;
             e = `Half past ${h12 || 12}`;
         } else {
-            // "To" phrase in Orange (Nominative)
             let d = 60 - minutes;
             p = `<span class="nom-case">za ${mAll[d]} ${hNom[n12]}</span>${sStr}`;
             ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`;
@@ -90,7 +89,8 @@ function updateDisplay(syncInput) {
         }
     }
 
-    const d = dict[currentLang] || dict['EN'];
+    // 4. Update UI
+    const d = dict[currentLang];
     const pt = document.getElementById('polish-text');
     const pht = document.getElementById('phonetic-text');
     const et = document.getElementById('english-text');
@@ -98,45 +98,43 @@ function updateDisplay(syncInput) {
     if (isQuiz && !isRevealed) {
         pt.innerText = d.ask; pht.innerText = ""; et.innerText = "";
     } else {
-        // Use innerHTML to allow the spans to render colors
         pt.innerHTML = p; 
         pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
 }
 
-async function toggleHelp() {
-    const modal = document.getElementById('help-modal');
-    const content = document.getElementById('help-content');
-    if (modal.style.display === 'block') {
-        modal.style.display = 'none';
-        return;
-    }
-    const helpFile = currentLang === 'PL' ? 'help_pl.html' : 'help_en.html';
-    try {
-        const response = await fetch(helpFile);
-        if (!response.ok) throw new Error();
-        content.innerHTML = await response.text();
-        modal.style.display = 'block';
-    } catch (e) {
-        content.innerHTML = "<p>Error loading help.</p>";
-        modal.style.display = 'block';
-    }
-}
+function startDrag(e) {
+    e.preventDefault();
+    const clock = document.getElementById('clock-container');
+    const move = (ev) => {
+        const rect = clock.getBoundingClientRect();
+        const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+        const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+        const x = cx - rect.left - rect.width / 2;
+        const y = cy - rect.top - rect.height / 2;
+        const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
+        const norm = (angle < 0) ? angle + 360 : angle;
+        const dist = Math.sqrt(x*x + y*y);
 
-// Ensure other missing functions are present
-function toggleLang() {
-    currentLang = (currentLang === 'EN' ? 'PL' : 'EN');
-    const d = dict[currentLang];
-    document.getElementById('app-title').innerText = d.title;
-    document.getElementById('btn-real').innerText = d.actual;
-    document.getElementById('btn-random').innerText = d.random;
-    document.getElementById('btn-listen').innerText = d.listen;
-    document.getElementById('btn-slow').innerText = d.slow;
-    document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
-    document.getElementById('help-close').innerText = d.close;
-    updateDisplay(true);
-    if(isQuiz) generateQuizOptions();
+        if (dist < 35) {
+            let newH = Math.round(norm / 30) % 12;
+            if (hours >= 12) newH += 12;
+            hours = newH;
+        } else {
+            minutes = Math.round(norm / 6) % 60;
+        }
+        updateDisplay(true);
+    };
+    const stop = () => {
+        window.removeEventListener('mousemove', move);
+        window.removeEventListener('touchmove', move);
+        if (isQuiz) generateQuizOptions();
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', move);
+    window.addEventListener('mouseup', stop, {once:true});
+    window.addEventListener('touchend', stop, {once:true});
 }
 
 function setRealTime() {
@@ -149,6 +147,7 @@ function setRealTime() {
 function rollTime() {
     hours = Math.floor(Math.random() * 24);
     minutes = Math.floor(Math.random() * 60);
+    seconds = 0;
     isRevealed = !isQuiz;
     updateDisplay(true);
     if (isQuiz) generateQuizOptions();
@@ -191,12 +190,12 @@ function toggleQuiz() {
 function generateQuizOptions() {
     const container = document.getElementById('quiz-options');
     const isFormal = document.getElementById('formal').checked;
-    const correctAnswer = getPolishTimeString(hours, minutes, isFormal);
+    const correctAnswer = getCorrectStr(hours, minutes, isFormal);
     let options = [correctAnswer];
     while (options.length < 4) {
         let rH = Math.floor(Math.random() * 24);
         let rM = Math.floor(Math.random() * 60);
-        let wrong = getPolishTimeString(rH, rM, isFormal);
+        let wrong = getCorrectStr(rH, rM, isFormal);
         if (!options.includes(wrong)) options.push(wrong);
     }
     options.sort(() => Math.random() - 0.5);
@@ -205,20 +204,20 @@ function generateQuizOptions() {
     options.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerHTML = opt;
+        btn.style.cssText = "padding:10px; border-radius:8px; border:1px solid #ccc; background:white; cursor:pointer;";
         btn.onclick = () => {
             if (opt === correctAnswer) {
-                btn.style.background = "#28a745";
+                btn.style.background = "#28a745"; btn.style.color = "white";
                 setTimeout(() => { isRevealed = true; updateDisplay(true); container.style.display="none"; }, 500);
             } else {
-                btn.style.background = "#dc3545";
-                btn.disabled = true;
+                btn.style.background = "#dc3545"; btn.style.color = "white"; btn.disabled = true;
             }
         };
         container.appendChild(btn);
     });
 }
 
-function getPolishTimeString(h, m, formal) {
+function getCorrectStr(h, m, formal) {
     if (formal) {
         let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
         return `Godzina <span class="nom-case">${hNom[h]}</span> ${mStr}`.trim();
@@ -231,27 +230,37 @@ function getPolishTimeString(h, m, formal) {
     }
 }
 
-function startDrag(e) {
-    e.preventDefault();
-    const move = (ev) => {
-        const rect = document.getElementById('clock-container').getBoundingClientRect();
-        const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
-        const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
-        const x = cx - rect.left - rect.width / 2;
-        const y = cy - rect.top - rect.height / 2;
-        const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-        const norm = (angle < 0) ? angle + 360 : angle;
-        const dist = Math.sqrt(x*x + y*y);
-        if (dist < 35) {
-            let newH = Math.round(norm / 30) % 12;
-            if (hours >= 12) newH += 12;
-            hours = newH;
-        } else {
-            minutes = Math.round(norm / 6) % 60;
-        }
-        updateDisplay(true);
-    };
-    const stop = () => { window.removeEventListener('mousemove', move); window.removeEventListener('touchmove', move); if (isQuiz) generateQuizOptions(); };
-    window.addEventListener('mousemove', move); window.addEventListener('touchmove', move);
-    window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
+function manualTime(val) {
+    if(!val.includes(':')) return;
+    const parts = val.split(':');
+    let ph = parseInt(parts[0]), pm = parseInt(parts[1]);
+    if(!isNaN(ph) && !isNaN(pm)) {
+        hours = Math.min(23, Math.max(0, ph));
+        minutes = Math.min(59, Math.max(0, pm));
+        updateDisplay(false);
+    }
+}
+
+async function toggleHelp() {
+    const modal = document.getElementById('help-modal');
+    if (modal.style.display === 'block') { modal.style.display = 'none'; return; }
+    const helpFile = currentLang === 'PL' ? 'help_pl.html' : 'help_en.html';
+    try {
+        const r = await fetch(helpFile);
+        document.getElementById('help-content').innerHTML = await r.text();
+        modal.style.display = 'block';
+    } catch (e) { modal.style.display = 'block'; }
+}
+
+function toggleLang() {
+    currentLang = (currentLang === 'EN' ? 'PL' : 'EN');
+    const d = dict[currentLang];
+    document.getElementById('app-title').innerText = d.title;
+    document.getElementById('btn-real').innerText = d.actual;
+    document.getElementById('btn-random').innerText = d.random;
+    document.getElementById('btn-listen').innerText = d.listen;
+    document.getElementById('btn-slow').innerText = d.slow;
+    document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
+    document.getElementById('help-close').innerText = d.close;
+    updateDisplay(true);
 }
