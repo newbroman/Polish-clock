@@ -253,16 +253,18 @@ function generateQuizOptions() {
 function getCorrectStr(h, m, formal) {
     if (formal) {
         let mStr = (m > 0 && m < 10) ? "zero " + mAll[m] : (m === 0 ? "" : mAll[m]);
-        return `Godzina <span class="nom-case">${hNom[h]}</span> ${mStr}`.trim();
+        // Wrap the minute string in the blue class
+        let mCard = mStr ? `<span class="cardinal-num">${mStr}</span>` : "";
+        return `Godzina <span class="nom-case">${hNom[h]}</span> ${mCard}`.trim();
     } else {
         let h12 = h % 12, n12 = (h + 1) % 12;
         if (m === 0) return `<span class="nom-case">${hNom[h12]}</span>`;
-        if (m < 30) return `${mAll[m]} po <span class="gen-case">${hGen[h12]}</span>`;
+        // Wrap minutes in blue cardinal-num class
+        if (m < 30) return `<span class="cardinal-num">${mAll[m]}</span> po <span class="gen-case">${hGen[h12]}</span>`;
         if (m === 30) return `w pół do <span class="gen-case">${hGen[n12]}</span>`;
-        return `za ${mAll[60-m]} <span class="nom-case">${hNom[n12]}</span>`;
+        return `za <span class="cardinal-num">${mAll[60-m]}</span> <span class="nom-case">${hNom[n12]}</span>`;
     }
 }
-
 function manualTime(val) {
     if(!val.includes(':')) return;
     const parts = val.split(':');
