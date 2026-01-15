@@ -101,44 +101,54 @@ function updateDisplay(syncInput) {
 
     document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
     document.getElementById('m-hand').style.transform = `rotate(${mRotation}deg)`;
-    document.getElementById('s-hand').style.transform = `rotate(${sRotation}deg)`;
+    
+    // Safety check for the second hand to prevent "null" errors
+    const sHand = document.getElementById('s-hand');
+    if (sHand) sHand.style.transform = `rotate(${sRotation}deg)`;
 
-    // 2. Digital Clock Formatting
-    const timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}${showSec ? ':' + seconds.toString().padStart(2, '0') : ''}`;
-    if(syncInput) document.getElementById('time-input-display').value = timeStr;
+    // 2. Digital Clock Formatting (HH:MM:SS)
+    const pad = (n) => n.toString().padStart(2, '0');
+    const timeStr = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
+    if (syncInput) document.getElementById('time-input-display').value = timeStr;
 
-    // 3. Grammar Logic for Polish Phrase
+    // 3. Grammar Logic & Formatting
     const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
+    let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
 
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
-        p = `Godzina <span class="nom-case">${hNom[hours]}</span> ${mStr}${sStr}`.trim();
-        ph = `go-jee-nah ${hNomPh[hours]} ...`; // Simplified for brevity
-        e = `${hours}:${minutes.toString().padStart(2, '0')}${showSec ? ':' + seconds : ''}`;
+        // Formal always uses Nominative (Orange)
+        p = `Godzina <span class="nom-case">${hNom[hours]}</span> ${mStr}${sStr}`;
+        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}`;
+        e = `${hours}:${pad(minutes)}${showSec ? ':'+pad(seconds) : ''}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
-        let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
-
         if (minutes === 0) {
-            let spec = hours === 0 ? "Północ" : hours === 12 ? "Południe" : hNom[h12];
+            let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
             p = `<span class="nom-case">${spec}</span>${sStr}`;
+            ph = `${hNomPh[h12]}`;
             e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12 || 12} o'clock`;
         } else if (minutes < 30) {
-            p = `${mAll[minutes]} po <span class="gen-case">${hGen[h12]}</span>${sStr}`;
+            // Minutes and "po" in Purple, Hour in Purple
+            p = `<span class="gen-case">${mAll[minutes]} po ${hGen[h12]}</span>${sStr}`;
+            ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`;
             e = `${minutes} past ${h12 || 12}`;
         } else if (minutes === 30) {
-            p = `Wpół do <span class="gen-case">${hGen[n12]}</span>${sStr}`;
+            // "Wpół do" and Hour in Purple
+            p = `<span class="gen-case">w pół do ${hGen[n12]}</span>${sStr}`;
+            ph = `fpoow do ${hGenPh[n12]}`;
             e = `Half past ${h12 || 12}`;
         } else {
+            // "Za" and Hour in Orange
             let d = 60 - minutes;
-            p = `Za ${mAll[d]} <span class="nom-case">${hNom[n12]}</span>${sStr}`;
+            p = `<span class="nom-case">za ${mAll[d]} ${hNom[n12]}</span>${sStr}`;
+            ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`;
             e = `${d} to ${n12 || 12}`;
         }
     }
 
-    // 4. Update the actual Text Elements on screen
+    // 4. Update Screen Elements
     const d = dict[currentLang] || dict['EN'];
     const pt = document.getElementById('polish-text');
     const pht = document.getElementById('phonetic-text');
@@ -148,7 +158,7 @@ function updateDisplay(syncInput) {
         pt.innerText = d.ask; pht.innerText = ""; et.innerText = "";
     } else {
         pt.innerHTML = p; 
-        pht.innerText = showPh ? "Phonetics placeholder..." : ""; // Use your mAllPh arrays here
+        pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
 }
