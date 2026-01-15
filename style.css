@@ -7,7 +7,7 @@
     --nom-color: #e67e22; 
     --gen-color: #9b59b6;
     --clock-face: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%);
-    --btn-sub: #e9ecef;
+    --btn-sub-border: #555;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,32 +16,15 @@
         --text-color: #e0e0e0;
         --container-bg: #1e1e1e;
         --accent: #ff4d4d;
-        --nom-color: #ff9f43; /* Brighter Orange for dark mode */
-        --gen-color: #ce93d8; /* Brighter Purple for dark mode */
-        --clock-face: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%);
-        --btn-sub: #2a2a2a; /* Darker grey for buttons */
+        --nom-color: #ff9f43;
+        --gen-color: #ce93d8;
+        --btn-sub-border: #444;
     }
 
-    /* Target the Quiz Buttons specifically */
     #quiz-options button {
-        background-color: #2a2a2a !important; /* Darker background for contrast */
-        color: #ffffff !important; /* Forces the 'black' text to be white */
-        border: 1px solid #444 !important;
-    }
-
-    /* Ensure Grammar Colors pop inside the buttons */
-    #quiz-options button .nom-case {
-        color: var(--nom-color) !important;
-    }
-
-    #quiz-options button .gen-case {
-        color: var(--gen-color) !important;
-    }
-    
-    /* Darken the Listen/Speed buttons to match your mobile screenshot */
-    .btn-sub {
-        background-color: #252525 !important;
+        background-color: var(--bg-color) !important;
         color: #ffffff !important;
+        border: 1px solid var(--btn-sub-border) !important;
     }
 }
 
@@ -53,6 +36,7 @@ body {
     display: flex;
     justify-content: center;
     font-family: -apple-system, sans-serif;
+    overflow-x: hidden;
 }
 
 .container {
@@ -65,8 +49,7 @@ body {
     box-sizing: border-box;
 }
 
-/* CLOCK FACE (Restored Polish Flag) */
-/* CLOCK WITH TICKS */
+/* CLOCK FACE (145px / 66% size) */
 #clock-container {
     width: 145px;
     height: 145px;
@@ -79,9 +62,16 @@ body {
 }
 
 .mark {
-    background-color: #000000 !important; /* Force black in both modes */
+    background-color: #000000 !important; /* Always black as requested */
     opacity: 0.8;
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    left: 50%;
+    margin-left: -1px;
+    transform-origin: 1px 72.5px; /* Centers ticks for 145px clock */
 }
+
 .hand {
     position: absolute;
     bottom: 50%;
@@ -92,108 +82,10 @@ body {
     z-index: 5;
 }
 
-.hour-hand { width: 6px; height: 50px; margin-left: -3px; }
-.min-hand { width: 4px; height: 80px; margin-left: -2px; }
-/* Second Hand - Thin and Red */
-.sec-hand {
-    width: 2px;
-    height: 95px;
-    margin-left: -1px;
-    background:#808080; 
-    z-index: 8;
-    transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44); /* Smooth tick */
-}
+.hour-hand { width: 6px; height: 40px; margin-left: -3px; }
+.min-hand { width: 4px; height: 60px; margin-left: -2px; }
 
-/* Ensure the center dot covers the hand pivot */
-.dot {
-    z-index: 10;
-}
-
-
-/* BUTTONS & QUIZ */
-button { 
-    width: 100%; 
-    padding: 12px; 
-    margin: 4px 0; 
-    border-radius: 10px; 
-    border: none; 
-    font-weight: bold; 
-    cursor: pointer;
-    background: var(--btn-sub);
-    color: var(--text-color);
-}
-
-.top-row { display: flex; width: 100%; gap: 8px; margin-bottom: 5px; }
-.top-row button { padding: 8px; font-size: 0.75rem; }
-.audio-row {
-    display: flex;
-    gap: 8px;
-    width: 100%;
-    max-width: 400px;
-}
-.audio-row button {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 10px;
-    width: 100%;
-}
-
-#quiz-options {
-    display: none;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-/* HELP MODAL & TABLES */
-#help-modal {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-height: 85vh;
-    padding: 20px;
-    background: var(--container-bg);
-    color: var(--text-color);
-    border: 1px solid var(--table-border);
-    border-radius: 15px;
-    z-index: 2000;
-    overflow-y: auto;
-    box-sizing: border-box;
-    text-align: left;
-}
-
-.help-table th { background: var(--table-header); }
-
-.digital-wrap {
-    border: none; /* Removed the outer wrapper border */
-    display: flex;
-    justify-content: center;
-}
-
-To achieve the precise layout and styling from your mobile screenshot, we need to adjust the sizing, color logic, and specific CSS properties.
-
-Here are the updates for your project.
-1. Updated style.css
-
-This includes the 66% smaller clock, the red digital text, the bordered second hand, and the darker quiz button for dark mode.
-CSS
-
-/* Update Clock Size */
-#clock-container {
-    width: 145px;  /* 66% of the original 220px */
-    height: 145px;
-    border: 4px solid var(--text-color);
-    border-radius: 50%;
-    position: relative;
-    background: var(--clock-face);
-    margin: 10px auto;
-}
-
-/* Second Hand with Border/Contrast */
+/* Second Hand - Bordered to stand out on red */
 .sec-hand {
     position: absolute;
     bottom: 50%;
@@ -202,84 +94,82 @@ CSS
     width: 2px;
     height: 65px;
     margin-left: -1px;
-    background: #808080;
-    /* White border/outline to stand out on the red half */
+    background: #808080; 
     box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.8);
     z-index: 8;
 }
 
-/* Digital Clock Styling */
+/* DIGITAL CLOCK (Red text, single border) */
 #time-input-display {
     color: #ff4d4d !important;
     font-size: 2.2rem;
     font-weight: bold;
-    border: 2px solid #dc3545; /* This is the single red border */
+    border: 2px solid #dc3545;
     border-radius: 12px;
-    padding: 8px; /* Adjusted padding */
+    padding: 8px;
     background: transparent;
     text-align: center;
     width: 180px;
-    outline: none; /* Prevents focus ring from looking like a border */
+    margin: 15px 0;
+    outline: none;
 }
 
-/* Grammar Colors */
-.nom-case { color: #e67e22 !important; font-weight: bold; } /* Orange */
-.gen-case { color: #9b59b6 !important; font-weight: bold; } /* Purple */
-
-/* Phrase Area */
-.display-area {
-    text-align: center;
-    margin-top: 10px;
-}
-
-#polish-text { font-size: 1.4rem; margin-bottom: 5px; }
-#phonetic-text { color: #2ecc71; font-family: monospace; } /* Green like the phone pic */
+/* POLISH PHRASE FORMATTING */
+.nom-case { color: var(--nom-color) !important; font-weight: bold; }
+.gen-case { color: var(--gen-color) !important; font-weight: bold; }
+#phonetic-text { color: #2ecc71; font-family: monospace; font-size: 0.9rem; }
 #english-text { opacity: 0.7; font-style: italic; }
 
-setting-row {
+/* BUTTONS */
+.btn-sub {
+    background-color: var(--bg-color) !important; /* Matches background */
+    color: var(--text-color);
+    border: 1px solid var(--btn-sub-border);
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.top-row { display: grid; grid-template-columns: repeat(5, 1fr); width: 100%; gap: 5px; }
+.top-row button { padding: 5px 0; font-size: 0.7rem; }
+
+.audio-row { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 8px; margin-top: 10px; }
+
+/* Main Action Buttons (80% Height) */
+.btn-real, .btn-main {
+    width: 100%;
+    padding: 12px; 
+    margin: 5px 0;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    color: white;
+}
+.btn-real { background-color: #007bff; }
+.btn-main { background-color: #dc3545; }
+
+/* HELP MODAL FIX */
+#help-modal {
+    display: none; 
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-height: 80vh;
+    padding: 20px;
+    background: var(--container-bg);
+    color: var(--text-color);
+    border: 2px solid var(--accent);
+    border-radius: 15px;
+    z-index: 3000; /* Extremely high to stay on top */
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.setting-row {
     display: flex;
     justify-content: space-around;
     width: 100%;
     margin: 15px 0;
-    color: var(--text-color);
-}
-
-/* Big Blue/Red Buttons */
-.btn-real, .btn-main {
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0;
-    border-radius: 12px;
-    border: none;
-    font-weight: bold;
-    font-size: 1rem;
-    color: white;
-    cursor: pointer;
-}
-
-/* Big Blue/Red Buttons - Updated to 80% height */
-.btn-real, .btn-main {
-    width: 100%;
-    padding: 12px; /* Reduced from 15px to meet the 80% height request */
-    margin: 5px 0;
-    border-radius: 12px;
-    border: none;
-    font-weight: bold;
-    font-size: 1rem;
-    color: white;
-    cursor: pointer;
-    display: block;
-    transition: opacity 0.2s;
-}
-
-.btn-real { background-color: #007bff; } /* Actual Time Blue */
-.btn-main { background-color: #dc3545; } /* Random Time Red */
-
-.btn-real:active, .btn-main:active {
-    opacity: 0.8;
-}
-.btn-sub {
-    background-color: var(--bg-color) !important;
-    border: 1px solid #555; /* Subtle border to see the button shape */
-    color: var(--text-color);
 }
