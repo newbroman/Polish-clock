@@ -95,31 +95,25 @@ function toggleSec() {
 }
 
 function updateDisplay(syncInput) {
-    // 1. Clock Hand Rotations
     const hRotation = ((hours % 12) * 30) + (minutes * 0.5);
     const mRotation = minutes * 6;
     const sRotation = seconds * 6;
 
     document.getElementById('h-hand').style.transform = `rotate(${hRotation}deg)`;
     document.getElementById('m-hand').style.transform = `rotate(${mRotation}deg)`;
-    
     const sHand = document.getElementById('s-hand');
     if (sHand) sHand.style.transform = `rotate(${sRotation}deg)`;
 
-    // 2. Digital Clock Formatting (Single Red Border Fix)
     const pad = (n) => n.toString().padStart(2, '0');
-    // Ensure no seconds in display unless toggled
     const timeStr = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     if (syncInput) document.getElementById('time-input-display').value = timeStr;
 
-    // 3. Grammar Logic & Full Phrase Coloring
     const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
     let sStr = (showSec && seconds > 0) ? ` i ${mAll[seconds]} sekund` : "";
 
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        // Formal: Entire phrase in Orange (Nominative)
         p = `<span class="nom-case">Godzina ${hNom[hours]} ${mStr}${sStr}</span>`;
         ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}`;
         e = `${hours}:${pad(minutes)}${showSec ? ':'+pad(seconds) : ''}`;
@@ -127,28 +121,40 @@ function updateDisplay(syncInput) {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
         if (minutes === 0) {
             let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
-            // Casual Full Hour: Orange
             p = `<span class="nom-case">${spec}</span>${sStr}`;
             ph = `${hNomPh[h12]}`;
             e = hours === 0 ? "Midnight" : hours === 12 ? "Noon" : `${h12 || 12} o'clock`;
         } else if (minutes < 30) {
-            // Casual Past: Entire phrase in Purple (Genitive)
             p = `<span class="gen-case">${mAll[minutes]} po ${hGen[h12]}</span>${sStr}`;
             ph = `${mAllPh[minutes]} po ${hGenPh[h12]}`;
             e = `${minutes} past ${h12 || 12}`;
         } else if (minutes === 30) {
-            // Casual Half-past: Entire phrase in Purple (Genitive)
             p = `<span class="gen-case">w pół do ${hGen[n12]}</span>${sStr}`;
             ph = `fpoow do ${hGenPh[n12]}`;
             e = `Half past ${h12 || 12}`;
         } else {
-            // Casual To: Entire phrase in Orange (Nominative)
             let d = 60 - minutes;
             p = `<span class="nom-case">za ${mAll[d]} ${hNom[n12]}</span>${sStr}`;
             ph = `zah ${mAllPh[d]} ${hNomPh[n12]}`;
             e = `${d} to ${n12 || 12}`;
         }
     }
+
+    const d = dict[currentLang] || dict['EN'];
+    const pt = document.getElementById('polish-text');
+    const pht = document.getElementById('phonetic-text');
+    const et = document.getElementById('english-text');
+
+    if (isQuiz && !isRevealed) {
+        pt.innerText = d.ask; 
+        pht.innerText = ""; 
+        et.innerText = "";
+    } else {
+        pt.innerHTML = p; 
+        pht.innerText = showPh ? ph : ""; 
+        et.innerText = e;
+    }
+}
 
     // 4. Update the actual Text Elements
     const pt = document.getElementById('polish-text');
@@ -344,10 +350,13 @@ async function toggleHelp() {
         if (!response.ok) throw new Error('File not found');
         let html = await response.text();
         
-    
+        // This was the missing line:
+        content.innerHTML = html; 
+        
         modal.style.display = 'block';
     } catch (e) {
-        content.innerHTML = "<p>Error loading help.</p>";
+        console.error(e);
+        content.innerHTML = `<p>Error loading help (${helpFile}). Please ensure the file exists in the same folder.</p>`;
         modal.style.display = 'block';
     }
 }
