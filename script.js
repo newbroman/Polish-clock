@@ -87,8 +87,6 @@ function startDrag(e) {
     window.addEventListener('mouseup', stop, {once:true}); window.addEventListener('touchend', stop, {once:true});
 }
 
-let showSec = false; // Add this to your global variables at the top
-
 function toggleSec() {
     showSec = !showSec;
     document.getElementById('sec-toggle').innerText = showSec ? "Sec: ON" : "Sec: OFF";
