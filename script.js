@@ -11,7 +11,7 @@ const mAll = ["zero", "jedna", "dwie", "trzy", "cztery", "pięć", "sześć", "s
 const mAllPh = ["ze-ro", "yed-nah", "dvye", "tshi", "chter-ih", "pyench", "shesh-ch", "she-dem", "o-shem", "je-vyench", "je-shench", "ye-de-nas-che", "dva-nash-che", "tshi-nash-che", "chter-nash-che", "pyent-nash-che", "shes-nas-che", "she-dem-nash-che", "o-shem-nash-che", "je-vyet-nas-che", "dva-jes-tsyah", "dva-jes-tsyah yed-nah", "dva-jes-tsyah dvye", "dva-jes-tsyah tshi", "dva-jes-tsyah chter-ih", "dva-jes-tsyah pyench", "dva-jes-tsyah shesh-ch", "dva-jes-tsyah she-dem", "dva-jes-tsyah o-shem", "dva-jes-tsyah je-vyench", "tshi-jes-tsyi", "tshi-jes-tsyi yed-nah", "tshi-jes-tsyi dvye", "tshi-jes-tsyi tshi", "tshi-jes-tsyi chter-ih", "tshi-jes-tsyi pyench", "tshi-jes-tsyi shesh-ch", "tshi-jes-tsyi she-dem", "tshi-jes-tsyi o-shem", "tshi-jes-tsyi je-vyench", "chter-jes-tsyi", "chter-jes-tsyi yed-nah", "chter-jes-tsyi dvye", "chter-jes-tsyi tshi", "chter-jes-tsyi chter-ih", "chter-jes-tsyi pyench", "chter-jes-tsyi shesh-ch", "chter-jes-tsyi she-dem", "chter-jes-tsyi o-shem", "chter-jes-tsyi je-vyench", "pyench-je-shont", "pyench-je-shont yed-nah", "pyench-je-shont dvye", "pyench-je-shont tshi", "pyench-je-shont chter-ih", "pyench-je-shont pyench", "pyench-je-shont shesh-ch", "pyench-je-shont she-dem", "pyench-je-shont o-shem", "pyench-je-shont je-vyench"];
 
 const dict = {
-    EN: { title: "Say the Time in Polishr", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How to say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF" },
+    EN: { title: "Say the Time in Polishr", actual: "ACTUAL TIME", random: "RANDOM TIME", listen: "🔊 LISTEN", slow: "½ SPEED", ask: "How do you say?", reveal: "REVEAL", close: "Close Help", qOn: "Quiz: ON", qOff: "Quiz: OFF" },
     PL: { title: "Powiedz Kótra Godzina po Polsku", actual: "AKTUALNY CZAS", random: "LOSOWY CZAS", listen: "🔊 SŁUCHAJ", slow: "½ PRĘDKOŚĆ", ask: "Jak to powiedzieć?", reveal: "POKAŻ", close: "Zamknij", qOn: "Quiz: WŁ", qOff: "Quiz: WYŁ" }
 };
 
@@ -191,18 +191,19 @@ function togglePh() {
 
 function toggleQuiz() {
     isQuiz = !isQuiz;
-    isRevealed = !isQuiz;
     const container = document.getElementById('quiz-options');
+    
     if (isQuiz) {
+        isRevealed = false; // Ensure the answer is hidden immediately [cite: 2026-01-13]
         generateQuizOptions();
         document.getElementById('quiz-toggle').innerText = dict[currentLang].qOn;
     } else {
+        isRevealed = true; // Show text again when quiz is off
         container.style.display = "none";
         document.getElementById('quiz-toggle').innerText = dict[currentLang].qOff;
-        updateDisplay(true);
     }
+    updateDisplay(true);
 }
-
 function generateQuizOptions() {
     const container = document.getElementById('quiz-options');
     const isFormal = document.getElementById('formal').checked;
