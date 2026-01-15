@@ -60,16 +60,15 @@ function updateDisplay(syncInput) {
   const isFormal = document.getElementById('formal').checked;
     let p = "", ph = "", e = "";
     
-    // Wrap seconds in cardinal color
+    // Seconds in cardinal blue
     let sStr = (showSec && seconds > 0) ? ` i <span class="cardinal-num">${mAll[seconds]}</span> sekund` : "";
 
     if (isFormal) {
         let mStr = (minutes > 0 && minutes < 10) ? "zero " + mAll[minutes] : (minutes === 0 ? "" : mAll[minutes]);
-        // Wrap formal minutes in cardinal color
         let mCard = minutes > 0 ? `<span class="cardinal-num">${mStr}</span>` : "";
         
+        // "Godzina [Hour]" is Orange, Minutes are Blue
         p = `<span class="nom-case">Godzina ${hNom[hours]}</span> ${mCard}${sStr}`;
-        ph = `go-jee-nah ${hNomPh[hours]} ${mAllPh[minutes]}`;
         e = `${pad(hours)}:${pad(minutes)}${showSec ? ':' + pad(seconds) : ''}`;
     } else {
         let h12 = hours % 12, n12 = (hours + 1) % 12;
@@ -78,14 +77,14 @@ function updateDisplay(syncInput) {
             let spec = hours === 0 ? "północ" : hours === 12 ? "południe" : hNom[h12];
             p = `<span class="nom-case">${spec}</span>${sStr}`;
         } else if (minutes < 30) {
-            // Minutes (Cardinal) + "po" hour (Genitive)
+            // Minutes (Blue) + "po [Hour]" (Purple)
             p = `<span class="cardinal-num">${mAll[minutes]}</span> <span class="gen-case">po ${hGen[h12]}</span>${sStr}`;
         } else if (minutes === 30) {
-            // "w pół do" hour (Genitive) - "pół" is part of the phrase here
+            // "w pół do [Hour]" (Purple)
             p = `<span class="gen-case">w pół do ${hGen[n12]}</span>${sStr}`;
         } else {
             let d = 60 - minutes;
-            // "za" (Nom) + Minutes (Cardinal) + Hour (Nom)
+            // "za" (Orange) + Minutes (Blue) + Hour (Orange)
             p = `<span class="nom-case">za</span> <span class="cardinal-num">${mAll[d]}</span> <span class="nom-case">${hNom[n12]}</span>${sStr}`;
         }
     }
