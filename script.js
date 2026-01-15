@@ -26,34 +26,35 @@ function init() {
         const m = document.createElement('div');
         m.className = 'mark';
         m.style.transform = `rotate(${i * 30}deg)`;
-        m.style.transformOrigin = `1px 72.5px`; // Ensure this matches your CSS circle
+        m.style.transformOrigin = `1px 72.5px`;
         c.appendChild(m);
     }
 
     setRealTime(); 
-  setInterval(() => {
-    if (isQuiz) return; // Never auto-tick during a quiz
+    
+    setInterval(() => {
+        if (isQuiz) return; // Stop everything during a quiz
 
-    if (isLive) {
-        // Real-time mode
-        const now = new Date();
-        seconds = now.getSeconds();
-        hours = now.getHours();
-        minutes = now.getMinutes();
-    } else {
-        // Manual mode: Tick forward from your custom time
-        seconds++;
-        if (seconds >= 60) {
-            seconds = 0;
-            minutes++;
-            if (minutes >= 60) {
-                minutes = 0;
-                hours = (hours + 1) % 24;
+        if (isLive) {
+            // Standard Live Mode
+            const now = new Date();
+            seconds = now.getSeconds();
+            hours = now.getHours();
+            minutes = now.getMinutes();
+        } else {
+            // Manual Tick: Keep the clock moving from the user's set time
+            seconds++;
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours = (hours + 1) % 24;
+                }
             }
         }
-    }
-    updateDisplay(true);
-}, 1000);
+        updateDisplay(true);
+    }, 1000);
 }
 
 function updateDisplay(syncInput) {
