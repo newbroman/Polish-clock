@@ -236,3 +236,9 @@ body {
     color: #3498db; /* A clear blue to distinguish from black/orange/purple */
     font-weight: bold;
 }
+
+#english-text {
+    color: #666;
+    font-style: italic;
+    margin-top: 5px;
+}
