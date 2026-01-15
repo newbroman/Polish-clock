@@ -16,12 +16,35 @@
         --text-color: #e0e0e0;
         --container-bg: #1e1e1e;
         --accent: #ff4d4d;
-        --nom-color: #ff9f43; 
-        --gen-color: #d1a3ff;
-        --clock-face: linear-gradient(to bottom, #eeeeee 50%, #a01d2a 50%);
-        --btn-sub: #333333;
+        --nom-color: #ff9f43; /* Brighter Orange for dark mode */
+        --gen-color: #ce93d8; /* Brighter Purple for dark mode */
+        --clock-face: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%);
+        --btn-sub: #2a2a2a; /* Darker grey for buttons */
+    }
+
+    /* Target the Quiz Buttons specifically */
+    #quiz-options button {
+        background-color: #2a2a2a !important; /* Darker background for contrast */
+        color: #ffffff !important; /* Forces the 'black' text to be white */
+        border: 1px solid #444 !important;
+    }
+
+    /* Ensure Grammar Colors pop inside the buttons */
+    #quiz-options button .nom-case {
+        color: var(--nom-color) !important;
+    }
+
+    #quiz-options button .gen-case {
+        color: var(--gen-color) !important;
+    }
+    
+    /* Darken the Listen/Speed buttons to match your mobile screenshot */
+    .btn-sub {
+        background-color: #252525 !important;
+        color: #ffffff !important;
     }
 }
+
 /* LAYOUT */
 body {
     background-color: var(--bg-color);
