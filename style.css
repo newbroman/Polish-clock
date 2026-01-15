@@ -230,3 +230,8 @@ body {
 .nom-case, .gen-case {
     font-weight: bold;
 }
+
+.cardinal-num {
+    color: #3498db; /* A clear blue to distinguish from black/orange/purple */
+    font-weight: bold;
+}
