@@ -31,16 +31,29 @@ function init() {
     }
 
     setRealTime(); 
-   setInterval(() => {
-        // Only update if isLive is true AND we aren't in a quiz
-        if (isLive && !isQuiz) {
-            const now = new Date();
-            seconds = now.getSeconds();
-            hours = now.getHours();
-            minutes = now.getMinutes();
-            updateDisplay(true);
+  setInterval(() => {
+    if (isQuiz) return; // Never auto-tick during a quiz
+
+    if (isLive) {
+        // Real-time mode
+        const now = new Date();
+        seconds = now.getSeconds();
+        hours = now.getHours();
+        minutes = now.getMinutes();
+    } else {
+        // Manual mode: Tick forward from your custom time
+        seconds++;
+        if (seconds >= 60) {
+            seconds = 0;
+            minutes++;
+            if (minutes >= 60) {
+                minutes = 0;
+                hours = (hours + 1) % 24;
+            }
         }
-    }, 1000);
+    }
+    updateDisplay(true);
+}, 1000);
 }
 
 function updateDisplay(syncInput) {
