@@ -268,11 +268,31 @@ function getPolishTimeString(h, m, formal) {
     }
 }
 
-function toggleLang() { currentLang = (currentLang === 'EN' ? 'PL' : 'EN'); updateDisplay(true); if(isQuiz) generateQuizOptions(); }
+function toggleLang() {
+    // 1. Switch language
+    currentLang = (currentLang === 'EN' ? 'PL' : 'EN');
+    const d = dict[currentLang];
 
-function togglePh() { 
-    showPh = !showPh; 
-    updateDisplay(true); 
+    // 2. Update Header
+    document.getElementById('app-title').innerText = d.title;
+
+    // 3. Update Main Buttons
+    document.getElementById('btn-real').innerText = d.actual;
+    document.getElementById('btn-random').innerText = d.random;
+    document.getElementById('btn-listen').innerText = d.listen;
+    document.getElementById('btn-slow').innerText = d.slow;
+    
+    // 4. Update Quiz Toggle text
+    document.getElementById('quiz-toggle').innerText = isQuiz ? d.qOn : d.qOff;
+
+    // 5. Update Help Button (if you have a label for it)
+    document.getElementById('help-close').innerText = d.close;
+
+    // 6. Refresh the phrase display
+    updateDisplay(true);
+    
+    // 7. If quiz is active, regenerate options in the new language
+    if(isQuiz) generateQuizOptions();
 }
 
 function manualTime(val) { 
