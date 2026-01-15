@@ -141,6 +141,34 @@ button {
 
 .help-table th { background: var(--table-header); }
 
-/* GRAMMAR COLORS */
-.nom-case { color: var(--nom-color) !important; font-weight: bold; }
-.gen-case { color: var(--gen-color) !important; font-weight: bold; }
+.digital-wrap {
+    border: 2px solid #dc3545; /* Polish Red border */
+    border-radius: 12px;
+    padding: 10px;
+    margin: 15px 0;
+    display: inline-block;
+}
+
+#time-input-display {
+    border: none;
+    background: transparent;
+    font-size: 2.5rem;
+    color: var(--text-color);
+    text-align: center;
+    width: 200px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Grammar Colors */
+.nom-case { color: #e67e22 !important; font-weight: bold; } /* Orange */
+.gen-case { color: #9b59b6 !important; font-weight: bold; } /* Purple */
+
+/* Phrase Area */
+.display-area {
+    text-align: center;
+    margin-top: 10px;
+}
+
+#polish-text { font-size: 1.4rem; margin-bottom: 5px; }
+#phonetic-text { color: #2ecc71; font-family: monospace; } /* Green like the phone pic */
+#english-text { opacity: 0.7; font-style: italic; }
