@@ -79,16 +79,9 @@ body {
 }
 
 .mark {
-    position: absolute;
-    width: 2px;
-    height: 10px;
-    background-color: var(--text-color);
-    left: 50%;
-    margin-left: -1px;
-    transform-origin: 1px 110px; /* Centers the ticks inside the 220px circle */
-    opacity: 0.6;
+    background-color: #000000 !important; /* Force black in both modes */
+    opacity: 0.8;
 }
-
 .hand {
     position: absolute;
     bottom: 50%;
@@ -176,11 +169,9 @@ button {
 .help-table th { background: var(--table-header); }
 
 .digital-wrap {
-    border: 2px solid #dc3545; /* Polish Red border */
-    border-radius: 12px;
-    padding: 10px;
-    margin: 15px 0;
-    display: inline-block;
+    border: none; /* Removed the outer wrapper border */
+    display: flex;
+    justify-content: center;
 }
 
 To achieve the precise layout and styling from your mobile screenshot, we need to adjust the sizing, color logic, and specific CSS properties.
@@ -219,17 +210,16 @@ CSS
 
 /* Digital Clock Styling */
 #time-input-display {
-    color: #ff4d4d !important; /* Force Red text */
+    color: #ff4d4d !important;
     font-size: 2.2rem;
     font-weight: bold;
-    border: 2px solid #dc3545;
+    border: 2px solid #dc3545; /* This is the single red border */
     border-radius: 12px;
-    padding: 10px;
+    padding: 8px; /* Adjusted padding */
     background: transparent;
     text-align: center;
-    width: 200px;
-    display: block;
-    margin: 15px auto;
+    width: 180px;
+    outline: none; /* Prevents focus ring from looking like a border */
 }
 
 /* Grammar Colors */
@@ -267,16 +257,29 @@ setting-row {
     cursor: pointer;
 }
 
+/* Big Blue/Red Buttons - Updated to 80% height */
+.btn-real, .btn-main {
+    width: 100%;
+    padding: 12px; /* Reduced from 15px to meet the 80% height request */
+    margin: 5px 0;
+    border-radius: 12px;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    display: block;
+    transition: opacity 0.2s;
+}
+
 .btn-real { background-color: #007bff; } /* Actual Time Blue */
 .btn-main { background-color: #dc3545; } /* Random Time Red */
 
+.btn-real:active, .btn-main:active {
+    opacity: 0.8;
+}
 .btn-sub {
-    background-color: #333333; /* Dark grey like the screenshot */
-    color: #ffffff;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    cursor: pointer;
+    background-color: var(--bg-color) !important;
+    border: 1px solid #555; /* Subtle border to see the button shape */
+    color: var(--text-color);
 }
