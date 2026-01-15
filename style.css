@@ -114,14 +114,14 @@ body {
 /* DIGITAL CLOCK (Red text, single border) */
 #time-input-display {
     color: #ff4d4d !important;
-    font-size: 2.2rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    border: 2px solid #dc3545;
-    border-radius: 12px;
-    padding: 8px;
+    border: 1px solid #dc3545;
+    border-radius: 5px;
+    padding: 5px;
     background: transparent;
     text-align: center;
-    width: 180px;
+    width: 8rem;
     margin: 15px 0;
     outline: none;
 }
