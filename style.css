@@ -3,14 +3,11 @@
     --bg-color: #f8f9fa;
     --text-color: #212529;
     --container-bg: #ffffff;
-    --table-header: #eeeeee;
-    --table-border: #dddddd;
-    --btn-sub: #e9ecef;
-    --accent: #dc3545; /* Polish Red */
+    --accent: #dc3545;
     --nom-color: #e67e22; 
     --gen-color: #9b59b6;
-    /* The Flag Face */
     --clock-face: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%);
+    --btn-sub: #e9ecef;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,27 +15,26 @@
         --bg-color: #121212;
         --text-color: #e0e0e0;
         --container-bg: #1e1e1e;
-        --table-header: #333333;
-        --table-border: #444444;
-        --btn-sub: #2d2d2d;
+        --accent: #ff4d4d;
         --nom-color: #ff9f43; 
         --gen-color: #d1a3ff;
-        --clock-face: linear-gradient(to bottom, #dddddd 50%, #a01d2a 50%);
+        --clock-face: linear-gradient(to bottom, #eeeeee 50%, #a01d2a 50%);
+        --btn-sub: #333333;
     }
 }
-
 /* LAYOUT */
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
-    transition: background-color 0.3s, color 0.3s;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    font-family: -apple-system, sans-serif;
 }
 
 .container {
+    width: 100%;
     max-width: 400px;
-    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,15 +43,27 @@ body {
 }
 
 /* CLOCK FACE (Restored Polish Flag) */
+/* CLOCK WITH TICKS */
 #clock-container {
-    width: 220px; /* Scaled down for mobile quiz visibility */
+    width: 220px;
     height: 220px;
     border: 5px solid var(--text-color);
     border-radius: 50%;
     position: relative;
     background: var(--clock-face);
-    margin: 15px 0;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin: 10px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.mark {
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    background-color: var(--text-color);
+    left: 50%;
+    margin-left: -1px;
+    transform-origin: 1px 110px; /* Centers the ticks inside the 220px circle */
+    opacity: 0.6;
 }
 
 .hand {
@@ -63,10 +71,9 @@ body {
     bottom: 50%;
     left: 50%;
     transform-origin: bottom;
-    background: #212529;
+    background: #1a1a1a;
     border-radius: 4px;
     z-index: 5;
-    border: 0.5px solid rgba(255,255,255,0.3);
 }
 
 .hour-hand { width: 6px; height: 50px; margin-left: -3px; }
@@ -74,22 +81,21 @@ body {
 
 /* BUTTONS & QUIZ */
 button { 
-    cursor: pointer; 
-    font-weight: 700; 
-    border-radius: 10px; 
-    border: 1px solid var(--table-border); 
-    padding: 10px; 
     width: 100%; 
-    margin-bottom: 6px;
-    background: var(--container-bg);
+    padding: 12px; 
+    margin: 4px 0; 
+    border-radius: 10px; 
+    border: none; 
+    font-weight: bold; 
+    cursor: pointer;
+    background: var(--btn-sub);
     color: var(--text-color);
 }
 
-.btn-main { background: var(--accent); color: white; border: none; }
-.btn-real { background: #007bff; color: white; border: none; }
-.btn-sub { background: var(--btn-sub); color: var(--text-color); padding: 6px; font-size: 0.65rem; width: auto; flex: 1; }
-
-.top-row { display: flex; width: 100%; gap: 8px; margin-bottom: 10px; }
+.btn-main { background: var(--accent); color: white; }
+.btn-real { background: #007bff; color: white; }
+.top-row { display: flex; width: 100%; gap: 8px; margin-bottom: 5px; }
+.top-row button { padding: 8px; font-size: 0.75rem; }
 
 #quiz-options {
     display: none;
