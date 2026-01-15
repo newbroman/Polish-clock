@@ -42,17 +42,18 @@
         <div id="quiz-options" style="display: none; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;"></div>
       </div>
 
-    <div class="setting-row">
-        <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay(true)"> Casual</label>
-        <label><input type="radio" name="mode" id="formal" onchange="updateDisplay(true)"> Formal</label>
-    </div>
+  <div class="setting-row">
+    <label><input type="radio" name="mode" id="casual" checked onchange="updateDisplay(true)"> Casual</label>
+    <label><input type="radio" name="mode" id="formal" onchange="updateDisplay(true)"> Formal</label>
+</div>
 
-    <button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
-    <button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-        <button class="btn-sub" id="btn-listen" onclick="speak(1)">🔊 LISTEN</button>
-        <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
-    </div>
+<button class="btn-real" id="btn-real" onclick="setRealTime()">ACTUAL TIME</button>
+<button class="btn-main" id="btn-random" onclick="rollTime()">RANDOM TIME</button>
+
+<div class="audio-row">
+    <button class="btn-sub" id="btn-listen" onclick="speak(1)">🔊 LISTEN</button>
+    <button class="btn-sub" id="btn-slow" onclick="speak(0.5)">½ SPEED</button>
+</div>
 
     <div id="help-modal">
         <h2 id="help-title">Guide / Poradnik</h2>
