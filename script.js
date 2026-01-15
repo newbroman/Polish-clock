@@ -95,7 +95,7 @@ function updateDisplay(syncInput) {
         }
     }
 
-    // 3. UI Update (Strict Quiz Hiding)
+  // 3. UI Update (Strict Quiz Hiding with Visibility control)
     const d = dict[currentLang];
     const pt = document.getElementById('polish-text');
     const pht = document.getElementById('phonetic-text');
@@ -103,14 +103,17 @@ function updateDisplay(syncInput) {
 
     if (isQuiz && !isRevealed) {
         pt.innerText = d.ask; 
+        pht.style.visibility = "hidden"; // Hide completely
+        et.style.visibility = "hidden"; // Hide completely
         pht.innerHTML = "&nbsp;"; 
         et.innerHTML = "&nbsp;"; 
     } else {
         pt.innerHTML = p; 
+        pht.style.visibility = "visible"; // Show again
+        et.style.visibility = "visible"; // Show again
         pht.innerText = showPh ? ph : ""; 
         et.innerText = e;
     }
-} // Properly closed
 
 function startDrag(e) {
    isLive = false;
