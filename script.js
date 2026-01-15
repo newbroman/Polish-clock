@@ -15,13 +15,18 @@ const dict = {
 
 function init() {
     const c = document.getElementById('clock-container');
+    // Clear existing to prevent duplicates on reload
+    const existingMarks = c.querySelectorAll('.mark');
+    existingMarks.forEach(m => m.remove());
+
     for (let i = 0; i < 12; i++) {
-        const m = document.createElement('div'); m.className = 'mark';
-        m.style.transform = `rotate(${i * 30}deg)`; c.appendChild(m);
+        const m = document.createElement('div');
+        m.className = 'mark';
+        m.style.transform = `rotate(${i * 30}deg)`;
+        c.appendChild(m);
     }
     setRealTime(); 
 }
-
 function startDrag(e) {
     e.preventDefault();
     const move = (ev) => {
