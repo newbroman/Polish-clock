@@ -313,10 +313,7 @@ async function toggleHelp() {
         if (!response.ok) throw new Error('File not found');
         let html = await response.text();
         
-        // Add the Close Button at the bottom
-        const closeText = currentLang === 'PL' ? 'Zamknij' : 'Close';
-        content.innerHTML = html + `<button class="btn-main" style="margin-top:20px" onclick="toggleHelp()">${closeText}</button>`;
-        
+    
         modal.style.display = 'block';
     } catch (e) {
         content.innerHTML = "<p>Error loading help.</p>";
