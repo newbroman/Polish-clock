@@ -18,19 +18,19 @@
     #help-content table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 0.85rem;
+        margin: 15px 0;
+        font-size: 0.8rem;
         text-align: center;
     }
 
     #help-content th {
         border-bottom: 2px solid #dee2e6;
-        padding: 10px;
+        padding: 8px;
     }
 
     #help-content td {
-        padding: 8px;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+        padding: 6px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
     }
 
     /* Grammar Colors */
@@ -45,23 +45,42 @@
     <div class="help-sect">
         <h3>📱 How to Use</h3>
         <ul>
-            <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
-            <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the box.</li>
-            <li><b>Formal/Casual Toggle:</b> Switch between official 24h time and daily 12h time.</li>
-            <li><b>EN/PL:</b> Switch the interface language.</li>
-            <li><b>Quiz Mode:</b> Pick the correct Polish phrase. <span style="color:#28a745">Green</span> is correct, <span style="color:#dc3545">Red</span> is wrong.</li>
+            <li><b>Drag the Hands:</b> Change time by moving the clock hands.</li>
+            <li><b>Manual Entry:</b> Type time directly (e.g., 16:45).</li>
+            <li><b>Formal/Casual Toggle:</b> Switch between 24h and 12h phrasing.</li>
+            <li><b>Quiz Mode:</b> Test your knowledge! <span style="color:#28a745">Green</span> = Correct.</li>
         </ul>
     </div>
 
     <div class="help-sect">
+        <h3>👔 Formal Grammar (24h)</h3>
+        <p>Used for schedules. <b>Hour</b> is <span class="nom-case">Ordinal</span>, <b>Minute</b> is <span class="cardinal-num">Cardinal</span>.</p>
+        <table class="help-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Structure</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>17:10</td>
+                    <td><span class="nom-case">Hour (Nom.)</span> + <span class="cardinal-num">Minute</span></td>
+                    <td><span class="nom-case">siedemnasta</span> <span class="cardinal-num">dziesięć</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="help-sect">
         <h3>☕ Casual Grammar (12h)</h3>
-        <p>In casual speech, the <b>Minute</b> is always <span class="cardinal-num">Cardinal</span>. The <b>Hour</b> is always <b>Ordinal</b>, but its case depends on the preposition used:</p>
-        
+        <p>The <b>Hour</b> case changes based on the preposition used:</p>
         <table class="help-table">
             <thead>
                 <tr>
                     <th>Structure</th>
-                    <th>Hour Case</th>
+                    <th>Preposition Case</th>
                     <th>Example</th>
                 </tr>
             </thead>
@@ -72,46 +91,62 @@
                     <td><span class="nom-case">Czwarta</span> (4:00)</td>
                 </tr>
                 <tr>
-                    <td><b>Po</b> (Past)</td>
-                    <td class="gen-case">Genitive</td>
-                    <td><span class="cardinal-num">pięć</span> po <span class="gen-case">czwartej</span> (4:05)</td>
+                    <td>Past</td>
+                    <td><span class="gen-case">po</span> (+ Genitive)</td>
+                    <td><span class="cardinal-num">pięć</span> <span class="gen-case">po czwartej</span></td>
                 </tr>
                 <tr>
-                    <td><b>Wpół do</b> (Half)</td>
-                    <td class="gen-case">Genitive</td>
-                    <td>wpół do <span class="gen-case">piątej</span> (4:30)</td>
+                    <td>Half past</td>
+                    <td><span class="gen-case">wpół do</span> (+ Genitive)</td>
+                    <td><span class="gen-case">wpół do piątej</span></td>
                 </tr>
                 <tr>
-                    <td><b>Za</b> (To)</td>
-                    <td class="nom-case">Nominative</td>
-                    <td>za <span class="cardinal-num">pięć</span> <span class="nom-case">piąta</span> (4:55)</td>
+                    <td>To</td>
+                    <td><span class="nom-case">za</span> (+ Nominative)</td>
+                    <td><span class="nom-case">za</span> <span class="cardinal-num">dziesięć</span> <span class="nom-case">piąta</span></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <div class="help-sect">
-        <h3>🔢 Number Reference Table</h3>
+        <h3>🔢 Number Reference</h3>
         <table>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Minutes (<span class="cardinal-num">Cardinal</span>)</th>
-                    <th>Hours (<span class="nom-case">Nom.</span>)</th>
-                    <th>Hours (<span class="gen-case">Gen.</span>)</th>
+                    <th>Min (<span class="cardinal-num">Card.</span>)</th>
+                    <th>Hr (<span class="nom-case">Nom.</span>)</th>
+                    <th>Hr (<span class="gen-case">Gen.</span>)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="number-table-body">
                 <tr><td>1</td><td class="cardinal-num">jeden</td><td class="nom-case">pierwsza</td><td class="gen-case">pierwszej</td></tr>
                 <tr><td>2</td><td class="cardinal-num">dwa</td><td class="nom-case">druga</td><td class="gen-case">drugiej</td></tr>
                 <tr><td>3</td><td class="cardinal-num">trzy</td><td class="nom-case">trzecia</td><td class="gen-case">trzeciej</td></tr>
                 <tr><td>4</td><td class="cardinal-num">cztery</td><td class="nom-case">czwarta</td><td class="gen-case">czwartej</td></tr>
                 <tr><td>5</td><td class="cardinal-num">pięć</td><td class="nom-case">piąta</td><td class="gen-case">piątej</td></tr>
+                <tr><td>6</td><td class="cardinal-num">sześć</td><td class="nom-case">szósta</td><td class="gen-case">szóstej</td></tr>
+                <tr><td>7</td><td class="cardinal-num">siedem</td><td class="nom-case">siódma</td><td class="gen-case">siódmej</td></tr>
+                <tr><td>8</td><td class="cardinal-num">osiem</td><td class="nom-case">ósma</td><td class="gen-case">ósmej</td></tr>
+                <tr><td>9</td><td class="cardinal-num">dziewięć</td><td class="nom-case">dziewiąta</td><td class="gen-case">dziewiątej</td></tr>
                 <tr><td>10</td><td class="cardinal-num">dziesięć</td><td class="nom-case">dziesiąta</td><td class="gen-case">dziesiątej</td></tr>
-                <tr><td>15</td><td class="cardinal-num">piętnaście</td><td class="nom-case">jedenasta*</td><td class="gen-case">jedenastej</td></tr>
-                <tr><td>20</td><td class="cardinal-num">dwadzieścia</td><td class="nom-case">dwunasta*</td><td class="gen-case">dwunastej</td></tr>
+                <tr><td>11</td><td class="cardinal-num">jedenasta</td><td class="nom-case">jedenasta</td><td class="gen-case">jedenastej</td></tr>
+                <tr><td>12</td><td class="cardinal-num">dwanaście</td><td class="nom-case">dwunasta</td><td class="gen-case">dwunastej</td></tr>
+                <tr><td>13</td><td class="cardinal-num">trzynaście</td><td class="nom-case">trzynasta</td><td class="gen-case">trzynastej</td></tr>
+                <tr><td>14</td><td class="cardinal-num">czternaście</td><td class="nom-case">czternasta</td><td class="gen-case">czternasta</td></tr>
+                <tr><td>15</td><td class="cardinal-num">piętnaście</td><td class="nom-case">piętnasta</td><td class="gen-case">piętnastej</td></tr>
+                <tr><td>16</td><td class="cardinal-num">szesnaście</td><td class="nom-case">szesnasta</td><td class="gen-case">szesnastej</td></tr>
+                <tr><td>17</td><td class="cardinal-num">siedemnaście</td><td class="nom-case">siedemnasta</td><td class="gen-case">siedemnastej</td></tr>
+                <tr><td>18</td><td class="cardinal-num">osiemnaście</td><td class="nom-case">osiemnasta</td><td class="gen-case">osiemnastej</td></tr>
+                <tr><td>19</td><td class="cardinal-num">dziewiętnaście</td><td class="nom-case">dziewiętnasta</td><td class="gen-case">dziewiętnastej</td></tr>
+                <tr><td>20</td><td class="cardinal-num">dwadzieścia</td><td class="nom-case">dwudziesta</td><td class="gen-case">dwudziestej</td></tr>
+                <tr><td>21</td><td class="cardinal-num">dwadzieścia jeden</td><td class="nom-case">dwudziesta pierwsza</td><td class="gen-case">dwudziestej pierwszej</td></tr>
+                <tr><td>22</td><td class="cardinal-num">dwadzieścia dwa</td><td class="nom-case">dwudziesta druga</td><td class="gen-case">dwudziestej drugiej</td></tr>
+                <tr><td>23</td><td class="cardinal-num">dwadzieścia trzy</td><td class="nom-case">dwudziesta trzecia</td><td class="gen-case">dwudziestej trzeciej</td></tr>
             </tbody>
         </table>
-        <small>*Note: Hours 11 and 12 are <b>jedenasta</b> and <b>dwunasta</b>.</small>
+        <p><small><b>Note on Minutes:</b> After 23, minutes continue in their standard <span class="cardinal-num">cardinal</span> form (e.g., 24 is <i>dwadzieścia cztery</i>, 25 is <i>dwadzieścia pięć</i>, etc.).</small></p>
+        <p><small><b>Note on Hours:</b> In 24h formal mode, use the Nominative Ordinal for all hours 1-24. In 12h casual mode, we only use hours 1-12.</small></p>
     </div>
 </div>
