@@ -280,8 +280,3 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#help-content table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-}
