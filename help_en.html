@@ -21,22 +21,27 @@
         margin: 15px 0;
         font-size: 0.8rem;
         text-align: center;
+        /* Bottom line for the whole table */
+        border-bottom: 2px solid rgba(128, 128, 128, 0.5);
     }
 
     #help-content th {
-        border-bottom: 2px solid #dee2e6;
-        padding: 8px;
+        background-color: transparent; 
+        /* Visible lines top and bottom of headings for all modes */
+        border-top: 2px solid rgba(128, 128, 128, 0.5);
+        border-bottom: 2px solid rgba(128, 128, 128, 0.5);
+        padding: 10px;
     }
 
     #help-content td {
-        padding: 6px;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        padding: 8px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
 
     /* Grammar Colors */
     .cardinal-num { color: #3498db; font-weight: bold; } /* Blue */
-    .nom-case { color: #e67e22; font-weight: bold; } /* Orange */
-    .gen-case { color: #9b59b6; font-weight: bold; } /* Purple */
+    .nom-case { color: #e67e22; font-weight: bold; }    /* Orange */
+    .gen-case { color: #9b59b6; font-weight: bold; }    /* Purple */
 </style>
 
 <div id="help-content">
@@ -45,17 +50,17 @@
     <div class="help-sect">
         <h3>📱 How to Use</h3>
         <ul>
-            <li><b>Drag the Hands:</b> Change time by moving the clock hands.</li>
-            <li><b>Manual Entry:</b> Type time directly (e.g., 16:45).</li>
-            <li><b>Formal/Casual Toggle:</b> Switch between 24h and 12h phrasing.</li>
-            <li><b>Quiz Mode:</b> Test your knowledge! <span style="color:#28a745">Green</span> = Correct.</li>
+            <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
+            <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the box.</li>
+            <li><b>Formal/Casual Toggle:</b> Switch between official 24h and daily 12h time.</li>
+            <li><b>Quiz Mode:</b> Test yourself! Pick the correct Polish phrase. <span style="color:#28a745">Green</span> for correct, <span style="color:#dc3545">Red</span> for wrong.</li>
         </ul>
     </div>
 
     <div class="help-sect">
         <h3>👔 Formal Grammar (24h)</h3>
-        <p>Used for schedules. <b>Hour</b> is <span class="nom-case">Ordinal</span>, <b>Minute</b> is <span class="cardinal-num">Cardinal</span>.</p>
-        <table class="help-table">
+        <p>Used for official schedules. <b>Hour</b> is <span class="nom-case">Ordinal</span>, <b>Minute</b> is <span class="cardinal-num">Cardinal</span>.</p>
+        <table>
             <thead>
                 <tr>
                     <th>Time</th>
@@ -76,7 +81,7 @@
     <div class="help-sect">
         <h3>☕ Casual Grammar (12h)</h3>
         <p>The <b>Hour</b> case changes based on the preposition used:</p>
-        <table class="help-table">
+        <table>
             <thead>
                 <tr>
                     <th>Structure</th>
@@ -120,7 +125,7 @@
                     <th>Hr (<span class="gen-case">Gen.</span>)</th>
                 </tr>
             </thead>
-            <tbody id="number-table-body">
+            <tbody>
                 <tr><td>1</td><td class="cardinal-num">jeden</td><td class="nom-case">pierwsza</td><td class="gen-case">pierwszej</td></tr>
                 <tr><td>2</td><td class="cardinal-num">dwa</td><td class="nom-case">druga</td><td class="gen-case">drugiej</td></tr>
                 <tr><td>3</td><td class="cardinal-num">trzy</td><td class="nom-case">trzecia</td><td class="gen-case">trzeciej</td></tr>
@@ -146,7 +151,7 @@
                 <tr><td>23</td><td class="cardinal-num">dwadzieścia trzy</td><td class="nom-case">dwudziesta trzecia</td><td class="gen-case">dwudziestej trzeciej</td></tr>
             </tbody>
         </table>
-        <p><small><b>Note on Minutes:</b> After 23, minutes continue in their standard <span class="cardinal-num">cardinal</span> form (e.g., 24 is <i>dwadzieścia cztery</i>, 25 is <i>dwadzieścia pięć</i>, etc.).</small></p>
+        <p><small><b>Note on Minutes:</b> Minutes are always <span class="cardinal-num">cardinal</span> numbers in both formal and casual forms. After 23, they continue their standard form (e.g., 24 is <i>dwadzieścia cztery</i>).</small></p>
         <p><small><b>Note on Hours:</b> In 24h formal mode, use the Nominative Ordinal for all hours 1-24. In 12h casual mode, we only use hours 1-12.</small></p>
     </div>
 </div>
