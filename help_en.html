@@ -15,19 +15,22 @@
         z-index: 100;
     }
 
+    /* Table responsive styling */
     #help-content table {
         width: 100%;
         border-collapse: collapse;
         margin: 15px 0;
         font-size: 0.8rem;
         text-align: center;
-        /* Bottom line for the whole table */
         border-bottom: 2px solid rgba(128, 128, 128, 0.5);
+        /* Allows horizontal scroll on small screens */
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
     #help-content th {
         background-color: transparent; 
-        /* Visible lines top and bottom of headings for all modes */
         border-top: 2px solid rgba(128, 128, 128, 0.5);
         border-bottom: 2px solid rgba(128, 128, 128, 0.5);
         padding: 10px;
@@ -53,7 +56,7 @@
             <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
             <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the box.</li>
             <li><b>Formal/Casual Toggle:</b> Switch between official 24h and daily 12h time.</li>
-            <li><b>Quiz Mode:</b> Test yourself! Pick the correct Polish phrase. <span style="color:#28a745">Green</span> for correct, <span style="color:#dc3545">Red</span> for wrong.</li>
+            <li><b>Quiz Mode:</b> <span style="color:#28a745">Green</span> for correct, <span style="color:#dc3545">Red</span> for wrong.</li>
         </ul>
     </div>
 
@@ -115,50 +118,52 @@
     </div>
 
     <div class="help-sect">
-    <h3>🎓 The Full Picture</h3>
-    <p>Combining everything: <span class="nom-case">Hour</span> + <span class="cardinal-num">Minutes</span> + <span class="cardinal-num">Seconds</span> + <b>Context</b>.</p>
-    <table class="help-table">
-        <thead>
-            <tr>
-                <th>Mode</th>
-                <th>Time (16:05:10)</th>
-                <th>Full Polish Phrase</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>👔 Formal</td>
-                <td>16:05:10</td>
-                <td><span class="nom-case">Szesnasta</span> <span class="cardinal-num">pięć dziesięć</span></td>
-            </tr>
-            <tr>
-                <td>☕ Casual</td>
-                <td>4:05:10 PM</td>
-                <td><span class="cardinal-num">Pięć</span> <span class="gen-case">po czwartej</span> <span class="cardinal-num">dziesięć</span> <b>po południu</b></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <h3>🎓 The Full Picture</h3>
+        <p>Combining everything: <span class="nom-case">Hour</span> + <span class="cardinal-num">Minutes</span> + <span class="cardinal-num">Seconds</span> + <b>Context</b>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mode</th>
+                    <th>Time (16:05:10)</th>
+                    <th>Full Polish Phrase</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>👔 Formal</td>
+                    <td>16:05:10</td>
+                    <td><span class="nom-case">Szesnasta</span> <span class="cardinal-num">pięć dziesięć</span></td>
+                </tr>
+                <tr>
+                    <td>☕ Casual</td>
+                    <td>4:05:10 PM</td>
+                    <td><span class="cardinal-num">Pięć</span> <span class="gen-case">po czwartej</span> <span class="cardinal-num">dziesięć</span> <b>po południu</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="help-sect">
-    <h3>☀️ Time of Day (AM/PM)</h3>
-    <p>Since casual mode uses 12h, add these phrases for clarity:</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Time Range</th>
-                <th>Polish Phrase</th>
-                <th>Meaning</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>04:00 – 09:00</td><td><b>rano</b></td><td>in the morning</td></tr>
-            <tr><td>10:00 – 11:00</td><td><b>przed południem</b></td><td>before noon</td></tr>
-            <tr><td>13:00 – 18:00</td><td><b>po południu</b></td><td>in the afternoon</td></tr>
-            <tr><td>19:00 – 23:00</td><td><b>wieczorem</b></td><td>in the evening</td></tr>
-            <tr><td>00:00 – 03:00</td><td><b>w nocy</b></td><td>at night</td></tr>
-        </tbody>
-    </table>
-</div>
+        <h3>☀️ Time of Day (AM/PM)</h3>
+        <p>Since casual mode uses 12h, add these phrases for clarity:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Time Range</th>
+                    <th>Polish Phrase</th>
+                    <th>Meaning</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>04:00 – 09:00</td><td><b>rano</b></td><td>in the morning</td></tr>
+                <tr><td>10:00 – 11:00</td><td><b>przed południem</b></td><td>before noon</td></tr>
+                <tr><td>13:00 – 18:00</td><td><b>po południu</b></td><td>in the afternoon</td></tr>
+                <tr><td>19:00 – 23:00</td><td><b>wieczorem</b></td><td>in the evening</td></tr>
+                <tr><td>00:00 – 03:00</td><td><b>w nocy</b></td><td>at night</td></tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="help-sect">
         <h3>🔢 Number Reference</h3>
         <table>
@@ -196,12 +201,13 @@
                 <tr><td>23</td><td class="cardinal-num">dwadzieścia trzy</td><td class="nom-case">dwudziesta trzecia</td><td class="gen-case">dwudziestej trzeciej</td></tr>
             </tbody>
         </table>
-<div class="help-sect">
-    <p><small><b>Note on Minutes & Seconds:</b> These are always <span class="cardinal-num">cardinal</span> (Blue) numbers in both formal and casual forms. After 23, they continue their standard form (e.g., 24 is <span class="cardinal-num"><i>dwadzieścia cztery</i></span>). Seconds follow the minutes directly (e.g., 12:05:10 is <span class="nom-case">dwunasta</span> <span class="cardinal-num">pięć dziesięć</span>).</small></p>
-    
-    <p><small><b>Note on Hours:</b> In 👔 Formal mode, always use the <span class="nom-case">Nominative Ordinal</span> (Orange). In ☕ Casual mode, use <span class="gen-case">Genitive</span> (Purple) after <span class="gen-case"><b>po</b></span> and <span class="gen-case"><b>wpół do</b></span>, but use <span class="nom-case">Nominative</span> (Orange) for full hours and after <span class="nom-case"><b>za</b></span>.</small></p>
-    
-    <p><small><b>Special Terms:</b> For 12:00, you can use <b>południe</b> (Noon) and for 00:00, <b>północ</b> (Midnight).</small></p>
-</div>
-      
+    </div>
+
+    <div class="help-sect">
+        <p><small><b>Note on Minutes & Seconds:</b> These are always <span class="cardinal-num">cardinal</span> (Blue) numbers in both formal and casual forms. After 23, they continue their standard form (e.g., 24 is <span class="cardinal-num"><i>dwadzieścia cztery</i></span>). Seconds follow the minutes directly (e.g., 12:05:10 is <span class="nom-case">dwunasta</span> <span class="cardinal-num">pięć dziesięć</span>).</small></p>
+        
+        <p><small><b>Note on Hours:</b> In 👔 Formal mode, always use the <span class="nom-case">Nominative Ordinal</span> (Orange). In ☕ Casual mode, use <span class="gen-case">Genitive</span> (Purple) after <span class="gen-case"><b>po</b></span> and <span class="gen-case"><b>wpół do</b></span>, but use <span class="nom-case">Nominative</span> (Orange) for full hours and after <span class="nom-case"><b>za</b></span>.</small></p>
+        
+        <p><small><b>Special Terms:</b> For 12:00, you can use <b>południe</b> (Noon) and for 00:00, <b>północ</b> (Midnight).</small></p>
+    </div>
 </div>
