@@ -1,112 +1,117 @@
 <style>
+    /* Floating Close Button */
+    .close-help {
+        position: sticky;
+        top: 10px;
+        float: right;
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 100;
+    }
+
     #help-content table {
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
-        font-size: 0.9rem; /* Tidier font size */
-        text-align: center; /* Centered content */
+        font-size: 0.85rem;
+        text-align: center;
     }
 
     #help-content th {
-        background-color: transparent; /* Transparent header for all modes */
         border-bottom: 2px solid #dee2e6;
-        padding: 12px;
-        text-align: center;
+        padding: 10px;
     }
 
     #help-content td {
-        padding: 10px;
+        padding: 8px;
         border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-        text-align: center;
     }
 
     /* Grammar Colors */
     .cardinal-num { color: #3498db; font-weight: bold; } /* Blue */
-    .nom-case { color: var(--nom-color); } /* Orange */
-    .gen-case { color: var(--gen-color); } /* Purple */
+    .nom-case { color: #e67e22; font-weight: bold; } /* Orange */
+    .gen-case { color: #9b59b6; font-weight: bold; } /* Purple */
 </style>
 
-<div class="help-sect">
-    <h3>📱 How to Use</h3>
-    <ul>
-        <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
-        <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the box.</li>
-        <li><b>EN/PL:</b> Switch the interface and help language.</li>
-        <li><b>Phon:</b> Toggle the phonetic "sounds-like" guide.</li>
-        <li><b>Quiz Mode:</b> Test yourself! Pick the correct Polish phrase for the time shown on the clock. The buttons are color-coded: <span style="color:#28a745">Green</span> for correct, <span style="color:#dc3545">Red</span> for wrong.</li>
-    </ul>
-</div>
+<div id="help-content">
+    <button class="close-help" onclick="toggleHelp()">✕ Close</button>
 
-<div class="help-sect">
-    <h3>👔 <span class="nom-case">Formal</span> Grammar (24h)</h3>
-    <p>Used for official schedules and digital clocks. It is mathematically precise.</p>
-    <table class="help-table">
-        <thead>
-            <tr>
-                <th>Part</th>
-                <th>Number Type</th>
-                <th>Case</th>
-                <th>Example</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><span class="nom-case">Hour</span></td>
-                <td><b class="nom-case">Ordinal</b></td>
-                <td class="nom-case">Nominative (Orange)</td>
-                <td><span class="nom-case">Godzina</span> <span class="nom-case">siedemnasta</span></td>
-            </tr>
-            <tr>
-                <td><span class="cardinal-num">Minute</span></td>
-                <td><b class="cardinal-num">Cardinal</b></td>
-                <td><span class="cardinal-num">Blue</span></td>
-                <td><span class="cardinal-num">dziesięć</span> (17:10)</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="help-sect">
+        <h3>📱 How to Use</h3>
+        <ul>
+            <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
+            <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the box.</li>
+            <li><b>Formal/Casual Toggle:</b> Switch between official 24h time and daily 12h time.</li>
+            <li><b>EN/PL:</b> Switch the interface language.</li>
+            <li><b>Quiz Mode:</b> Pick the correct Polish phrase. <span style="color:#28a745">Green</span> is correct, <span style="color:#dc3545">Red</span> is wrong.</li>
+        </ul>
+    </div>
 
-<div class="help-sect">
-    <h3>☕ <span class="gen-case">Casual</span> Grammar (12h)</h3>
-    <p>Used in daily conversation. The <span class="nom-case">hour</span> changes ending based on the word before it.</p>
-    <table class="help-table">
-        <thead>
-            <tr>
-                <th>Word Used</th>
-                <th>Number Type</th>
-                <th>Case Used</th>
-                <th>Example</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>(On the <span class="nom-case">hour</span>)</td>
-                <td><b class="nom-case">Ordinal</b></td>
-                <td class="nom-case">Nominative (Orange)</td>
-                <td><span class="nom-case">Czwarta</span> (4:00)</td>
-            </tr>
-            <tr>
-                <td><b class="gen-case">Po</b> (Past)</td>
-                <td><b class="nom-case"></b></td>
-                <td class="gen-case">Genitive (Purple)</td>
-                <td><span class="cardinal-num">pięć</span> <span class="gen-case">po</span> <span class="gen-case">czwartej</span> (4:05)</td>
-            </tr>
-            <tr>
-                <td><b class="gen-case">Wpół do</b> (Half)</td>
-                <td><b class="nom-case"></b></td>
-                <td class="gen-case">Genitive (Purple)</td>
-                <td><span class="gen-case">wpół do</span> <span class="gen-case">piątej</span> (4:30)</td>
-            </tr>
-            <tr>
-                <td><b class="nom-case">Za</b> (To)</td>
-                <td><b class="nom-case"></b></td>
-                <td class="nom-case">Nominative (Orange)</td>
-                <td><span class="nom-case">za</span> <span class="cardinal-num">pięć</span> <span class="nom-case">piąta</span> (4:55)</td>
-            </tr>
-        </tbody>
-    </table>
-    <p>
-        <small>*Note: <span class="cardinal-num">minutes</span> are always 
-        <b class="cardinal-num">cardinal</b> numbers in <span class="gen-case">casual</span> mode.</small>
-    </p>
+    <div class="help-sect">
+        <h3>☕ Casual Grammar (12h)</h3>
+        <p>In casual speech, the <b>Minute</b> is always <span class="cardinal-num">Cardinal</span>. The <b>Hour</b> is always <b>Ordinal</b>, but its case depends on the preposition used:</p>
+        
+        <table class="help-table">
+            <thead>
+                <tr>
+                    <th>Structure</th>
+                    <th>Hour Case</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>On the Hour</td>
+                    <td class="nom-case">Nominative</td>
+                    <td><span class="nom-case">Czwarta</span> (4:00)</td>
+                </tr>
+                <tr>
+                    <td><b>Po</b> (Past)</td>
+                    <td class="gen-case">Genitive</td>
+                    <td><span class="cardinal-num">pięć</span> po <span class="gen-case">czwartej</span> (4:05)</td>
+                </tr>
+                <tr>
+                    <td><b>Wpół do</b> (Half)</td>
+                    <td class="gen-case">Genitive</td>
+                    <td>wpół do <span class="gen-case">piątej</span> (4:30)</td>
+                </tr>
+                <tr>
+                    <td><b>Za</b> (To)</td>
+                    <td class="nom-case">Nominative</td>
+                    <td>za <span class="cardinal-num">pięć</span> <span class="nom-case">piąta</span> (4:55)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="help-sect">
+        <h3>🔢 Number Reference Table</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Minutes (<span class="cardinal-num">Cardinal</span>)</th>
+                    <th>Hours (<span class="nom-case">Nom.</span>)</th>
+                    <th>Hours (<span class="gen-case">Gen.</span>)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td class="cardinal-num">jeden</td><td class="nom-case">pierwsza</td><td class="gen-case">pierwszej</td></tr>
+                <tr><td>2</td><td class="cardinal-num">dwa</td><td class="nom-case">druga</td><td class="gen-case">drugiej</td></tr>
+                <tr><td>3</td><td class="cardinal-num">trzy</td><td class="nom-case">trzecia</td><td class="gen-case">trzeciej</td></tr>
+                <tr><td>4</td><td class="cardinal-num">cztery</td><td class="nom-case">czwarta</td><td class="gen-case">czwartej</td></tr>
+                <tr><td>5</td><td class="cardinal-num">pięć</td><td class="nom-case">piąta</td><td class="gen-case">piątej</td></tr>
+                <tr><td>10</td><td class="cardinal-num">dziesięć</td><td class="nom-case">dziesiąta</td><td class="gen-case">dziesiątej</td></tr>
+                <tr><td>15</td><td class="cardinal-num">piętnaście</td><td class="nom-case">jedenasta*</td><td class="gen-case">jedenastej</td></tr>
+                <tr><td>20</td><td class="cardinal-num">dwadzieścia</td><td class="nom-case">dwunasta*</td><td class="gen-case">dwunastej</td></tr>
+            </tbody>
+        </table>
+        <small>*Note: Hours 11 and 12 are <b>jedenasta</b> and <b>dwunasta</b>.</small>
+    </div>
 </div>
