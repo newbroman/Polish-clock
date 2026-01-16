@@ -1,110 +1,152 @@
 <style>
+    /* Pływający przycisk zamknięcia */
+    .close-help {
+        position: sticky;
+        top: 10px;
+        float: right;
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 100;
+    }
+
     #help-content table {
         width: 100%;
         border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 0.9rem;
+        margin: 15px 0;
+        font-size: 0.8rem;
         text-align: center;
     }
 
     #help-content th {
-        background-color: transparent;
         border-bottom: 2px solid #dee2e6;
-        padding: 12px;
-        text-align: center;
+        padding: 8px;
     }
 
     #help-content td {
-        padding: 10px;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-        text-align: center;
+        padding: 6px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
     }
 
-    /* Grammar Colors */
-    .cardinal-num { color: #3498db; font-weight: bold; } /* Blue */
-    .nom-case { color: var(--nom-color); } /* Orange */
-    .gen-case { color: var(--gen-color); } /* Purple */
+    /* Kolory gramatyczne */
+    .cardinal-num { color: #3498db; font-weight: bold; } /* Niebieski - Liczebniki główne */
+    .nom-case { color: #e67e22; font-weight: bold; }    /* Pomarańczowy - Mianownik */
+    .gen-case { color: #9b59b6; font-weight: bold; }    /* Fioletowy - Dopełniacz */
 </style>
 
-<div class="help-sect">
-    <h3>📱 Instructions</h3>
-    <ul>
-        <li><b>Drag the Hands:</b> Move the clock hands to change the time.</li>
-        <li><b>Manual Entry:</b> Type a time (e.g., 14:20) in the text box.</li>
-        <li><b>EN/PL:</b> Change the interface and help language.</li>
-        <li><b>Phon:</b> Enable/disable the phonetic transcription.</li>
-        <li><b>Quiz Mode:</b> Test yourself! Choose the correct Polish phrase for the time on the clock. Buttons change color: <span style="color:#28a745">Green</span> (correct), <span style="color:#dc3545">Red</span> (wrong).</li>
-    </ul>
-</div>
+<div id="help-content">
+    <button class="close-help" onclick="toggleHelp()">✕ Zamknij</button>
 
-<div class="help-sect">
-    <h3>👔 <span class="nom-case">Formal</span> Grammar (24h)</h3>
-    <table class="help-table">
-        <thead>
-            <tr>
-                <th>Part</th>
-                <th>Number Type</th>
-                <th>Case</th>
-                <th>Example</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><span class="nom-case">Hour</span></td>
-                <td><b class="nom-case">Ordinal</b></td>
-                <td class="nom-case">Nominative (Orange)</td>
-                <td><span class="nom-case">Godzina</span> <span class="nom-case">siedemnasta</span></td>
-            </tr>
-            <tr>
-                <td><span class="cardinal-num">Minute</span></td>
-                <td><b class="cardinal-num">Cardinal</b></td>
-                <td><span class="cardinal-num">Blue</span></td>
-                <td><span class="cardinal-num">dziesięć</span> (17:10)</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <div class="help-sect">
+        <h3>📱 Jak używać</h3>
+        <ul>
+            <li><b>Przesuń wskazówki:</b> Poruszaj wskazówkami zegara, aby zmienić godzinę.</li>
+            <li><b>Wpisz ręcznie:</b> Wpisz czas bezpośrednio w pole (np. 16:45).</li>
+            <li><b>Tryb Formalny/Potoczny:</b> Przełączaj między systemem 24h a 12h.</li>
+            <li><b>Tryb Quizu:</b> Sprawdź swoją wiedzę! <span style="color:#28a745">Zielony</span> = Dobrze.</li>
+        </ul>
+    </div>
 
-<div class="help-sect">
-    <h3>☕ <span class="gen-case">Casual</span> Grammar (12h)</h3>
-    <table class="help-table">
-        <thead>
-            <tr>
-                <th>Context</th>
-                <th>Number Type</th>
-                <th>Case</th>
-                <th>Example</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Full <span class="nom-case">hour</span></td>
-                <td><b class="nom-case">Ordinal</b></td>
-                <td class="nom-case">Nominative (Orange)</td>
-                <td><span class="nom-case">Czwarta</span> (4:00)</td>
-            </tr>
-            <tr>
-                <td><b class="gen-case">Po</b> (Past)</td>
-                <td><b class="nom-case"</b></td>
-                <td class="gen-case">Genitive (Purple)</td>
-                <td><span class="cardinal-num">pięć</span> <span class="gen-case">po</span> <span class="gen-case">czwartej</span> (4:05)</td>
-            </tr>
-            <tr>
-                <td><b class="gen-case">Wpół do</b> (Half to)</td>
-                <td><b class="nom-case"></b></td>
-                <td class="gen-case">Genitive (Purple)</td>
-                <td><span class="gen-case">wpół do</span> <span class="gen-case">piątej</span> (4:30)</td>
-            </tr>
-            <tr>
-                <td><b class="nom-case">Za</b> (To)</td>
-                <td><b class="nom-case"></b></td>
-                <td class="nom-case">Nominative (Orange)</td>
-                <td><span class="nom-case">za</span> <span class="cardinal-num">pięć</span> <span class="nom-case">piąta</span> (4:55)</td>
-            </tr>
-        </tbody>
-    </table>
-    <p>
-        <small>*Note: <span class="cardinal-num">minutes</span> are always 
-        <b class="cardinal-num">cardinal</b> numbers in <span class="gen-case">casual</span> mode.</small>
-    </p>
+    <div class="help-sect">
+        <h3>👔 Gramatyka Formalna (24h)</h3>
+        <p>Używana w oficjalnych rozkładach. <b>Godzina</b> to liczebnik <span class="nom-case">porządkowy</span>, <b>Minuta</b> to liczebnik <span class="cardinal-num">główny</span>.</p>
+        <table class="help-table">
+            <thead>
+                <tr>
+                    <th>Czas</th>
+                    <th>Struktura</th>
+                    <th>Przykład</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>17:10</td>
+                    <td><span class="nom-case">Godzina (Mianownik)</span> + <span class="cardinal-num">Minuta</span></td>
+                    <td><span class="nom-case">siedemnasta</span> <span class="cardinal-num">dziesięć</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="help-sect">
+        <h3>☕ Gramatyka Potoczna (12h)</h3>
+        <p>Przypadek <b>Godziny</b> zmienia się w zależności od użytego przyimka:</p>
+        <table class="help-table">
+            <thead>
+                <tr>
+                    <th>Struktura</th>
+                    <th>Przypadek przyimka</th>
+                    <th>Przykład</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pełna godzina</td>
+                    <td class="nom-case">Mianownik</td>
+                    <td><span class="nom-case">Czwarta</span> (4:00)</td>
+                </tr>
+                <tr>
+                    <td>Po</td>
+                    <td><span class="gen-case">po</span> (+ Dopełniacz)</td>
+                    <td><span class="cardinal-num">pięć</span> <span class="gen-case">po czwartej</span></td>
+                </tr>
+                <tr>
+                    <td>Wpół do</td>
+                    <td><span class="gen-case">wpół do</span> (+ Dopełniacz)</td>
+                    <td><span class="gen-case">wpół do piątej</span></td>
+                </tr>
+                <tr>
+                    <td>Za (do godziny)</td>
+                    <td><span class="nom-case">za</span> (+ Mianownik)</td>
+                    <td><span class="nom-case">za</span> <span class="cardinal-num">dziesięć</span> <span class="nom-case">piąta</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="help-sect">
+        <h3>🔢 Tabela Liczebników</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Min (<span class="cardinal-num">Główne</span>)</th>
+                    <th>Godz (<span class="nom-case">Mian.</span>)</th>
+                    <th>Godz (<span class="gen-case">Dopeł.</span>)</th>
+                </tr>
+            </thead>
+            <tbody id="number-table-body">
+                <tr><td>1</td><td class="cardinal-num">jeden</td><td class="nom-case">pierwsza</td><td class="gen-case">pierwszej</td></tr>
+                <tr><td>2</td><td class="cardinal-num">dwa</td><td class="nom-case">druga</td><td class="gen-case">drugiej</td></tr>
+                <tr><td>3</td><td class="cardinal-num">trzy</td><td class="nom-case">trzecia</td><td class="gen-case">trzeciej</td></tr>
+                <tr><td>4</td><td class="cardinal-num">cztery</td><td class="nom-case">czwarta</td><td class="gen-case">czwartej</td></tr>
+                <tr><td>5</td><td class="cardinal-num">pięć</td><td class="nom-case">piąta</td><td class="gen-case">piątej</td></tr>
+                <tr><td>6</td><td class="cardinal-num">sześć</td><td class="nom-case">szósta</td><td class="gen-case">szóstej</td></tr>
+                <tr><td>7</td><td class="cardinal-num">siedem</td><td class="nom-case">siódma</td><td class="gen-case">siódmej</td></tr>
+                <tr><td>8</td><td class="cardinal-num">osiem</td><td class="nom-case">ósma</td><td class="gen-case">ósmej</td></tr>
+                <tr><td>9</td><td class="cardinal-num">dziewięć</td><td class="nom-case">dziewiąta</td><td class="gen-case">dziewiątej</td></tr>
+                <tr><td>10</td><td class="cardinal-num">dziesięć</td><td class="nom-case">dziesiąta</td><td class="gen-case">dziesiątej</td></tr>
+                <tr><td>11</td><td class="cardinal-num">jedenasta</td><td class="nom-case">jedenasta</td><td class="gen-case">jedenastej</td></tr>
+                <tr><td>12</td><td class="cardinal-num">dwanaście</td><td class="nom-case">dwunasta</td><td class="gen-case">dwunastej</td></tr>
+                <tr><td>13</td><td class="cardinal-num">trzynaście</td><td class="nom-case">trzynasta</td><td class="gen-case">trzynastej</td></tr>
+                <tr><td>14</td><td class="cardinal-num">czternaście</td><td class="nom-case">czternasta</td><td class="gen-case">czternasta</td></tr>
+                <tr><td>15</td><td class="cardinal-num">piętnaście</td><td class="nom-case">piętnasta</td><td class="gen-case">piętnastej</td></tr>
+                <tr><td>16</td><td class="cardinal-num">szesnaście</td><td class="nom-case">szesnasta</td><td class="gen-case">szesnastej</td></tr>
+                <tr><td>17</td><td class="cardinal-num">siedemnaście</td><td class="nom-case">siedemnasta</td><td class="gen-case">siedemnastej</td></tr>
+                <tr><td>18</td><td class="cardinal-num">osiemnaście</td><td class="nom-case">osiemnasta</td><td class="gen-case">osiemnastej</td></tr>
+                <tr><td>19</td><td class="cardinal-num">dziewiętnaście</td><td class="nom-case">dziewiętnasta</td><td class="gen-case">dziewiętnastej</td></tr>
+                <tr><td>20</td><td class="cardinal-num">dwadzieścia</td><td class="nom-case">dwudziesta</td><td class="gen-case">dwudziestej</td></tr>
+                <tr><td>21</td><td class="cardinal-num">dwadzieścia jeden</td><td class="nom-case">dwudziesta pierwsza</td><td class="gen-case">dwudziestej pierwszej</td></tr>
+                <tr><td>22</td><td class="cardinal-num">dwadzieścia dwa</td><td class="nom-case">dwudziesta druga</td><td class="gen-case">dwudziestej drugiej</td></tr>
+                <tr><td>23</td><td class="cardinal-num">dwadzieścia trzy</td><td class="nom-case">dwudziesta trzecia</td><td class="gen-case">dwudziestej trzeciej</td></tr>
+            </tbody>
+        </table>
+        <p><small><b>Uwaga dot. minut:</b> Powyżej 23 minuty kontynuują swoją standardową formę <span class="cardinal-num">główną</span> (np. 24 to <i>dwadzieścia cztery</i>, 25 to <i>dwadzieścia pięć</i> itd.).</small></p>
+        <p><small><b>Uwaga dot. godzin:</b> W trybie formalnym 24h używamy Mianownika porządkowego dla wszystkich godzin 1-24. W trybie potocznym 12h używamy tylko godzin 1-12.</small></p>
+    </div>
 </div>
