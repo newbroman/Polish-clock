@@ -1,5 +1,5 @@
 <style>
-    /* Floating Close Button */
+    /* Pływający przycisk zamknięcia */
     .close-help {
         position: sticky;
         top: 10px;
@@ -15,20 +15,21 @@
         z-index: 100;
     }
 
+    /* Responsywność tabel */
     #help-content table {
         width: 100%;
         border-collapse: collapse;
         margin: 15px 0;
         font-size: 0.8rem;
         text-align: center;
-        /* Bottom line for the whole table */
         border-bottom: 2px solid rgba(128, 128, 128, 0.5);
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
     #help-content th {
-        /* Adapts to device mode automatically */
         background-color: transparent; 
-        /* Visible lines top and bottom of headings */
         border-top: 2px solid rgba(128, 128, 128, 0.5);
         border-bottom: 2px solid rgba(128, 128, 128, 0.5);
         padding: 10px;
@@ -39,10 +40,10 @@
         border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
 
-    /* Grammar Colors */
-    .cardinal-num { color: #3498db; font-weight: bold; } /* Blue */
-    .nom-case { color: #e67e22; font-weight: bold; }    /* Orange */
-    .gen-case { color: #9b59b6; font-weight: bold; }    /* Purple */
+    /* Kolory gramatyczne */
+    .cardinal-num { color: #3498db; font-weight: bold; } /* Niebieski - Liczebniki główne */
+    .nom-case { color: #e67e22; font-weight: bold; }    /* Pomarańczowy - Mianownik */
+    .gen-case { color: #9b59b6; font-weight: bold; }    /* Fioletowy - Dopełniacz */
 </style>
 
 <div id="help-content">
@@ -52,15 +53,15 @@
         <h3>📱 Jak używać</h3>
         <ul>
             <li><b>Przesuń wskazówki:</b> Poruszaj wskazówkami zegara, aby zmienić godzinę.</li>
-            <li><b>Wpisz ręcznie:</b> Wpisz czas bezpośrednio w pole (np. 16:45).</li>
-            <li><b>Tryb Formalny/Potoczny:</b> Przełączaj między systemem 24h a 12h.</li>
-            <li><b>Tryb Quizu:</b> Sprawdź swoją wiedzę! <span style="color:#28a745">Zielony</span> = Dobrze.</li>
+            <li><b>Wpisz ręcznie:</b> Wpisz czas bezpośrednio (np. 14:20).</li>
+            <li><b>Tryb Formalny/Potoczny:</b> Przełączaj między czasem 24h a 12h.</li>
+            <li><b>Tryb Quizu:</b> <span style="color:#28a745">Zielony</span> = Dobrze, <span style="color:#dc3545">Czerwony</span> = Źle.</li>
         </ul>
     </div>
 
     <div class="help-sect">
         <h3>👔 Gramatyka Formalna (24h)</h3>
-        <p>Używana w oficjalnych rozkładach. <b>Godzina</b> to liczebnik <span class="nom-case">porządkowy</span>, <b>Minuta</b> to liczebnik <span class="cardinal-num">główny</span>.</p>
+        <p>Używana w oficjalnych sytuacjach. <b>Godzina</b> to liczebnik <span class="nom-case">porządkowy</span>, <b>Minuta</b> to liczebnik <span class="cardinal-num">główny</span>.</p>
         <table>
             <thead>
                 <tr>
@@ -72,7 +73,7 @@
             <tbody>
                 <tr>
                     <td>17:10</td>
-                    <td><span class="nom-case">Godzina (Mianownik)</span> + <span class="cardinal-num">Minuta</span></td>
+                    <td><span class="nom-case">Godzina (Mian.)</span> + <span class="cardinal-num">Minuta</span></td>
                     <td><span class="nom-case">siedemnasta</span> <span class="cardinal-num">dziesięć</span></td>
                 </tr>
             </tbody>
@@ -116,58 +117,59 @@
     </div>
 
     <div class="help-sect">
-    <h3>🎓 Pełna Struktura</h3>
-    <p>Łączymy wszystko: <span class="nom-case">Godzina</span> + <span class="cardinal-num">Minuty</span> + <span class="cardinal-num">Sekundy</span> + <b>Pora dnia</b>.</p>
-    <table class="help-table">
-        <thead>
-            <tr>
-                <th>Tryb</th>
-                <th>Czas (16:05:10)</th>
-                <th>Pełna fraza po polsku</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>👔 Formalny</td>
-                <td>16:05:10</td>
-                <td><span class="nom-case">Szesnasta</span> <span class="cardinal-num">pięć dziesięć</span></td>
-            </tr>
-            <tr>
-                <td>☕ Potoczny</td>
-                <td>4:05:10 PM</td>
-                <td><span class="cardinal-num">Pięć</span> <span class="gen-case">po czwartej</span> <span class="cardinal-num">dziesięć</span> <b>po południu</b></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-    
+        <h3>🎓 Pełna Struktura</h3>
+        <p>Łączymy wszystko: <span class="nom-case">Godzina</span> + <span class="cardinal-num">Minuty</span> + <span class="cardinal-num">Sekundy</span> + <b>Pora dnia</b>.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tryb</th>
+                    <th>Czas (16:05:10)</th>
+                    <th>Pełna fraza po polsku</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>👔 Formalny</td>
+                    <td>16:05:10</td>
+                    <td><span class="nom-case">Szesnasta</span> <span class="cardinal-num">pięć dziesięć</span></td>
+                </tr>
+                <tr>
+                    <td>☕ Potoczny</td>
+                    <td>4:05:10 PM</td>
+                    <td><span class="cardinal-num">Pięć</span> <span class="gen-case">po czwartej</span> <span class="cardinal-num">dziesięć</span> <b>po południu</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="help-sect">
-    <h3>☀️ Pory Dnia (AM/PM)</h3>
-    <p>Ponieważ tryb potoczny używa formatu 12h, dodajemy te zwroty dla jasności:</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Przedział czasu</th>
-                <th>Polski zwrot</th>
-                <th>Znaczenie</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>04:00 – 09:00</td><td><b>rano</b></td><td>rano</td></tr>
-            <tr><td>10:00 – 11:00</td><td><b>przed południem</b></td><td>przed południem</td></tr>
-            <tr><td>13:00 – 18:00</td><td><b>po południu</b></td><td>po południu</td></tr>
-            <tr><td>19:00 – 23:00</td><td><b>wieczorem</b></td><td>wieczorem</td></tr>
-            <tr><td>00:00 – 03:00</td><td><b>w nocy</b></td><td>w nocy</td></tr>
-        </tbody>
-    </table>
-</div>
+        <h3>☀️ Pory Dnia (AM/PM)</h3>
+        <p>W trybie potocznym dodajemy te zwroty dla jasności:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Przedział czasu</th>
+                    <th>Polski zwrot</th>
+                    <th>Znaczenie</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>04:00 – 09:00</td><td><b>rano</b></td><td>rano</td></tr>
+                <tr><td>10:00 – 11:00</td><td><b>przed południem</b></td><td>przed południem</td></tr>
+                <tr><td>13:00 – 18:00</td><td><b>po południu</b></td><td>po południu</td></tr>
+                <tr><td>19:00 – 23:00</td><td><b>wieczorem</b></td><td>wieczorem</td></tr>
+                <tr><td>00:00 – 03:00</td><td><b>w nocy</b></td><td>w nocy</td></tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="help-sect">
         <h3>🔢 Tabela Liczebników</h3>
         <table>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Min (<span class="cardinal-num">Główne</span>)</th>
+                    <th>Min (<span class="cardinal-num">Głów.</span>)</th>
                     <th>Godz (<span class="nom-case">Mian.</span>)</th>
                     <th>Godz (<span class="gen-case">Dopeł.</span>)</th>
                 </tr>
@@ -198,12 +200,13 @@
                 <tr><td>23</td><td class="cardinal-num">dwadzieścia trzy</td><td class="nom-case">dwudziesta trzecia</td><td class="gen-case">dwudziestej trzeciej</td></tr>
             </tbody>
         </table>
-      <div class="help-sect">
-    <p><small><b>Uwaga dot. minut i sekund:</b> Są to zawsze liczebniki <span class="cardinal-num">główne</span> (Niebieski) zarówno w formie formalnej, jak i potocznej. Powyżej 23 kontynuują swoją standardową formę (np. 24 to <span class="cardinal-num"><i>dwadzieścia cztery</i></span>). Sekundy następują bezpośrednio po minutach (np. 12:05:10 to <span class="nom-case">dwunasta</span> <span class="cardinal-num">pięć dziesięć</span>).</small></p>
-    
-    <p><small><b>Uwaga dot. godzin:</b> W trybie 👔 Formalnym zawsze używaj <span class="nom-case">Mianownika porządkowego</span> (Pomarańczowy). W trybie ☕ Potocznym używaj <span class="gen-case">Dopełniacza</span> (Fioletowy) po <span class="gen-case"><b>po</b></span> oraz <span class="gen-case"><b>wpół do</b></span>, natomiast <span class="nom-case">Mianownika</span> (Pomarańczowy) przy pełnych godzinach oraz po <span class="nom-case"><b>za</b></span>.</small></p>
-    
-    <p><small><b>Pory specjalne:</b> Dla godziny 12:00 możesz użyć słowa <b>południe</b>, a dla 00:00 słowa <b>północ</b>.</small></p>
-</div>
-        <h3>
+    </div>
+
+    <div class="help-sect">
+        <p><small><b>Uwaga dot. minut i sekund:</b> Są to zawsze liczebniki <span class="cardinal-num">głównymi</span> (Niebieski). Powyżej 23 kontynuują swoją standardową formę (np. 24 to <span class="cardinal-num"><i>dwadzieścia cztery</i></span>). Sekundy wypowiadamy po minutach (np. 12:05:10 to <span class="nom-case">dwunasta</span> <span class="cardinal-num">pięć dziesięć</span>).</small></p>
+        
+        <p><small><b>Uwaga dot. godzin:</b> W trybie 👔 Formalnym używaj <span class="nom-case">Mianownika porządkowego</span> (Pomarańczowy). W trybie ☕ Potocznym używaj <span class="gen-case">Dopełniacza</span> (Fioletowy) po <span class="gen-case"><b>po</b></span> oraz <span class="gen-case"><b>wpół do</b></span>, a <span class="nom-case">Mianownika</span> (Pomarańczowy) przy pełnych godzinach i po <span class="nom-case"><b>za</b></span>.</small></p>
+        
+        <p><small><b>Pory specjalne:</b> Dla godziny 12:00 używamy słowa <b>południe</b>, a dla 00:00 słowa <b>północ</b>.</small></p>
+    </div>
 </div>
