@@ -1,5 +1,5 @@
 <style>
-    /* Pływający przycisk zamknięcia */
+    /* Floating Close Button */
     .close-help {
         position: sticky;
         top: 10px;
@@ -21,22 +21,28 @@
         margin: 15px 0;
         font-size: 0.8rem;
         text-align: center;
+        /* Bottom line for the whole table */
+        border-bottom: 2px solid rgba(128, 128, 128, 0.5);
     }
 
     #help-content th {
-        border-bottom: 2px solid #dee2e6;
-        padding: 8px;
+        /* Adapts to device mode automatically */
+        background-color: transparent; 
+        /* Visible lines top and bottom of headings */
+        border-top: 2px solid rgba(128, 128, 128, 0.5);
+        border-bottom: 2px solid rgba(128, 128, 128, 0.5);
+        padding: 10px;
     }
 
     #help-content td {
-        padding: 6px;
-        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        padding: 8px;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
 
-    /* Kolory gramatyczne */
-    .cardinal-num { color: #3498db; font-weight: bold; } /* Niebieski - Liczebniki główne */
-    .nom-case { color: #e67e22; font-weight: bold; }    /* Pomarańczowy - Mianownik */
-    .gen-case { color: #9b59b6; font-weight: bold; }    /* Fioletowy - Dopełniacz */
+    /* Grammar Colors */
+    .cardinal-num { color: #3498db; font-weight: bold; } /* Blue */
+    .nom-case { color: #e67e22; font-weight: bold; }    /* Orange */
+    .gen-case { color: #9b59b6; font-weight: bold; }    /* Purple */
 </style>
 
 <div id="help-content">
@@ -55,7 +61,7 @@
     <div class="help-sect">
         <h3>👔 Gramatyka Formalna (24h)</h3>
         <p>Używana w oficjalnych rozkładach. <b>Godzina</b> to liczebnik <span class="nom-case">porządkowy</span>, <b>Minuta</b> to liczebnik <span class="cardinal-num">główny</span>.</p>
-        <table class="help-table">
+        <table>
             <thead>
                 <tr>
                     <th>Czas</th>
@@ -76,7 +82,7 @@
     <div class="help-sect">
         <h3>☕ Gramatyka Potoczna (12h)</h3>
         <p>Przypadek <b>Godziny</b> zmienia się w zależności od użytego przyimka:</p>
-        <table class="help-table">
+        <table>
             <thead>
                 <tr>
                     <th>Struktura</th>
@@ -120,7 +126,7 @@
                     <th>Godz (<span class="gen-case">Dopeł.</span>)</th>
                 </tr>
             </thead>
-            <tbody id="number-table-body">
+            <tbody>
                 <tr><td>1</td><td class="cardinal-num">jeden</td><td class="nom-case">pierwsza</td><td class="gen-case">pierwszej</td></tr>
                 <tr><td>2</td><td class="cardinal-num">dwa</td><td class="nom-case">druga</td><td class="gen-case">drugiej</td></tr>
                 <tr><td>3</td><td class="cardinal-num">trzy</td><td class="nom-case">trzecia</td><td class="gen-case">trzeciej</td></tr>
@@ -134,7 +140,7 @@
                 <tr><td>11</td><td class="cardinal-num">jedenasta</td><td class="nom-case">jedenasta</td><td class="gen-case">jedenastej</td></tr>
                 <tr><td>12</td><td class="cardinal-num">dwanaście</td><td class="nom-case">dwunasta</td><td class="gen-case">dwunastej</td></tr>
                 <tr><td>13</td><td class="cardinal-num">trzynaście</td><td class="nom-case">trzynasta</td><td class="gen-case">trzynastej</td></tr>
-                <tr><td>14</td><td class="cardinal-num">czternaście</td><td class="nom-case">czternasta</td><td class="gen-case">czternasta</td></tr>
+                <tr><td>14</td><td class="cardinal-num">czternaście</td><td class="nom-case">czternasta</td><td class="gen-case">czternastej</td></tr>
                 <tr><td>15</td><td class="cardinal-num">piętnaście</td><td class="nom-case">piętnasta</td><td class="gen-case">piętnastej</td></tr>
                 <tr><td>16</td><td class="cardinal-num">szesnaście</td><td class="nom-case">szesnasta</td><td class="gen-case">szesnastej</td></tr>
                 <tr><td>17</td><td class="cardinal-num">siedemnaście</td><td class="nom-case">siedemnasta</td><td class="gen-case">siedemnastej</td></tr>
@@ -146,7 +152,7 @@
                 <tr><td>23</td><td class="cardinal-num">dwadzieścia trzy</td><td class="nom-case">dwudziesta trzecia</td><td class="gen-case">dwudziestej trzeciej</td></tr>
             </tbody>
         </table>
-        <p><small><b>Uwaga dot. minut:</b> Powyżej 23 minuty kontynuują swoją standardową formę <span class="cardinal-num">główną</span> (np. 24 to <i>dwadzieścia cztery</i>, 25 to <i>dwadzieścia pięć</i> itd.).</small></p>
+        <p><small><b>Uwaga dot. minut:</b> Minuty są zawsze liczebnikami <span class="cardinal-num">głównymi</span> zarówno w formie formalnej, jak i potocznej. Powyżej 23 minuty kontynuują swoją formę (np. 24 to <i>dwadzieścia cztery</i>).</small></p>
         <p><small><b>Uwaga dot. godzin:</b> W trybie formalnym 24h używamy Mianownika porządkowego dla wszystkich godzin 1-24. W trybie potocznym 12h używamy tylko godzin 1-12.</small></p>
     </div>
 </div>
