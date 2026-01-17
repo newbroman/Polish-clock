@@ -1,28 +1,13 @@
-/* VARIABLES & THEMES - Now with German Grammar Colors */
-root {
-    /* GERMAN FLAG COLORS */
-    --germany-black: #000000;
-    --germany-red: #FF0000;
-    --germany-gold: #FFCC00;
-    
-    /* CLOCK FACE GRADIENT */
-    --clock-face: linear-gradient(
-        to bottom, 
-        var(--germany-black) 0%, 
-        var(--germany-black) 33.3%, 
-        var(--germany-red) 33.3%, 
-        var(--germany-red) 66.6%, 
-        var(--germany-gold) 66.6%, 
-        var(--germany-gold) 100%
-    );
-
-    /* UI THEME COLORS */
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --accent: #ff4d4d;
-    --nom-color: #ff9f43;    /* Hour color */
-    --cardinal-color: #3498db; /* Minutes color */
-    --btn-sub-border: #444;
+/* VARIABLES & THEMES */
+:root {
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --container-bg: #ffffff;
+    --accent: #dc3545;
+    --nom-color: #e67e22; 
+    --gen-color: #9b59b6;
+    --clock-face: linear-gradient(to bottom, #ffffff 50%, #dc3545 50%);
+    --btn-sub-border: #555;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,7 +17,7 @@ root {
         --container-bg: #1e1e1e;
         --accent: #ff4d4d;
         --nom-color: #ff9f43;
-        --cardinal-color: #5dade2;
+        --gen-color: #ce93d8;
         --btn-sub-border: #444;
     }
 
@@ -52,7 +37,6 @@ body {
     justify-content: center;
     font-family: -apple-system, sans-serif;
     overflow-x: hidden;
-    min-height: 100vh;
 }
 
 .container {
@@ -65,46 +49,69 @@ body {
     box-sizing: border-box;
 }
 
-/* 145px CLOCK FACE (66% size preservation) */
+/* CLOCK FACE (145px / 66% size) */
 #clock-container {
     width: 145px;
     height: 145px;
     border: 5px solid var(--text-color);
     border-radius: 50%;
     position: relative;
-    background: var(--clock-face); /* Applies the flag colors */
+    background: var(--clock-face);
     margin: 10px 0;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    overflow: hidden; /* Ensures the flag doesn't bleed out */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+
 .mark {
-    background-color: #ffffff !important; /* Pure white for the black stripe */
-    opacity: 1;
+    background-color: #000000 !important; /* Always black as requested */
+    opacity: 0.8;
     position: absolute;
     width: 2px;
-    height: 10px; /* Slightly longer for better visibility */
+    height: 8px;
     left: 50%;
     margin-left: -1px;
-    transform-origin: 1px 72.5px; /* Centers for 145px clock */
-    z-index: 2;
-    /* This shadow ensures they are visible even on the yellow/gold stripe */
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8); 
+    transform-origin: 1px 72.5px; /* Centers ticks for 145px clock */
 }
+
 .hand {
-   background: #ffffff; /* Change hands to white */
-    border: 1px solid #000; /* Thin black border so they show on the white/gold sections */
-    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5); /* Slight outer glow */
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    background: #1a1a1a;
+    border-radius: 4px;
+    z-index: 5;
 }
 
 .hour-hand { width: 6px; height: 40px; margin-left: -3px; }
 .min-hand { width: 4px; height: 60px; margin-left: -2px; }
 
+/* Second Hand - Bordered to stand out on red */
 .sec-hand {
-    background: var(--vivid-red) !important;
-    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.9);
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform-origin: bottom;
+    width: 2px;
+    height: 65px;
+    margin-left: -1px;
+    background: #808080; 
+    box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.8);
+    z-index: 8;
 }
 
-/* DIGITAL CLOCK (Red text) */
+.dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--text-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+/* DIGITAL CLOCK (Red text, single border) */
 #time-input-display {
     color: #ff4d4d !important;
     font-size: 1.2rem;
@@ -117,46 +124,31 @@ body {
     width: 8rem;
     margin: 15px 0;
     outline: none;
-    font-family: 'Courier New', monospace;
 }
 
-/* GERMAN PHRASE FORMATTING */
-.display-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    margin: 10px 0;
-    min-height: 110px;
-}
-
-#german-text {
-    font-size: 1.4rem;
-    font-weight: bold;
-    margin-bottom: 4px;
-    width: 100%;
-    word-wrap: break-word; /* Essential for long German words */
-}
-
+/* POLISH PHRASE FORMATTING */
 .nom-case { color: var(--nom-color) !important; font-weight: bold; }
-.cardinal-num { color: var(--cardinal-color) !important; font-weight: bold; }
-#english-text { opacity: 0.6; font-style: italic; margin-top: 5px; font-size: 1rem; }
+.gen-case { color: var(--gen-color) !important; font-weight: bold; }
+#phonetic-text { color: #2ecc71; font-family: monospace; font-size: 0.9rem; }
+#english-text { opacity: 0.7; font-style: italic; }
 
-/* BUTTONS & CONTROLS */
+/* BUTTONS */
 .btn-sub {
-    background-color: var(--bg-color) !important;
+    background-color: var(--bg-color) !important; /* Matches background */
     color: var(--text-color);
     border: 1px solid var(--btn-sub-border);
     padding: 10px;
     border-radius: 10px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .top-row { display: grid; grid-template-columns: repeat(5, 1fr); width: 100%; gap: 5px; }
 .top-row button { padding: 5px 0; font-size: 0.7rem; }
 
-/* Main Action Buttons (80% scale feel preserved) */
+.audio-row { display: grid; grid-template-columns: 1fr 1fr; width: 100%; gap: 8px; margin-top: 10px; }
+
+/* Main Action Buttons (80% Height) */
 .btn-real, .btn-main {
     width: 100%;
     padding: 12px; 
@@ -169,20 +161,121 @@ body {
 .btn-real { background-color: #007bff; }
 .btn-main { background-color: #dc3545; }
 
-/* QUIZ OPTIONS */
-#quiz-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
+/* HELP MODAL FIX */
+#help-modal {
+    display: none; 
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-height: 80vh;
+    padding: 20px;
+    background: var(--container-bg);
+    color: var(--text-color);
+    border: 2px solid var(--accent);
+    border-radius: 15px;
+    z-index: 3000; /* Extremely high to stay on top */
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-around;
     width: 100%;
+    margin: 15px 0;
+}
+.display-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers items horizontally */
+    text-align: center;  /* Centers text inside items */
+    width: 100%;
+    margin: 10px 0;
+    min-height: 110px;  /* Reserves space so buttons don't jump */
+}
+
+#polish-text, #phonetic-text, #english-text {
+    width: 100%;
+    display: block;
+    margin: 3px 0;
+}
+
+#polish-text {
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.polish-display {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    width: 100%;
+}
+
+.phonetic-display {
+    color: #2ecc71; /* Green like your reference */
+    font-family: monospace;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.english-display {
+    opacity: 0.6;
+    font-style: italic;
+    margin-top: 5px;
+    font-size: 1rem;
+}
+
+/* Ensure the grammar spans inherit the bold font */
+.nom-case, .gen-case {
+    font-weight: bold;
+}
+
+.cardinal-num {
+    color: #3498db; /* A clear blue to distinguish from black/orange/purple */
+    font-weight: bold;
+}
+
+#english-text {
+    color: #666;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+#help-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.9rem; /* Reduced font size for a tidier look */
+    text-align: center; /* Centers all content */
+}
+
+#help-content th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6; /* Bold line under headings */
+    padding: 10px;
+    text-align: center;
+}
+
+#help-content td {
+    padding: 8px;
+    border-bottom: 1px solid #eee; /* Light lines between rows */
+    vertical-align: middle;
+}
+
+/* Specific color for minutes/cardinals in help page */
+.cardinal-num {
+    color: #3498db;
+    font-weight: bold;
 }
 
 #app-title {
     font-size: 1.5rem;
     font-weight: 800;
-    color: var(--accent);
+    color: #FF000;
     text-shadow: 0 0 10px rgba(255, 49, 49, 0.5);
     margin-bottom: 20px;
     text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
