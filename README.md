@@ -20,11 +20,9 @@ An interactive analogue clock that shows how to say the time in Polish, with pho
 
 ## Using it
 
-Open the live app in a modern browser. On a phone you can add it to the home screen using the browser's menu; `manifest.json` provides the name, icon and standalone display.
+Open the live app in a modern browser. It installs as a PWA: on a phone you can add it to the home screen using the browser's menu, and `manifest.json` provides the name, icon and standalone display. A service worker caches the app on first load, so it works offline afterwards.
 
 Audio uses the Web Speech API and asks for the `pl-PL` language. For proper Polish pronunciation the device needs a Polish voice installed; otherwise the browser may use a default voice or stay silent.
-
-Offline use is not currently available; see Notes.
 
 ## Project structure
 
@@ -35,7 +33,7 @@ Offline use is not currently available; see Notes.
 | `style.css` | Styling, including the dark theme |
 | `help_en.html`, `help_pl.html` | Help content fetched into the pop-up |
 | `manifest.json`, `icon.png` | PWA manifest and app icon |
-| `sw.js` | Service worker (not currently active; see Notes) |
+| `sw.js` | Service worker: precaches the app files (relative paths) and serves them cache-first; registered from `index.html`. Bump `CACHE_NAME` when files change |
 
 ## Development
 
@@ -51,7 +49,6 @@ The help pages are loaded with `fetch`, so open the app through a server rather 
 
 ## Notes
 
-- `sw.js` is not registered by `index.html` or `script.js`, so nothing is cached and the app needs a connection. The file also appears to contain two service workers pasted together: the second `const CACHE_NAME` redeclares the first and has an unterminated string, so the file does not parse. Its asset list refers to `styles.css`, but the stylesheet is `style.css`, and it uses a hard-coded `/Polish-clock` path. If you want offline support, replace it with one worker, register it, and bump the cache name whenever files change.
 - The help text writes the half-hour form as "wpół do"; the app itself displays "w pół do".
 
 Built by Martin Hollingham.
